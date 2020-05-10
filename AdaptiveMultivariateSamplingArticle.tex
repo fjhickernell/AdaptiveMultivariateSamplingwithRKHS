@@ -1,0 +1,419 @@
+\documentclass[11pt]{NSFamsart}
+
+
+\usepackage{latexsym,amsfonts,amsmath,amssymb,amsthm,epsfig,extdash,multirow}
+\usepackage{stackrel,tabularx,mathtools,enumitem,longtable,xspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref,accents, booktabs}
+\usepackage{algorithm, algorithmicx}
+\usepackage{anyfontsize}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage[font=small,labelfont=bf]{caption}
+%\usepackage[sort&compress]{natbib}
+
+\usepackage{algpseudocode}
+\usepackage{algorithm, algorithmicx}
+\algnewcommand\algorithmicparam{\textbf{Parameters:}}
+\algnewcommand\PARAM{\item[\algorithmicparam]}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\RETURN{\State \textbf{Return }}
+
+
+\usepackage{algpseudocode}
+%%list of acronyms with links
+\newcommand{\QMCSoft}{QMCSoft\xspace}
+\newcommand{\GAIL}{GAIL\xspace}
+\newcommand{\QMC}{QMC\xspace}
+\newcommand{\IIDMC}{IID MC\xspace}
+\newcommand{\SAMSIQMC}{SAMSI-QMC\xspace}
+\newcommand{\SciPy}{SciPy\xspace}
+\newcommand{\GSL}{GSL\xspace}
+\newcommand{\NAG}{NAG\xspace}
+\newcommand{\MATLAB}{MATLAB\xspace}
+\newcommand{\Chebfun}{Chebfun\xspace}
+\newcommand{\Rlang}{R\xspace}
+\newcommand{\Julia}{Julia\xspace}
+
+
+\textwidth6.5in
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\textheight9.0in
+%\textheight9.1in
+
+\newtheorem{theorem}{theorem}
+
+
+\providecommand{\FJHickernell}{Hickernell}
+\newcommand{\hf}{\widehat{f}}
+\newcommand{\hg}{\widehat{g}}
+\newcommand{\hI}{\hat{I}}
+\newcommand{\hatf}{\hat{f}}
+\newcommand{\hatg}{\hat{g}}
+\newcommand{\tf}{\widetilde{f}}
+\newcommand{\tbf}{\tilde{\bff}}
+%\DeclareMathOperator{\Pr}{\mathbb{P}}
+
+% Math operators
+\DeclareMathOperator{\cost}{COST}
+\DeclareMathOperator{\comp}{COMP}
+\DeclareMathOperator{\loss}{loss}
+\DeclareMathOperator{\lof}{lof}
+\DeclareMathOperator{\reg}{reg}
+\DeclareMathOperator{\CV}{CV}
+\DeclareMathOperator{\size}{wd}
+\DeclareMathOperator{\GP}{\mathcal{G} \! \mathcal{P}}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\QOI}{QOI} %Quantity of Interest
+\DeclareMathOperator{\POI}{POI} %Parameter of Interest
+\DeclareMathOperator{\Ans}{ANS}
+\DeclareMathOperator{\Var}{Var}
+%\DeclareMathOperator{\APP}{\widehat{\QOI}}
+\DeclareMathOperator{\SURR}{SM} %surrogate model
+\DeclareMathOperator{\STREND}{ST} %surrogate trend
+\DeclareMathOperator{\SVAR}{SV} %surrogate variation
+\DeclareMathOperator{\SVARERR}{SVU} %surrogate variation uncertainty
+\newcommand{\MLS}{\textrm{MLS}\xspace} %distance weighted least squares, also known as moving least squares
+\DeclareMathOperator{\ALG}{ALG}
+\DeclareMathOperator{\ERR}{ERR}
+\DeclareMathOperator{\VAL}{ACQ}
+\DeclareMathOperator{\OPER}{OPER}
+\DeclareMathOperator{\INT}{INT}
+\DeclareMathOperator{\MIN}{MIN}
+\DeclareMathOperator{\ID}{ID}
+\DeclareMathOperator{\APPMIN}{\widehat{\MIN}}
+\DeclareMathOperator{\APPID}{\widehat{\ID}}
+\DeclareMathOperator{\MINVAL}{MINACQ}
+\DeclareMathOperator{\IDVAL}{IDACQ}
+\DeclareMathOperator{\SURRERR}{SU}
+\DeclareMathOperator{\MINERR}{MERR}
+\DeclareMathOperator{\IDERR}{IDERR}
+\DeclareMathOperator{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\filldis}{fill}
+\DeclareMathOperator{\sep}{sep}
+\DeclareMathOperator{\avg}{avg}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\APP}{APP}
+\newcommand{\TREND}{\textup{T}}
+\newcommand{\VAR}{\textup{V}}
+\newcommand{\LS}{\textup{LS}}
+
+
+
+
+
+
+
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\naturals}{{\mathbb{N}}}
+\newcommand{\natzero}{{\mathbb{N}_0}}
+\newcommand{\integers}{{\mathbb{Z}}}
+\def\expect{{\mathbb{E}}}
+\def\il{\left \langle}
+\def\ir{\right \rangle}
+\def\e{\varepsilon}
+\def\g{\gamma}
+\def\l{\lambda}
+\def\b{\beta}
+\def\a{\alpha}
+\def\lall{\Lambda^{{\rm all}}}
+\def\lstd{\Lambda^{{\rm std}}}
+
+\newcommand{\vf}{\boldsymbol{f}}
+\newcommand{\hV}{\widehat{V}}
+\newcommand{\tV}{\widetilde{V}}
+\newcommand{\fraku}{\mathfrak{u}}
+\newcommand{\hcut}{\mathfrak{h}}
+\newcommand{\tOmega}{\widetilde{\Omega}}
+\newcommand{\tvarrho}{\widetilde{\varrho}}
+
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\tQ}{\widetilde{Q}}
+\newcommand{\mA}{\mathsf{A}}
+\newcommand{\mB}{\mathsf{B}}
+\newcommand{\mC}{\mathsf{C}}
+\newcommand{\mD}{\mathsf{D}}
+\newcommand{\mG}{\mathsf{G}}
+\newcommand{\mH}{\mathsf{H}}
+\newcommand{\mI}{\mathsf{I}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\mK}{\mathsf{K}}
+\newcommand{\tmK}{\widetilde{\mathsf{K}}}
+\newcommand{\mL}{\mathsf{L}}
+\newcommand{\mM}{\mathsf{M}}
+\newcommand{\mP}{\mathsf{P}}
+\newcommand{\mQ}{\mathsf{Q}}
+\newcommand{\mR}{\mathsf{R}}
+\newcommand{\mX}{\mathsf{X}}
+\newcommand{\mPhi}{\mathsf{\Phi}}
+\newcommand{\mPsi}{\mathsf{\Psi}}
+\newcommand{\mLambda}{\mathsf{\Lambda}}
+\newcommand{\cube}{[0,1]^d}
+\newcommand{\design}{\{\bx_i\}_{i=1}^n}
+
+
+
+
+\newcommand{\bone}{\boldsymbol{1}}
+\newcommand{\bzero}{\boldsymbol{0}}
+\newcommand{\binf}{\boldsymbol{\infty}}
+\newcommand{\ba}{{\boldsymbol{a}}}
+\newcommand{\bb}{{\boldsymbol{b}}}
+\newcommand{\bc}{{\boldsymbol{c}}}
+\newcommand{\bd}{{\boldsymbol{d}}}
+\newcommand{\be}{{\boldsymbol{e}}}
+\newcommand{\bff}{{\boldsymbol{f}}}
+\newcommand{\bhh}{{\boldsymbol{h}}}
+\newcommand{\beps}{{\boldsymbol{\varepsilon}}}
+\newcommand{\tbeps}{\tilde{\beps}}
+\newcommand{\bx}{{\boldsymbol{x}}}
+\newcommand{\bX}{{\boldsymbol{X}}}
+\newcommand{\bh}{{\boldsymbol{h}}}
+\newcommand{\bj}{{\boldsymbol{j}}}
+\newcommand{\bk}{{\boldsymbol{k}}}
+\newcommand{\bg}{{\boldsymbol{g}}}
+\newcommand{\bn}{{\boldsymbol{n}}}
+\newcommand{\br}{{\boldsymbol{r}}}
+\newcommand{\bv}{{\boldsymbol{v}}}
+\newcommand{\bu}{{\boldsymbol{u}}}
+\newcommand{\by}{{\boldsymbol{y}}}
+\newcommand{\bt}{{\boldsymbol{t}}}
+\newcommand{\bz}{{\boldsymbol{z}}}
+\newcommand{\bvarphi}{{\boldsymbol{\varphi}}}
+\newcommand{\bgamma}{{\boldsymbol{\gamma}}}
+\newcommand{\bphi}{{\boldsymbol{\phi}}}
+\newcommand{\bpsi}{{\boldsymbol{\psi}}}
+\newcommand{\btheta}{{\boldsymbol{\theta}}}
+\newcommand{\bnu}{{\boldsymbol{\nu}}}
+\newcommand{\balpha}{{\boldsymbol{\alpha}}}
+\newcommand{\bbeta}{{\boldsymbol{\beta}}}
+\newcommand{\bo}{{\boldsymbol{\omega}}}  %GF added
+\newcommand{\newton}[2]{\left(\begin{array}{c} #1\\ #2\end{array}\right)}
+\newcommand{\anor}[2]{\| #1\|_{\mu_{#2}}}
+\newcommand{\satop}[2]{\stackrel{\scriptstyle{#1}}{\scriptstyle{#2}}}
+\newcommand{\setu}{{\mathfrak{u}}}
+
+\newcommand{\me}{\textup{e}}
+\newcommand{\mi}{\textup{i}}
+\def\d{\textup{d}}
+\def\dif{\textup{d}}
+\newcommand{\cc}{\mathcal{C}}
+\newcommand{\cb}{\mathcal{B}}
+\newcommand{\cl}{L}
+\newcommand{\ct}{\mathfrak{T}}
+\newcommand{\cx}{{\Omega}}
+\newcommand{\cala}{{\mathcal{A}}}
+\newcommand{\calc}{{\mathcal{C}}}
+\newcommand{\calf}{{\mathcal{F}}}
+\newcommand{\calfd}{{\calf_d}}
+\newcommand{\calh}{{\mathcal{H}}}
+\newcommand{\tcalh}{{\widetilde{\calh}}}
+\newcommand{\calI}{{\mathcal{I}}}
+\newcommand{\calhk}{\calh_d(K)}
+\newcommand{\calg}{{\mathcal{G}}}
+\newcommand{\calgd}{{\calg_d}}
+\newcommand{\caln}{{\mathcal{N}}}
+\newcommand{\calp}{{\mathcal{P}}}
+\newcommand{\cals}{{\mathcal{S}}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\hS}{\widehat{S}}
+
+\def\abs#1{\ensuremath{\left \lvert #1 \right \rvert}}
+\newcommand{\bigabs}[1]{\ensuremath{\bigl \lvert #1 \bigr \rvert}}
+\newcommand{\norm}[2][{}]{\ensuremath{\left \lVert #2 \right \rVert}_{#1}}
+\newcommand{\ip}[3][{}]{\ensuremath{\left \langle #2, #3 \right \rangle_{#1}}}
+\newcommand{\bignorm}[2][{}]{\ensuremath{\bigl \lVert #2 \bigr \rVert}_{#1}}
+\newcommand{\Bignorm}[2][{}]{\ensuremath{\Bigl \lVert #2 \Bigr \rVert}_{#1}}
+\newcommand{\calm}{{\mathfrak{M}}}
+
+\newcommand{\des}{\{\bx_i\}}
+\newcommand{\desinf}{\{\bx_i\}_{i=1}^{\infty}}
+\newcommand{\desn}{\{\bx_i\}_{i=1}^n}
+\newcommand{\wts}{\{g_i\}_{i=1}^N}
+\newcommand{\wtsn}{\{g_i\}_{i=1}^N}
+\newcommand{\datan}{\{y_i\}_{i=1}^N}
+
+%FJH added
+\newcommand{\Order}{\mathcal{O}}
+\newcommand{\ch}{\mathcal{H}}
+\newcommand{\tch}{{\widetilde{\ch}}}
+\newcommand{\veps}{\boldsymbol{\varepsilon}}
+\DeclareMathOperator{\best}{best}
+\newcommand{\hmu}{\hat{\mu}}
+\newcommand{\hsigma}{\hat{\sigma}}
+\newcommand{\tK}{\widetilde{K}}
+%\newcommand{\Matlab}{{\sc Matlab}\xspace}
+\newcommand{\abstol}{\varepsilon_{\text{a}}}
+\newcommand{\reltol}{\varepsilon_{\text{r}}}
+
+\newcommand\starred[1]{\accentset{\star}{#1}}
+
+\newcommand{\designInf}{\{\bx_i\}_{i=1}^\infty}
+\newcommand{\dataN}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^n}
+\newcommand{\dataNp}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^{n'}}
+\newcommand{\dataNo}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^{n_0}}
+\newcommand{\ErrN}{\ERR\bigl(\dataN,n\bigr)}
+\newcommand{\fint}{f_{\text{int}}}
+\newcommand{\inflate}{\fC}
+
+\newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
+
+\title{Adaptive Multivariate Sampling to Accelerate Discovery}
+\author{}
+\date{December 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Rigorous error bounds for numerical approximations typically consist of the norm of the input function multiplied by the norm of the error operator.  Because the norm of the input function is unknown, these error bounds cannot tell us whether a prescribed error tolerance has been met.  Adaptive numerical algorithms typically use heuristic data-driven error bounds, but then we don't know under what conditions they are trustworthy.
+
+We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate set}, which takes the shape of a cone, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant, and its error bound can be written explicitly.  Baking into $\cc$ the assumption that the norm of a function is not much worse than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$ for all $f\in \cc$.
+
+There are several forms that adaption can take, including
+\begin{itemize}
+    \item Adaptive choice of the number of function data needed, $n$,
+    \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,
+    \item Adaptive choice of the function space, $\calf$, for which the input function is typical.
+\end{itemize}
+We construct an algorithm utilizing the first two kinds of adaption in Section \ref{sec:fixedF} and incorporate the third kind of adaption in Section \ref{sec:adaptF}.
+\FredNote{more}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Adaptive Function Approximation for a Fixed Hilbert Space} \label{sec:fixedF}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Basic Idea}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
+The minimum norm interpolant of $f$ is 
+\begin{subequations} \label{eq:RKHSAPP}
+\begin{align} 
+\APP(\mX,\by) &= \sum_{i=1}^n c_i K(\bx_i,\cdot) = \bc^T K(\mX,\cdot) =  K(\cdot, \mX) \mK^{-1} \by \, \\
+ \text{where } & \qquad \bc = \mK^{-1} \by, \quad \mK = K(\mX,\mX) = \bigl( K(\bx_i,\bx_j) \bigr)_{i,j=1}^n,  \\
+& \qquad  K(\mX,\bx) = \bigl(K(\bx,\bx_i) \bigr)_{i=1}^n =  K(\bx, \mX)^T.
+\end{align}
+\end{subequations}
+This has a known pointwise error bound of
+\begin{align}
+\label{eq:RKHSErrBd}
+\abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx)} \, \bignorm[\calf]{f - \APP(f)} \\
+\nonumber
+& \le \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx) } \, \norm[\calf]{f} .
+\end{align}
+
+Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$ does cannot be computed from function data.  What we can compute from data is $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$.  Moreover, it is known that the error is orthogonal to the approximation, so by the Pythagorean Theorem,  $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we consider a candidate set
+\begin{align} \label{eq:RKHScone}
+\calc &:= \Bigl\{f \in \calf : \norm[\calf]{f}^2 \le (1 + A^2(\mX)) \bignorm[\calf]{\APP(\mX,\by)}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
+\nonumber
+& = \Bigl \{f \in \calf : \bignorm[\calf]{f - \APP(f)} \le A(\mX) \bignorm[\calf]{\APP(\mX,\by)} \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \},
+\end{align}
+where $A(\mX)$ is positive and fixed in advance. Larger $A(\mX)$ yields a more inclusive candidate set.  This candidate set is a cone because if $f \in \calc$, then $c f \in \calc$ for any real $c$. 
+
+The intuition leading to the definition of our cone candidate set is \emph{what you have not seen is not much worse than what you can see}. All adaptive algorithms are based on this philosophy. The definition of the cone in \eqref{eq:RKHScone} is a way of formalizing this key idea. 
+
+Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error bound \eqref{eq:RKHSErrBd} implies an error bound that can be computed solely based on the output data: 
+\begin{subequations} \label{eq:DataErrBd}
+\begin{align}
+    \abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le   A(\mX) \sqrt{[K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx) ] \, [\by^T \mK^{-1} \by] } \qquad \forall f \in \calc, \\
+    \norm[\infty]{f - \APP(\mX,\by)} & \le   A(\mX) \sqrt{\norm[\infty]{[K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)] \, [\by^T \mK^{-1} \by] }} \qquad \forall f \in \calc.
+\end{align}
+\end{subequations}
+This data-based error bound provides what is needed for our adaptive algorithm.
+
+\begin{algorithm}[H]
+\caption{Adaptive Sample Size $\ALG$ for Multivariate Function Approximation \label{alg:basicadapt}}
+	\begin{algorithmic}
+	\PARAM the RKHS space $\calf$, a sequence of data sites $\{\bx_1, \bx_2, \ldots \}$, an initial sample size $n_0$, the factor $A(\cdot)$
+	\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
+
+    \Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
+
+   \State Let $n \leftarrow n_0 -1$
+
+\Repeat
+
+\State Let $n \leftarrow n + 1$
+
+\State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\bx)$
+
+\Until $A(\mX) \sqrt{\norm[\infty]{[K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)] \, [\by^T \mK^{-1} \by] }}  \le \varepsilon$
+
+\RETURN $\ALG(f,\varepsilon) = \APP(\mX,\by)$
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsection{What is $A_n$?}
+
+$A_n$ is to reflect how well the design is. We consider to define $A_n$ as
+\begin{equation} \label{eq:an}
+A_n: = A_0 \norm[\infty]{
+1 - \frac{\bk^T(\cdot) \mK^{-1} \bk(\cdot)}{K(\cdot,\cdot)} }^r
+\end{equation}
+
+As \[\norm[\infty]{
+1 - \frac{\bk^T(\cdot) \mK^{-1} \bk(\cdot)}{K(\cdot,\cdot)} }^r\le 1,\]
+we introduce $A_n$ is to make it large enough for small $n$.
+
+Here we use one 1-d example to illustrate it.
+
+ A commonly used reproducing kernel is the following member of the Mat\'ern family:
+\[
+K(\bt,\bx) = (1 + \theta \norm[2]{\bt-\bx}) \exp(-\theta\norm[2]{\bt-\bx}),
+\]
+where $\theta = 1.$
+We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
+Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
+
+
+\subsection{ Infer the value of $\theta$}
+
+One improvement is to infer the value of $\theta$ inherent in the definition of $K$ in rather than to set it arbitrarily. The empirical Bayes perspective leads to the following choice: 
+\begin{equation} \label{eq:thetEB}
+\theta_{\textup{EB}} = \argmin_\theta \left[\frac 1n \log \bigl( \det(\mK_\theta) \bigr) + \log \bigl ( \by^T \mK_\theta^{-1} \by \bigr)\right].
+\end{equation}
+
+\subsection{Adaptive Sampling }
+
+\begin{equation} \label{eq:nextsample}
+\bx_{n+1} = \argmax_{\bx \in \Omega}  A_n \sqrt{[K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx)] \, [\by^T \mK^{-1} \by] }.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function Approximation when the Hilbert Space Is Inferred} \label{sec:adaptF}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\end{document}
