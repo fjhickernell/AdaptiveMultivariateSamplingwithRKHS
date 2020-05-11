@@ -4,14 +4,13 @@
 \usepackage{latexsym,amsfonts,amsmath,amssymb,amsthm,epsfig,extdash,multirow}
 \usepackage{stackrel,tabularx,mathtools,enumitem,longtable,xspace}
 \usepackage[dvipsnames]{xcolor}
-\usepackage[numbers,sort&compress]{natbib}
+%\usepackage[numbers,sort&compress]{natbib}
 \usepackage{hyperref,accents, booktabs}
 \usepackage{algorithm, algorithmicx}
 \usepackage{anyfontsize}
 \usepackage{cleveref}
 \usepackage{wrapfig}
 \usepackage[font=small,labelfont=bf]{caption}
-%\usepackage[sort&compress]{natbib}
 
 \usepackage{algpseudocode}
 \usepackage{algorithm, algorithmicx}
@@ -276,7 +275,7 @@
 
 \title{Adaptive Multivariate Sampling to Accelerate Discovery}
 \author{}
-\date{December 2019}
+\date{June 2020}
 
 \begin{document}
 
@@ -297,13 +296,16 @@ There are several forms that adaption can take, including
     \item Adaptive choice of the function space, $\calf$, for which the input function is typical.
 \end{itemize}
 We construct an algorithm utilizing the first two kinds of adaption in Section \ref{sec:fixedF} and incorporate the third kind of adaption in Section \ref{sec:adaptF}.
+
+
+Any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly do so for a candidate set corresponding to an infinite dimensional vector space.  If there were such an algorithm, then $\ALG(0,\varepsilon)$ would terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  That is, $g$ looks like $0$ to the algorithm, but is not close enough to $0$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
+
+Function approximation algorithms are often constructed to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  Choosing this convex, symmetric  candidate set guarantees that adaption is of no use \cite{Bak71}.  Here we choose candidate sets that are unbounded and non-convex, which are amenable to adaptive algorithms.
+
+The algorithms constructed here put a premium on the cost of obtaining function values.  We have in mind the situation where one function value may be the result of an expensive simulation costing hours or days of CPU time, denoted $\$(f)$.  Our algorithm produces an inexpensive surrogate or approximation of the expensive simulation.  If $n$ function values are required to obtain a satisfactory function approximation, then we do not mind if the manipulation of that data to form our function approximation requires $\Order(n^p)$ operations, since practically speaking this will be smaller than $\$(f) n$.  RKHS minimum  norm interpolants typically require $\Order(n^3)$ operations, and we may require a bit more to obtain a satisfactory error bound.
+
+
 \FredNote{more}
-
-We close this introduction by explaining why any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly hold for a candidate set, $\cc$, corresponding to an infinite dimensional vector space.  If there was such an algorithm, then $\ALG(0,\varepsilon)$ must terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
-
-What is often done in the construction of function approximation algorithms is to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  The disadvantage of choosing this convex, symmetric  set is that adaption is of no use \cite{Bak71}.  Here we 
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -378,7 +380,7 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 
 This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate set $\cc$.  For a well chosen design, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
 
-However, there are several deficiencies in this algorithm.  The design is not chosen adaptively.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$
+However, there are several deficiencies in this algorithm.  The design is not yet chosen adaptively.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.
 
 
 \subsection{Choosing a Reasonable Factor $A$?}
