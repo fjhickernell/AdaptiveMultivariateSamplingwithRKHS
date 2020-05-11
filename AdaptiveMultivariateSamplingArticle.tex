@@ -285,7 +285,10 @@
 \section{Introduction}
 Rigorous error bounds for numerical approximations typically consist of the norm of the input function multiplied by the norm of the error operator.  Because the norm of the input function is unknown, these error bounds cannot tell us whether a prescribed error tolerance has been met.  Adaptive numerical algorithms typically use heuristic data-driven error bounds, but then we don't know under what conditions they are trustworthy.
 
-We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate set}, which takes the shape of a cone, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant, and its error bound can be written explicitly.  Baking into $\cc$ the assumption that the norm of a function is not much worse than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$ for all $f\in \cc$.
+We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate set}, which takes the shape of a cone, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant, and its error bound can be written explicitly.  Baking into $\cc$ the assumption that the norm of a function is not much worse than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which 
+\begin{equation} \label{eq:errorcrit}
+\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon \qquad \forall f\in \cc.
+\end{equation}
 
 There are several forms that adaption can take, including
 \begin{itemize}
@@ -295,6 +298,10 @@ There are several forms that adaption can take, including
 \end{itemize}
 We construct an algorithm utilizing the first two kinds of adaption in Section \ref{sec:fixedF} and incorporate the third kind of adaption in Section \ref{sec:adaptF}.
 \FredNote{more}
+
+We close this introduction by explaining why any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly hold for a candidate set, $\cc$, corresponding to an infinite dimensional vector space.  If there was such an algorithm, then $\ALG(0,\varepsilon)$ must terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
+
+What is often done in the construction of function approximation algorithms is to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  The disadvantage of choosing this convex, symmetric  set is that adaption is of no use \cite{Ba.  Here we 
 
 
 
@@ -341,10 +348,10 @@ Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error boun
 \begin{subequations} \label{eq:DataErrBd}
 \begin{align}
     \abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le   A(\mX) \sqrt{[K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx) ] \, [\by^T \mK^{-1} \by] } \qquad \forall f \in \calc, \\
-    \norm[\infty]{f - \APP(\mX,\by)} & \le   A(\mX) \sqrt{\norm[\infty]{[K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)] \, [\by^T \mK^{-1} \by] }} \qquad \forall f \in \calc.
+    \norm[\infty]{f - \APP(\mX,\by)} & \le   A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] } \qquad \forall f \in \calc.
 \end{align}
 \end{subequations}
-This data-based error bound provides what is needed for our adaptive algorithm.
+This data-based error bound provides what is needed for our adaptive algorithm.  Note that $n$ is implicit in the definition of $\mX$, but we do not show this explicitly to for notational simplicity.
 
 \begin{algorithm}[H]
 \caption{Adaptive Sample Size $\ALG$ for Multivariate Function Approximation \label{alg:basicadapt}}
@@ -362,18 +369,21 @@ This data-based error bound provides what is needed for our adaptive algorithm.
 
 \State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\bx)$
 
-\Until $A(\mX) \sqrt{\norm[\infty]{[K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)] \, [\by^T \mK^{-1} \by] }}  \le \varepsilon$
+\Until $A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] }  \le \varepsilon$
 
 \RETURN $\ALG(f,\varepsilon) = \APP(\mX,\by)$
 
 \end{algorithmic}
 \end{algorithm}
 
+This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate set $\cc$.  For a well chosen design, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
+
+However, there are several deficiencies in this algorithm.  The design is not chosen adaptively.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$
 
 
-\subsection{What is $A_n$?}
+\subsection{Choosing a Reasonable Factor $A$?}
 
-$A_n$ is to reflect how well the design is. We consider to define $A_n$ as
+According to \ref{eq:RKHScone}, the factor  $A$ reflects how much larger than is to reflect how well the design is. We consider to define $A_n$ as
 \begin{equation} \label{eq:an}
 A_n: = A_0 \norm[\infty]{
 1 - \frac{\bk^T(\cdot) \mK^{-1} \bk(\cdot)}{K(\cdot,\cdot)} }^r
@@ -414,6 +424,6 @@ One improvement is to infer the value of $\theta$ inherent in the definition of 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
+\begin{b}
 
 \end{document}
