@@ -1,0 +1,3 @@
+[submodule "MasterBibFiles"]
+	path = MasterBibFiles
+	url = https://github.com/fjhickernell/MasterBibFiles
