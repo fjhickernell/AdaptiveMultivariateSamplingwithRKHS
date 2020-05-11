@@ -367,7 +367,7 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 
 \State Let $n \leftarrow n + 1$
 
-\State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\bx)$
+\State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\cdot)$
 
 \Until $A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] }  \le \varepsilon$
 
