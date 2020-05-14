@@ -380,20 +380,26 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 
 This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate set $\cc$.  For a well chosen design, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
 
-However, there are several deficiencies in this algorithm.  The design is not yet chosen adaptively.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.
+However, there are several deficiencies in this algorithm.  The choice of the design does not yet depend in on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.
 
 
 \subsection{Choosing a Reasonable Factor $A$?}
 
-According to \ref{eq:RKHScone}, the factor  $A$ reflects how much larger than is to reflect how well the design is. We consider to define $A_n$ as
+According to \ref{eq:RKHScone}, the factor  $A$ reflects how much larger one expects $\bignorm[\calf]{f  - \APP(\mX,\by)}$ to be than $\bignorm[\calf]{\APP(\mX,\by)}$ is.  This should depend on the quality of the design and the number of data sites.  One measure of the quality of the design is 
+\begin{equation*}
+B(\mX) : = \frac{ \sup \{\norm[\infty]{f} :  \norm[\calf]{f}  \le 1 , \ f(\mX) = 0 \}   }  {\sup \{ \norm[\infty]{f}  : \norm[\calf]{f}  \le 1  \} }
+= \sqrt{ \frac{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}}{\norm[\infty]{K(\cdot,\cdot)}}} \le 1.
+\end{equation*}
+As the sample size increases using well-placed data, $B(\mX)$ tends to zero.
+
+The choice of $A(\mX)$ is rather a value judgment.  We propose
 \begin{equation} \label{eq:an}
-A_n: = A_0 \norm[\infty]{
-1 - \frac{\bk^T(\cdot) \mK^{-1} \bk(\cdot)}{K(\cdot,\cdot)} }^r
+A(\mX): = \begin{cases} \displaystyle
+\frac{A_\infty B_0}{B_0 - B(\mX)}, & B(\mX) < B_0, \\
+\infty, & B(\mX) \ge B_0.
+\end{cases}
 \end{equation}
 
-As \[\norm[\infty]{
-1 - \frac{\bk^T(\cdot) \mK^{-1} \bk(\cdot)}{K(\cdot,\cdot)} }^r\le 1,\]
-we introduce $A_n$ is to make it large enough for small $n$.
 
 Here we use one 1-d example to illustrate it.
 
