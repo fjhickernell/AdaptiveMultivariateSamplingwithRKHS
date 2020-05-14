@@ -175,6 +175,8 @@
 \newcommand{\bh}{{\boldsymbol{h}}}
 \newcommand{\bj}{{\boldsymbol{j}}}
 \newcommand{\bk}{{\boldsymbol{k}}}
+\newcommand{\vell}{{\boldsymbol{\ell}}}
+\newcommand{\bL}{{\boldsymbol{L}}}
 \newcommand{\bg}{{\boldsymbol{g}}}
 \newcommand{\bn}{{\boldsymbol{n}}}
 \newcommand{\br}{{\boldsymbol{r}}}
@@ -182,6 +184,7 @@
 \newcommand{\bu}{{\boldsymbol{u}}}
 \newcommand{\by}{{\boldsymbol{y}}}
 \newcommand{\bt}{{\boldsymbol{t}}}
+\newcommand{\bU}{{\boldsymbol{U}}}
 \newcommand{\bz}{{\boldsymbol{z}}}
 \newcommand{\bvarphi}{{\boldsymbol{\varphi}}}
 \newcommand{\bgamma}{{\boldsymbol{\gamma}}}
@@ -450,5 +453,94 @@ One improvement is to infer the value of $\theta$ inherent in the definition of 
 \bibliographystyle{amsplain}
 \bibliography{FJHown23,FJH23}
 
+\section*{Appendix}
+The Gram matrix, $\mK$ defined in \eqref{eq:RKHSAPP} is positive definite, and therefore has a Cholesky decomposition, $\mK = \mL \mD \mL^T$, where $\mL$ is a lower unitriangular matrix and $\mD$ is a diagonal matrix with positive diagonal elements.  Moreover, $\mK^{-1} = \mU \mD^{-1} \mU^T$, where $\mU := \mL^{-T}$ is an upper unitriangular matrix. As the sample size grows, these matrices can be constructed recursively.  Expressing the sample size $n$ in the notation, we claim that 
+\begin{subequations} \label{eq:cholrecurse}
+\begin{gather}
+\label{eq:cholrecurseA}
+\mK_1  = \mD_1 = K(\bx_1,\bx_1), \quad \mL_1 = \mU_1 = 1,  \quad \\
+\intertext{and for $n = 1, 2, \ldots$ we have recursively}
+\label{eq:cholrecurseB}\mK_{n+1} = \begin{pmatrix}
+\mK_n & K(\mX_n, \bx_{n+1}) \\
+K(\bx_{n+1}, \mX_n) & K(\bx_{n+1}, \bx_{n+1})
+\end{pmatrix},
+\quad 
+\mD_{n+1} = \begin{pmatrix}
+\mD_n & \bzero_n \\
+\bzero_n^T & d_{n+1}
+\end{pmatrix},
+\\
+\label{eq:cholrecurseC}
+\mL_{n+1} = \begin{pmatrix}
+\mL_n & \bzero_n \\
+\bL_{n+1}^T  & 1
+\end{pmatrix},
+\quad 
+\mU_{n+1} = \begin{pmatrix}
+\mU_n & \bU_{n+1} \\
+\bzero_n^T  & 1
+\end{pmatrix}, \\
+\intertext{where}
+\label{eq:cholrecurseD}
+\vell_{n+1} = \mU_n^T K(\mX_n, \bx_{n+1}), \qquad
+\bL_{n+1} = \mD_n^{-1} \vell_{n+1}, 
+\\
+\label{eq:cholrecurseE}
+d_{n+1} = K(\bx_{n+1}, \bx_{n+1}) - \vell^T_{n+1} \bL_{n+1}, \qquad
+\bU_{n+1} = - \mU_n \bL_{n+1}.
+\end{gather}
+\end{subequations}
 
+The proof is by induction.  Certain properties follow automatically: the $n = 1$ case,  the recursive form for $\mK_{n+1}$, and the facts that $\mL_n$ is lower unitriangular, the $\mU_n$ is upper unitriangular, and $\mD_n$ is diagonal.  What need to be established are that $\mU_{n+1}= \mL^{-T}_{n+1}$ and that $\mK_{n+1} =  \mL_{n+1} \mD_{n+1} \mL^T_{n+1}$.   Given that  the formulas for $\mD_n$, $\mL_n$, and $\mU_n$ are correct, it follows that 
+\begin{align*}
+ \mU_{n+1} \mL_{n+1}^T & = 
+ \begin{pmatrix}
+ \mU_n & \bU_{n+1} \\
+ \bzero_n^T  & 1
+ \end{pmatrix}
+ \begin{pmatrix}
+ \mL_n^T & \bL_{n+1} \\
+ \bzero_n^T  & 1
+ \end{pmatrix}  = 
+ \begin{pmatrix}
+ \mU_n\mL_n^T & \mU_n\bL_{n+1} + \bU_{n+1}\\
+ \bzero_n^T  & 1
+ \end{pmatrix} 
+ = 
+ \begin{pmatrix}
+ \mI_n & \bzero_n\\
+ \bzero_n^T  & 1
+ \end{pmatrix} = \mI_{n+1},\\
+ \mL_{n+1} \mD_{n+1} \mL^T_{n+1} &=
+ \begin{pmatrix}
+\mL_n & \bzero_n \\
+\bL_{n+1}^T  & 1
+\end{pmatrix}
+\begin{pmatrix}
+\mD_n & \bzero_n \\
+\bzero_n^T & d_{n+1}
+\end{pmatrix}
+ \begin{pmatrix}
+\mL_n^T & \bL_{n+1}  \\
+\bzero_n^T  & 1
+\end{pmatrix}
+ =  \begin{pmatrix}
+\mL_n \mD_n \mL_n^T & \mL_n \mD_n \bL_{n+1}  \\
+\bL_{n+1}^T \mD_n \mL_n^T   & \bL_{n+1}^T \mD_n \bL_{n+1} + d_{n+1}
+\end{pmatrix}\\
+& =  \begin{pmatrix}
+\mK_n  & \mL_n \mD_n \mD_n^{-1} \vell_{n+1}  \\
+\vell_{n+1}^T \mD_n^{-1} \mD_n \mL_n^T   & \vell_{n+1}^T \mD_n^{-1} \mD_n \bL_{n+1}  +  K(\bx_{n+1}, \bx_{n+1}) - \vell^T_{n+1} \bL_{n+1}
+\end{pmatrix}\\
+& =  \begin{pmatrix}
+\mK_n  & \mL_n \mU_n^T K(\mX_n, \bx_{n+1}) \\
+ K(\bx_{n+1}, \mX_{n}) \mU_n \mL_n^T   &   K(\bx_{n+1}, \bx_{n+1})
+\end{pmatrix} =  \begin{pmatrix}
+\mK_n  &  K(\mX_n, \bx_{n+1}) \\
+K(\bx_{n+1}, \mX_{n})    &   K(\bx_{n+1}, \bx_{n+1})
+\end{pmatrix} = \mK_{n+1}.
+\end{align*}
+This completes the proof.
+
+Each recursive step in  \eqref{eq:cholrecurse} requires $\Order(n^2)$ operations.  Thus, computing all matrices up to case $n$ requires  $\Order(n^3)$ operations.
 \end{document}
