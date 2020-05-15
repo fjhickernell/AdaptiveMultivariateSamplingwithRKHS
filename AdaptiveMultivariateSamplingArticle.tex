@@ -308,17 +308,17 @@ The algorithms constructed here put a premium on the cost of obtaining function 
 \FredNote{more} \cite{Hic97a}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Adaptive Function Approximation for a Fixed Hilbert Space} \label{sec:fixedF}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Basic Idea}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
 The minimum norm interpolant of $f$ is 
 \begin{subequations} \label{eq:RKHSAPP}
@@ -383,7 +383,11 @@ This algorithm adaptively chooses the sample size so that the error criterion mu
 However, there are several deficiencies in this algorithm.  The choice of the design does not yet depend in on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Choosing a Reasonable Factor $A$?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The candidate set depends on the factor $A(\mX)$, which, according to \ref{eq:RKHScone}, reflects how much larger one expects $\bignorm[\calf]{f  - \APP(\mX,\by)}$ might be than $\bignorm[\calf]{\APP(\mX,\by)}$ is.  It is natural for $A(\mX)$ to depend  on the quality of the design and the number of data sites.  One measure of the quality of the design is 
 \begin{equation*}
@@ -418,42 +422,60 @@ where $\theta = 1.$
 We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
 Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Computational Cost}
-Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  There are a number of matrix operations that require $\Order(n^3)$ operations.  Explicitly showing the $n$ dependence, 
-\begin{gather*}
-\by_1, \ldots, \by_n, \quad K(\bx,\mX_1), \ldots, K(\bx,\mX_n)  \quad \text{can be be computed iteratively in $\Order(n)$ operations} , \\
-\mK_1, \ldots, \mK_n  \quad \text{can be be computed iteratively in $\Order(n^2)$ operations}
-\end{gather*}
-Let $\mK  = \mL \mL^T$ be the Cholesky decomposition of the Gram matrix $\mK$, where $\mL$ is a lower triangular matrix.  Then $\mK^{-1} = \mU \mU^T$, where $\mU = \mL^{-T}$ is an upper triangular matrix.  
-
-Then $\mK \ba = $  and 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  Moreover, $K(\bx,\mX_1), \ldots, K(\bx,\mX_n)$ can  be be computed iteratively in $\Order(n)$ operations.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  If a reasonable approximation of $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ can be made using $\Order(N)$ values of  $K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)$, then the computational cost of Algorithm \ref{alg:basicadapt} is
+\begin{equation}
+\Order\bigl(\$(f)n + n^3 + Nn^2 \bigr).
+\end{equation}
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Adaptive Sampling }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{equation} \label{eq:nextsample}
+\bx_{n+1} = \argmax_{\bx \in \Omega}  A_n \sqrt{[K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx)] \, [\by^T \mK^{-1} \by] }.
+\end{equation}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function Approximation when the Hilbert Space Is Inferred} \label{sec:adaptF}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{ Infer the value of $\theta$}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 One improvement is to infer the value of $\theta$ inherent in the definition of $K$ in rather than to set it arbitrarily. The empirical Bayes perspective leads to the following choice: 
 \begin{equation} \label{eq:thetEB}
 \theta_{\textup{EB}} = \argmin_\theta \left[\frac 1n \log \bigl( \det(\mK_\theta) \bigr) + \log \bigl ( \by^T \mK_\theta^{-1} \by \bigr)\right].
 \end{equation}
 
-\subsection{Adaptive Sampling }
 
-\begin{equation} \label{eq:nextsample}
-\bx_{n+1} = \argmax_{\bx \in \Omega}  A_n \sqrt{[K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx)] \, [\by^T \mK^{-1} \by] }.
-\end{equation}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Function Approximation when the Hilbert Space Is Inferred} \label{sec:adaptF}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{amsplain}
 \bibliography{FJHown23,FJH23}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Appendix}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The Gram matrix, $\mK$ defined in \eqref{eq:RKHSAPP} is positive definite, and therefore has a Cholesky decomposition, $\mK = \mL \mD \mL^T$, where $\mL$ is a lower unitriangular matrix and $\mD$ is a diagonal matrix with positive diagonal elements.  Moreover, $\mK^{-1} = \mU \mD^{-1} \mU^T$, where $\mU := \mL^{-T}$ is an upper unitriangular matrix. As the sample size grows, these matrices can be constructed recursively.  Expressing the sample size $n$ in the notation, we claim that 
 \begin{subequations} \label{eq:cholrecurse}
 \begin{gather}
