@@ -146,8 +146,9 @@
 \newcommand{\mM}{\mathsf{M}}
 \newcommand{\mP}{\mathsf{P}}
 \newcommand{\mQ}{\mathsf{Q}}
-\newcommand{\mU}{\mathsf{U}}
 \newcommand{\mR}{\mathsf{R}}
+\newcommand{\mT}{\mathsf{T}}
+\newcommand{\mU}{\mathsf{U}}
 \newcommand{\mX}{\mathsf{X}}
 \newcommand{\mPhi}{\mathsf{\Phi}}
 \newcommand{\mPsi}{\mathsf{\Psi}}
@@ -349,7 +350,9 @@ The intuition leading to the definition of our cone candidate set is \emph{what 
 Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error bound \eqref{eq:RKHSErrBd} implies an error bound that can be computed solely based on the output data: 
 \begin{subequations} \label{eq:DataErrBd}
 \begin{align}
+\label{eq:DataErrBdA}
     \abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le   A(\mX) \sqrt{[K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx) ] \, [\by^T \mK^{-1} \by] } \qquad \forall f \in \calc, \\
+    \label{eq:DataErrBdB}
     \norm[\infty]{f - \APP(\mX,\by)} & \le   A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] } \qquad \forall f \in \calc.
 \end{align}
 \end{subequations}
@@ -390,10 +393,10 @@ However, there are several deficiencies in this algorithm.  The choice of the de
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The candidate set depends on the factor $A(\mX)$, which, according to \ref{eq:RKHScone}, reflects how much larger one expects $\bignorm[\calf]{f  - \APP(\mX,\by)}$ might be than $\bignorm[\calf]{\APP(\mX,\by)}$ is.  It is natural for $A(\mX)$ to depend  on the quality of the design and the number of data sites.  One measure of the quality of the design is 
-\begin{equation*}
+\begin{equation} \label{eq:BX}
 B(\mX) : = \frac{ \sup \{\norm[\infty]{f} :  \norm[\calf]{f}  \le 1 , \ f(\mX) = 0 \}   }  {\sup \{ \norm[\infty]{f}  : \norm[\calf]{f}  \le 1  \} }
 = \sqrt{ \frac{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}}{\norm[\infty]{K(\cdot,\cdot)}}} \le 1.
-\end{equation*}
+\end{equation}
 As the sample size increases using well-placed data, $B(\mX)$ tends to zero.
 
 The choice of $A(\mX)$ is rather a value judgment.  We propose
@@ -427,7 +430,19 @@ Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 \subsection{Computational Cost}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  Moreover, $K(\bx,\mX_1), \ldots, K(\bx,\mX_n)$ can  be be computed iteratively in $\Order(n)$ operations.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  If a reasonable approximation of $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ can be made using $\Order(N)$ values of  $K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)$, then the computational cost of Algorithm \ref{alg:basicadapt} is
+Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  Moreover, $K(\bx,\mX_1), \ldots, K(\bx,\mX_n)$ can  be be computed iteratively in $\Order(n)$ operations.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  
+
+
+We approximate, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$, which appears in our algorithm via the data-based error bound in \eqref{eq:DataErrBdB} as well as the definition of $B(\mX)$ in \eqref{eq:BX} by direct search:
+\begin{equation} \label{eq:normappx}
+\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \approx \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)},
+\end{equation}
+where $\mT := (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.
+
+
+
+
+If a reasonable approximation of $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ can be made using $\Order(N)$ values of  $K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)$, then the computational cost of Algorithm \ref{alg:basicadapt} is
 \begin{equation}
 \Order\bigl(\$(f)n + n^3 + Nn^2 \bigr).
 \end{equation}
@@ -565,4 +580,37 @@ K(\bx_{n+1}, \mX_{n})    &   K(\bx_{n+1}, \bx_{n+1})
 This completes the proof.
 
 Each recursive step in  \eqref{eq:cholrecurse} requires $\Order(n^2)$ operations.  Thus, computing all matrices up to case $n$ requires  $\Order(n^3)$ operations.
+
+
+Now we consider recursively approximating the quantity the sup norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
+\begin{align*}
+\mK_{n+1}^{-1} K(\mX_{n+1},\mT) & = 
+\begin{pmatrix}
+\mU_n & \bU_{n+1} \\
+\bzero^T_n & 1
+\end{pmatrix}
+\begin{pmatrix}
+\mD_n & \bzero_n \\
+\bzero^T_n & d_{n+1}
+\end{pmatrix}
+\begin{pmatrix}
+\mU_n & \bzero_n \\
+\bU_{n+1}^T & 1
+\end{pmatrix}
+\begin{pmatrix}
+K(\mX_n,\mT)  \\
+K(\bx_{n+1},\mT)
+\end{pmatrix}
+\end{align*}
+
+
+
+
+
+\begin{equation}
+\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \approx \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)}
+\end{equation}
+
+
+
 \end{document}
