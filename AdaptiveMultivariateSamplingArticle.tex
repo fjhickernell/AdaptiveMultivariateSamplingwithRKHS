@@ -582,9 +582,9 @@ This completes the proof.
 Each recursive step in  \eqref{eq:cholrecurse} requires $\Order(n^2)$ operations.  Thus, computing all matrices up to case $n$ requires  $\Order(n^3)$ operations.
 
 
-Now we consider recursively approximating the quantity the sup norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
+Now we consider recursively computing the approximation to the sup norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
 \begin{align*}
-\mK_{n+1}^{-1} K(\mX_{n+1},\mT) 
+\MoveEqLeft{\mK_{n+1}^{-1} K(\mX_{n+1},\mT)} \\
 & = 
 \begin{pmatrix}
 \mU_n & \bU_{n+1} \\
@@ -611,17 +611,41 @@ K(\bx_{n+1},\mT)
 \mD_n\mU_n^T  K(\mX_n,\mT) \\
 d_{n+1}[ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ]
 \end{pmatrix}, \\
-K(\mT,\mX) \mK^{-1} K(\mX,\mT) 
-& = 
+\MoveEqLeft{K(\mT,\mX_{n+1}) \mK_{n+1}^{-1} K(\mX_{n+1},\mT)} \\
+& = \begin{pmatrix}
+K(\mT, \mX_n)  &
+K(\mT, \bx_{n+1})
+\end{pmatrix} 
+\begin{pmatrix}
+\mU_n & \bU_{n+1} \\
+\bzero^T_n & 1
+\end{pmatrix}
+\begin{pmatrix}
+\mD_n\mU_n^T  K(\mX_n,\mT) \\
+d_{n+1}[ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ]
+\end{pmatrix}
+\\
+&= 
+\begin{pmatrix}
+K(\mT, \mX_n)\mU_n  &
+K(\mT, \mX_n)\bU_{n+1} +  K(\mT, \bx_{n+1})
+\end{pmatrix} 
+\begin{pmatrix}
+\mD_n\mU_n^T  K(\mX_n,\mT) \\
+d_{n+1}[ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ]
+\end{pmatrix}, \\
+\MoveEqLeft{\diag\bigl( K(\mT,\mX_{n+1}) \mK_{n+1}^{-1} K(\mX_{n+1},\mT) \bigr)} \\
+& = \diag\bigl( K(\mT, \mX_n)\mU_n \mD_n\mU_n^T  K(\mX_n,\mT) \bigr) \\
+&\qquad \qquad + 
+d_{n+1} \diag\bigl( [K(\mT, \mX_n)\bU_{n+1} +  K(\mT, \bx_{n+1})] [ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ] \bigr) \\
+& = \diag\bigl( K(\mT, \mX_n)\mK_n^{-1}  K(\mX_n,\mT) \bigr)  + 
+d_{n+1} [ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ]^{\circ 2},
 \end{align*}
-
-
-
-
-
-\begin{equation}
-\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \approx \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)}
-\end{equation}
+where $\circ$ denotes the element-wise operation.  For a fixed $n$, this last computation requires $\Order(Nn)$ operations, assuming that $\diag\bigl( K(\mT, \mX_n)\mU_n \mD_n\mU_n^T  K(\mX_n,\mT) \bigr)$ is known.  Therefore, computing 
+\begin{equation*}
+ \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)}
+\end{equation*}
+for all cases up to case $n$ requires $\Order(Nn^2)$ operations.
 
 
 
