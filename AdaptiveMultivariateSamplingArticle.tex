@@ -293,8 +293,8 @@ We propose an adaptive function approximation algorithm based on rigorous, data-
 
 There are several forms that adaption can take, including
 \begin{itemize}
-    \item Adaptive choice of the number of function data needed, $n$,
-    \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,
+    \item Adaptive choice of the number of function data needed, $n$, (Section \ref{sec:basicIdea}),
+    \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,  (Section \ref{sec:adaptSites}),
     \item Adaptive choice of the function space, $\calf$, for which the input function is typical.
 \end{itemize}
 We construct an algorithm utilizing the first two kinds of adaption in Section \ref{sec:fixedF} and incorporate the third kind of adaption in Section \ref{sec:adaptF}.
@@ -302,12 +302,12 @@ We construct an algorithm utilizing the first two kinds of adaption in Section \
 
 Any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly do so for a candidate set corresponding to an infinite dimensional vector space.  If there were such an algorithm, then $\ALG(0,\varepsilon)$ would terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  That is, $g$ looks like $0$ to the algorithm, but is not close enough to $0$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
 
-Function approximation algorithms are often constructed to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  Choosing this convex, symmetric  candidate set guarantees that adaption is of no use \cite{Bak71}.  Here we choose candidate sets that are unbounded and non-convex, which are amenable to adaptive algorithms.
+Function approximation algorithms are often constructed to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  Choosing this convex, symmetric  candidate set guarantees that adaption is of no value \cite{Bak71}.  Here we choose candidate sets that are unbounded and non-convex, which are amenable to adaptive algorithms.
 
 The algorithms constructed here put a premium on the cost of obtaining function values.  We have in mind the situation where one function value may be the result of an expensive simulation costing hours or days of CPU time, denoted $\$(f)$.  Our algorithm produces an inexpensive surrogate or approximation of the expensive simulation.  If $n$ function values are required to obtain a satisfactory function approximation, then we do not mind if the manipulation of that data to form our function approximation requires $\Order(n^p)$ operations, since practically speaking this will be smaller than $\$(f) n$.  RKHS minimum  norm interpolants typically require $\Order(n^3)$ operations, and we may require a bit more to obtain a satisfactory error bound.
 
 
-\FredNote{more} \cite{Hic97a}
+\FredNote{Continue}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -318,7 +318,7 @@ The algorithms constructed here put a premium on the cost of obtaining function 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{The Basic Idea}
+\subsection{The Basic Idea} \label{sec:basicIdea}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
@@ -428,7 +428,7 @@ Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Computational Cost}
+\subsection{Computational Cost} \label{sec:compCost}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  
@@ -449,14 +449,24 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Adaptive Choice of Data Sites }
+\subsection{Adaptive Choice of Data Sites }  \label{sec:adaptSites}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  On step in that direction is to choose the next data site where the pointwise error bound of $\APP(\mX,\by)$ in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to maximizing a data-based acquisition function, $\ACQ(\mX,\by)$:
+Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  It is better to choose the next data site where the pointwise error bound of $\APP(\mX,\by)$ in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to maximizing a data-based acquisition function, $\ACQ(\mX,\by)$:
 \begin{equation} \label{eq:nextsample}
 \bx_{n+1} = \argmax_{\bx \in \Omega} \ACQ(\mX,\by)(\bx), \qquad \ACQ(\mX,\by)(\bx) := K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx).
 \end{equation}
+As was done in Section \ref{sec:compCost}, we can approximate this by
+\begin{equation} \label{eq:nextsampleAPPX}
+\bx_{n+1} \approx \argmax_{\bt_1, \ldots, \bt_N} \ACQ(\mX,\by)(\bt)
+\end{equation}
+where $\ACQ(\mX,\by)(\mT) = \diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)$
+
+\begin{equation} \label{eq:normappx}
+\ACQ(\mX,\by)(\bx) :=  \approx  \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)},
+\end{equation}
+
 The \FredNote{Continue}
 
 
