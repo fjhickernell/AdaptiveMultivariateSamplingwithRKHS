@@ -318,7 +318,7 @@ The algorithms constructed here put a premium on the cost of obtaining function 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{The Basic Idea} \label{sec:basicIdea}
+\subsection{Basic Idea Our Adaptive Algorithm} \label{sec:basicIdea}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
@@ -433,7 +433,7 @@ Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Algorithm \ref{alg:basicadapt} requires numerical optimization to  
-approximate $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$, which appears in via the data-based error bound in \eqref{eq:DataErrBdB} as well as the definition of $B(\mX)$ in \eqref{eq:BX}.  Optimization is also required below in \eqref{label} for choosing data sites and in \eqref{} below.  Identifying the best numerical optimization algorithms is beyond the scope of this article and are definitely routines for performing these optimizations here.
+approximate the sup-norms that appear in via the data-based error bound in \eqref{eq:DataErrBdB} and the definition of $B(\mX)$ in \eqref{eq:BX}.  Optimization is also required below in \eqref{label} for adaptively choosing the next data site and for adaptively choosing the correct kernel in \eqref{} in Section \ref{label}.  Identifying the best numerical optimization algorithms is beyond the scope of this article and are definitely routines for performing these optimizations here.
 
 
 
@@ -610,7 +610,7 @@ This completes the proof.
 Each recursive step in  \eqref{eq:cholrecurse} requires $\Order(n^2)$ operations.  Thus, computing all matrices up to case $n$ requires  $\Order(n^3)$ operations.
 
 
-Now we consider recursively computing the approximation to the sup norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
+Now we consider recursively computing the approximation to the sup-norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
 \begin{align*}
 \MoveEqLeft{\mK_{n+1}^{-1} K(\mX_{n+1},\mT)} \\
 & = 
