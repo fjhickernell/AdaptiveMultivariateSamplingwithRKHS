@@ -58,54 +58,56 @@
 %\DeclareMathOperator{\Pr}{\mathbb{P}}
 
 % Math operators
-\DeclareMathOperator{\cost}{COST}
-\DeclareMathOperator{\comp}{COMP}
-\DeclareMathOperator{\loss}{loss}
-\DeclareMathOperator{\lof}{lof}
-\DeclareMathOperator{\reg}{reg}
-\DeclareMathOperator{\CV}{CV}
-\DeclareMathOperator{\size}{wd}
+%\DeclareMathOperator{\cost}{COST}
+%\DeclareMathOperator{\comp}{COMP}
+%\DeclareMathOperator{\loss}{loss}
+%\DeclareMathOperator{\lof}{lof}
+%\DeclareMathOperator{\reg}{reg}
+%\DeclareMathOperator{\CV}{CV}
+%\DeclareMathOperator{\size}{wd}
 \DeclareMathOperator{\GP}{\mathcal{G} \! \mathcal{P}}
-\DeclareMathOperator{\erf}{erf}
+%\DeclareMathOperator{\erf}{erf}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator{\QOI}{QOI} %Quantity of Interest
-\DeclareMathOperator{\POI}{POI} %Parameter of Interest
-\DeclareMathOperator{\Ans}{ANS}
-\DeclareMathOperator{\Var}{Var}
+%\DeclareMathOperator{\QOI}{QOI} %Quantity of Interest
+%\DeclareMathOperator{\POI}{POI} %Parameter of Interest
+%\DeclareMathOperator{\Ans}{ANS}
+%\DeclareMathOperator{\Var}{Var}
 %\DeclareMathOperator{\APP}{\widehat{\QOI}}
-\DeclareMathOperator{\SURR}{SM} %surrogate model
-\DeclareMathOperator{\STREND}{ST} %surrogate trend
-\DeclareMathOperator{\SVAR}{SV} %surrogate variation
-\DeclareMathOperator{\SVARERR}{SVU} %surrogate variation uncertainty
-\newcommand{\MLS}{\textrm{MLS}\xspace} %distance weighted least squares, also known as moving least squares
+%\DeclareMathOperator{\SURR}{SM} %surrogate model
+%\DeclareMathOperator{\STREND}{ST} %surrogate trend
+%\DeclareMathOperator{\SVAR}{SV} %surrogate variation
+%\DeclareMathOperator{\SVARERR}{SVU} %surrogate variation uncertainty
+%\newcommand{\MLS}{\textrm{MLS}\xspace} %distance weighted least squares, also known as moving least squares
 \DeclareMathOperator{\ALG}{ALG}
 \DeclareMathOperator{\ACQ}{ACQ}
 \DeclareMathOperator{\ERR}{ERR}
-\DeclareMathOperator{\VAL}{ACQ}
-\DeclareMathOperator{\OPER}{OPER}
-\DeclareMathOperator{\INT}{INT}
-\DeclareMathOperator{\MIN}{MIN}
-\DeclareMathOperator{\ID}{ID}
-\DeclareMathOperator{\APPMIN}{\widehat{\MIN}}
-\DeclareMathOperator{\APPID}{\widehat{\ID}}
-\DeclareMathOperator{\MINVAL}{MINACQ}
-\DeclareMathOperator{\IDVAL}{IDACQ}
-\DeclareMathOperator{\SURRERR}{SU}
-\DeclareMathOperator{\MINERR}{MERR}
-\DeclareMathOperator{\IDERR}{IDERR}
+%\DeclareMathOperator{\VAL}{ACQ}
+%\DeclareMathOperator{\OPER}{OPER}
+%\DeclareMathOperator{\INT}{INT}
+%\DeclareMathOperator{\MIN}{MIN}
+%\DeclareMathOperator{\ID}{ID}
+%\DeclareMathOperator{\APPMIN}{\widehat{\MIN}}
+%\DeclareMathOperator{\APPID}{\widehat{\ID}}
+%\DeclareMathOperator{\MINVAL}{MINACQ}
+%\DeclareMathOperator{\IDVAL}{IDACQ}
+%\DeclareMathOperator{\SURRERR}{SU}
+%\DeclareMathOperator{\MINERR}{MERR}
+%\DeclareMathOperator{\IDERR}{IDERR}
 \DeclareMathOperator{\Prob}{\mathbb{P}}
 \DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\dist}{dist}
-\DeclareMathOperator{\filldis}{fill}
-\DeclareMathOperator{\sep}{sep}
-\DeclareMathOperator{\avg}{avg}
-\DeclareMathOperator{\vol}{vol}
-\DeclareMathOperator{\cov}{cov}
+%\DeclareMathOperator{\dist}{dist}
+%\DeclareMathOperator{\filldis}{fill}
+%\DeclareMathOperator{\sep}{sep}
+%\DeclareMathOperator{\avg}{avg}
+%\DeclareMathOperator{\vol}{vol}
+%\DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\APP}{APP}
 \newcommand{\TREND}{\textup{T}}
 \newcommand{\VAR}{\textup{V}}
 \newcommand{\LS}{\textup{LS}}
+
+\newcommand{\NT}{{N_{\mT}}}
 
 
 \newcommand{\reals}{{\mathbb{R}}}
@@ -362,7 +364,7 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 \begin{algorithm}[H]
 \caption{Adaptive Sample Size $\ALG$ for Multivariate Function Approximation \label{alg:basicadapt}}
 	\begin{algorithmic}
-	\PARAM the RKHS space $\calf$, a sequence of data sites $\{\bx_1, \bx_2, \ldots \}$, an initial sample size $n_0$, the factor $A(\cdot)$
+	\PARAM the RKHS space, $\calf$; a sequence of data sites, $\{\bx_1, \bx_2, \ldots \}$; an initial sample size, $n_0$; the factor defining the candidate set, $A(\cdot)$
 	\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 
     \Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
@@ -409,22 +411,24 @@ A(\mX): = \begin{cases} \displaystyle
 \end{equation}
 The parameter $A_\infty > 0$ represents the limiting value of $A(\mX)$ as the design tends to perfection.  The parameter $B_0$ represents the maximum value of $B(\mX)$ for which one is willing to infer a bound on $\bignorm[\calf]{f  - \APP(\mX,\by)}$ in terms of $\bignorm[\calf]{\APP(\mX,\by)}$.  Making $A_\infty$ larger or $B_0$ smaller makes the candidate set, $\cc$ more inclusive.
 
+The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minimum sample size for which $B(\mX) < B_0$.  This leaves only the two parameters, $A_\infty$ and $B_0$ as needing to be given default values or be chosen by the user.
+
 \begin{example}
+	Here we use one 1-d example to illustrate it.
+	
+	A commonly used reproducing kernel is the following member of the Mat\'ern family:
+	\[
+	K(\bt,\bx) = (1 + \theta \norm[2]{\bt-\bx}) \exp(-\theta\norm[2]{\bt-\bx}),
+	\]
+	where $\theta = 1.$
+	We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
+	Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 	
 	
 	
 \end{example}
 
 
-Here we use one 1-d example to illustrate it.
-
- A commonly used reproducing kernel is the following member of the Mat\'ern family:
-\[
-K(\bt,\bx) = (1 + \theta \norm[2]{\bt-\bx}) \exp(-\theta\norm[2]{\bt-\bx}),
-\]
-where $\theta = 1.$
-We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
-Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -433,17 +437,16 @@ Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Algorithm \ref{alg:basicadapt} requires numerical optimization to  
-approximate the sup-norms that appear in via the data-based error bound in \eqref{eq:DataErrBdB} and the definition of $B(\mX)$ in \eqref{eq:BX}.  Finding the location of optima is required below in \eqref{label} for adaptively choosing the next data site and for adaptively choosing the correct kernel in \eqref{} in Section \ref{label}.  
+approximate the sup-norms that appear in via the data-based error bound in \eqref{eq:DataErrBdB} and the definition of $B(\mX)$ in \eqref{eq:BX}.  Finding the locations of optima is required below in \eqref{label} for adaptively choosing the next data site and for adaptively choosing the correct kernel in \eqref{} in Section \ref{label}.  We do not consider identifying the best numerical optimization algorithms for these purposes in this article but recognize it as a problem for further research.  
 
-Identifying the best numerical optimization algorithms for performing these optimizations is beyond the scope of this article and are definitely routines  here.
-
-
-
- by direct search:
+Moreover, these optimization problems do not require high accuracy answers.  Underestimating 
+\[\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}\]
+in  \eqref{eq:DataErrBdB} or  \eqref{eq:BX} by several percent does not lead to significant loss of accuracy or efficiency.  
+In our numerical examples, we approximate this quantity by direct search:
 \begin{equation} \label{eq:normappx}
 \norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \approx \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)},
 \end{equation}
-where $\mT := (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The quantity on the right can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( Nn^2 \bigr)$ operations, as shown in the appendix. 
+where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test points.
 
 
 
@@ -452,19 +455,13 @@ where $\mT := (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test point
 \subsection{Computational Cost} \label{sec:compCost}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Although we explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  
-
-We approximate, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$, which appears in our algorithm via the data-based error bound in \eqref{eq:DataErrBdB} as well as the definition of $B(\mX)$ in \eqref{eq:BX} by direct search:
-\begin{equation} \label{eq:normappx}
-\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \approx \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)},
-\end{equation}
-where $\mT := (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The quantity on the right can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( Nn^2 \bigr)$ operations, as shown in the appendix.  
+We explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, but we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  The quantity on the right side of \eqref{eq:normappx} can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( \NT n^2 \bigr)$ operations, as shown in the appendix.  
 
 Thus, the computational cost of Algorithm \ref{alg:basicadapt} is
 \begin{equation}
-\Order\bigl(\$(f)n + n^3 + Nn^2 \bigr),
+\Order\bigl(\$(f)n + n^3 + \NT n^2 \bigr),
 \end{equation}
-where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $n^2$ and $Nn$.  
+where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $n^2$ and $\NT n$.  
 
 
 
@@ -476,17 +473,44 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 
 Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  It is better to choose the next data site where the pointwise error bound of $\APP(\mX,\by)$ in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to maximizing a data-based acquisition function, $\ACQ(\mX,\by)$:
 \begin{equation} \label{eq:nextsample}
-\bx_{n+1} = \argmax_{\bx \in \Omega} \ACQ(\mX,\by)(\bx), \qquad \ACQ(\mX,\by)(\bx) := K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx).
+\bx_1 \text{ given}, \qquad \bx_{n+1} = \argmax_{\bx \in \Omega} \ACQ(\mX,\by)(\bx), \; n \in \naturals,  \quad \ACQ(\mX,\by)(\bx) := K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx).
 \end{equation}
-As was done in Section \ref{sec:compCost}, we can approximate this by
+As was suggested in Section \ref{sec:compCost}, we can approximate this by a direct search
 \begin{equation} \label{eq:nextsampleAPPX}
-\bx_{n+1} \approx \argmax_{\bt_1, \ldots, \bt_N} \ACQ(\mX,\by)(\bt)
+\bx_{n+1} \approx \argmax_{\bt_1, \ldots, \bt_\NT} \ACQ(\mX,\by)(\bt)
 \end{equation}
-where $\ACQ(\mX,\by)(\mT) = \diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)$
+where $\ACQ(\mX,\by)(\mT) = \diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)$.  
 
-\begin{equation} \label{eq:normappx}
-\ACQ(\mX,\by)(\bx) :=  \approx  \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)},
-\end{equation}
+Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then choose $n_0 = 1$.  The improvement of Algorithm \ref{alg:basicadapt} becomes the following. 
+
+\begin{algorithm}[H]
+	\caption{Adaptive Sample Size $\ALG$ for Multivariate Function Approximation \label{alg:adaptsample}}
+	\begin{algorithmic}
+		\PARAM the RKHS space, $\calf$; an initial data site, $\bx_1$; the parameters defining the candidate set, $A_\infty$ and $B_0$
+		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
+		
+		\Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
+		
+		\State Let $n \leftarrow 0$
+		
+		\Repeat
+		
+		\State Let $n \leftarrow n + 1$
+		
+		\State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\cdot)$
+		
+		\Until $A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] }  \le \varepsilon$
+		
+		\RETURN $\ALG(f,\varepsilon) = \APP(\mX,\by)$
+		
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+
+ one may choseThis
+
 
 The \FredNote{Continue}
 
@@ -632,7 +656,7 @@ This completes the proof.
 Each recursive step in  \eqref{eq:cholrecurse} requires $\Order(n^2)$ operations.  Thus, computing all matrices up to case $n$ requires  $\Order(n^3)$ operations.
 
 
-Now we consider recursively computing the approximation to the sup-norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_N)^T \in \cx^N$ is a fixed array of test points.  The key quantity is 
+Now we consider recursively computing the approximation to the sup-norm as in \eqref{eq:normappx}.   Recall that $\mT = (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test points.  The key quantity is 
 \begin{align*}
 \MoveEqLeft{\mK_{n+1}^{-1} K(\mX_{n+1},\mT)} \\
 & = 
@@ -691,11 +715,11 @@ d_{n+1} \diag\bigl( [K(\mT, \mX_n)\bU_{n+1} +  K(\mT, \bx_{n+1})] [ \bU_{n+1}^T 
 & = \diag\bigl( K(\mT, \mX_n)\mK_n^{-1}  K(\mX_n,\mT) \bigr)  + 
 d_{n+1} [ \bU_{n+1}^T K(\mX_n,\mT) + K(\bx_{n+1},\mT) ]^{\circ 2},
 \end{align*}
-where $\circ$ denotes the element-wise operation.  For a fixed $n$, this last computation requires $\Order(Nn)$ operations, assuming that $\diag\bigl( K(\mT, \mX_n)\mU_n \mD_n\mU_n^T  K(\mX_n,\mT) \bigr)$ is known.  Therefore, computing 
+where $\circ$ denotes the element-wise operation.  For a fixed $n$, this last computation requires $\Order(\NT n)$ operations, assuming that $\diag\bigl( K(\mT, \mX_n)\mU_n \mD_n\mU_n^T  K(\mX_n,\mT) \bigr)$ is known.  Therefore, computing 
 \begin{equation*}
  \norm[\infty]{\diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\mT) \bigr)}
 \end{equation*}
-for all cases up to case $n$ requires $\Order(Nn^2)$ operations.
+for all cases up to case $n$ requires $\Order(\NT n^2)$ operations.
 
 
 
