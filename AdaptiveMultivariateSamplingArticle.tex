@@ -55,6 +55,8 @@
 \newcommand{\hatg}{\hat{g}}
 \newcommand{\tf}{\widetilde{f}}
 \newcommand{\tbf}{\tilde{\bff}}
+\newcommand{\vBall}{\text{vBall}_n}
+\newcommand{\vEll}{\text{vEll}}
 %\DeclareMathOperator{\Pr}{\mathbb{P}}
 
 % Math operators
@@ -100,7 +102,7 @@
 %\DeclareMathOperator{\filldis}{fill}
 %\DeclareMathOperator{\sep}{sep}
 %\DeclareMathOperator{\avg}{avg}
-%\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\vol}{vol}
 %\DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\APP}{APP}
 \newcommand{\TREND}{\textup{T}}
@@ -344,7 +346,9 @@ Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient 
 \begin{align} \label{eq:RKHScone}
 \calc &:= \Bigl\{f \in \calf : \norm[\calf]{f}^2 \le (1 + A^2(\mX)) \bignorm[\calf]{\APP(\mX,\by)}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
 \nonumber
-& = \Bigl \{f \in \calf : \bignorm[\calf]{f - \APP(f)} \le A(\mX) \bignorm[\calf]{\APP(\mX,\by)} \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \},
+& = \Bigl \{f \in \calf : \bignorm[\calf]{f - \APP(f)} \le A(\mX) \bignorm[\calf]{\APP(\mX,\by)} \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
+\nonumber
+& = \Bigl \{f \in \calf : \bignorm[\calf]{f - \APP(f)}^2 \le \frac{A^2(\mX)}{1 + A^2(\mX)} \bignorm[\calf]{f}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \},
 \end{align}
 where $A(\mX)$ is positive and fixed in advance. Larger $A(\mX)$ yields a more inclusive candidate set.  This candidate set is a cone because if $f \in \calc$, then $c f \in \calc$ for any real $c$. 
 
@@ -417,10 +421,10 @@ The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minim
 	Here we use one 1-d example to illustrate it.
 	
 	A commonly used reproducing kernel is the following member of the Mat\'ern family:
-	\[
+	\begin{equation} \label{eq:Matern}
 	K(\bt,\bx) = (1 + \theta \norm[2]{\bt-\bx}) \exp(-\theta\norm[2]{\bt-\bx}),
-	\]
-	where $\theta = 1.$
+	\end{equation}
+	where $\theta = 1$.
 	We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
 	Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 	
@@ -458,7 +462,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 We explained in the introduction that we are primarily concerned with the computational cost of obtaining function data, but we will count the cost of our algorithms.  Explicitly showing the $n$ dependence, the sequence of data vectors, $\by_1, \ldots, \by_n$, cost $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  The quantity on the right side of \eqref{eq:normappx} can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( \NT n^2 \bigr)$ operations, as shown in the appendix.  
 
 Thus, the computational cost of Algorithm \ref{alg:basicadapt} is
-\begin{equation}
+\begin{equation} \label{eq:compcostbasic}
 \Order\bigl(\$(f)n + n^3 + \NT n^2 \bigr),
 \end{equation}
 where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $n^2$ and $\NT n$.  
@@ -484,7 +488,7 @@ where $\ACQ(\mX,\by)(\mT) = \diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\m
 Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then choose $n_0 = 1$.  The improvement of Algorithm \ref{alg:basicadapt} becomes the following. 
 
 \begin{algorithm}[H]
-	\caption{Adaptive Sample Size $\ALG$ for Multivariate Function Approximation \label{alg:adaptsample}}
+	\caption{Adaptive Data Site Selection $\ALG$ for Multivariate Function Approximation \label{alg:adaptsample}}
 	\begin{algorithmic}
 		\PARAM the RKHS space, $\calf$; an initial data site, $\bx_1$; the parameters defining the candidate set, $A_\infty$ and $B_0$
 		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
@@ -495,9 +499,15 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 		
 		\Repeat
 		
+		\If{ $n > 0$}
+		
+		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K(\bx,\bx) - \bk^T(\bx) \mK^{-1} \bk(\bx)]$
+		
+		\EndIf
+		
 		\State Let $n \leftarrow n + 1$
 		
-		\State Compute $\by$, $A(\mX)$, $K(\mX,\mX)$, and $K(\mX,\cdot)$
+		\State Compute $\by$, $A(\mX)$, $\mK = K(\mX,\mX)$, and $K(\mX,\cdot)$
 		
 		\Until $A(\mX) \sqrt{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)} \, [\by^T \mK^{-1} \by] }  \le \varepsilon$
 		
@@ -506,13 +516,11 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 	\end{algorithmic}
 \end{algorithm}
 
+Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \ref{alg:basicadapt}, which is given in \eqref{eq:compcostbasic}.  The cost of optimizing the acquisition function is the same as evaluating the error bound.
+
+Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It cannot choose data sites more densely where the function is fluctuating more.  The next section improves upon our algorithm to make the acquisition function strongly dependent on $\by$.
 
 
-
- one may choseThis
-
-
-The \FredNote{Continue}
 
 
 
@@ -530,13 +538,22 @@ The \FredNote{Continue}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Until now, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know for what RKHS $f$ is typical.  We do not expect there to be a single such RKHS, but we want to infer an appropriate RKHS from the data.  
+
+Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is the Mat\'ern family defined in terms of a scalar parameter in \eqref{eq:Matern}.  More diverse families are possible.  Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\by)$ denote the volume of the ellipsoid in $\reals^n$ consisting of all possible function data for which the minimum-norm interpolant has an $\calf_{\btheta}$ norm no greater than that of the interpolant from the observed data:
+\begin{align*}
+\vEll(\btheta,\by) &= \vol\bigl(\{ \bz \in \reals^n : \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\bz)}  \le \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\by)} \} \bigr) \\
+& = \vol\Bigl( \bigl \{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \} \Bigr) \\
+\end{align*}
+
+
 One improvement is to infer the value of $\theta$ inherent in the definition of $K$ in rather than to set it arbitrarily. The empirical Bayes perspective leads to the following choice: 
 \begin{equation} \label{eq:thetEB}
 \theta_{\textup{EB}} = \argmin_\theta \left[\frac 1n \log \bigl( \det(\mK_\theta) \bigr) + \log \bigl ( \by^T \mK_\theta^{-1} \by \bigr)\right].
 \end{equation}
 
 
-
+The \FredNote{Continue}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inferring the Spatial Dependence of the Reproducing Kernel}
