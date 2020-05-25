@@ -289,20 +289,28 @@
 \maketitle
 
 \section{Introduction}
-Rigorous error bounds for numerical approximations typically consist of the norm of the input function multiplied by the norm of the error operator.  Because the norm of the input function is unknown, these error bounds cannot tell us whether a prescribed error tolerance has been met.  Adaptive numerical algorithms typically use heuristic data-driven error bounds, but then we don't know under what conditions they are trustworthy.
+Rigorous error bounds for numerical approximations typically consist of the norm of the input function multiplied by the norm of the error operator.  Because the norm of the input function is unknown, these error bounds cannot tell us whether a prescribed error tolerance has been met.  Adaptive numerical algorithms typically use heuristic data-driven error bounds, which means that we don't know under what conditions they can be trusted.
 
-We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate set}, which takes the shape of a cone, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant, and its error bound can be written explicitly.  Baking into $\cc$ the assumption that the norm of a function is not much worse than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which 
+We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate cone}, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$, which makes $\cc$ a cone.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant with an explicit error bound.  Baking into $\cc$ the assumption that the norm of a function is not arbitrarily larger than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which 
 \begin{equation} \label{eq:errorcrit}
 \norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon \qquad \forall f\in \cc.
 \end{equation}
 
-There are several forms that adaption can take, including
+Adaption can take several forms, including
 \begin{itemize}
     \item Adaptive choice of the number of function data needed, $n$, (Section \ref{sec:basicIdea}),
-    \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,  (Section \ref{sec:adaptSites}),
-    \item Adaptive choice of the function space, $\calf$, for which the input function is typical.
+    \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,  (Section \ref{sec:adaptSites}), and
+    \item Adaptive choice of the function space, $\calf$, for which the input function is typical  (Section \ref{sec:adaptF}).
 \end{itemize}
-We construct an algorithm utilizing the first two kinds of adaption in Section \ref{sec:fixedF} and incorporate the third kind of adaption in Section \ref{sec:adaptF}.
+Algorithm \ref{alg:basicadapt} incorporates the idea of the candidate cone and the first kind of adaption.  Algorithm \ref{alg:adaptsample} adds the second kind of adaption, and Algorithm \ref{alg:adapttheta} adds the third kind of adaption.  Our theory is developed initially for functions lying purely in a RKHS.  In Section{sec:poly} and Algorithm \ref{alg:poly} we generalize to the setting where a low-dimensional space of functions, e.g., polynomials of fixed degre, are exactly reproduced.
+
+These algorithms rely on the well-developed literature of RKHS function approximation.  Our main contributions are 
+\begin{itemize}
+	\item The idea of a candidate cone (Section \ref{sec:basicIdea}),
+	\item A geometric interpretation of the condition for inferring the suitable Hilbert space (Section  \ref{sec:adaptTheta}), and
+	\item .
+\end{itemize}
+
 
 
 Any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly do so for a candidate set corresponding to an infinite dimensional vector space.  If there were such an algorithm, then $\ALG(0,\varepsilon)$ would terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  That is, $g$ looks like $0$ to the algorithm, but is not close enough to $0$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
@@ -323,7 +331,7 @@ The algorithms constructed here put a premium on the cost of obtaining function 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Basic Idea Our Adaptive Algorithm} \label{sec:basicIdea}
+\subsection{The Basic Idea Our Adaptive Algorithm} \label{sec:basicIdea}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
@@ -422,10 +430,10 @@ The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minim
 	Here we use one 1-d example to illustrate it.
 	
 	A commonly used reproducing kernel is the following member of the Mat\'ern family:
-	\begin{equation} \label{eq:Matern}
-	K(\bt,\bx) = (1 + \theta \norm{\bt-\bx}) \exp(-\theta\norm{\bt-\bx}),
+	\begin{equation} \label{eq:MaternOne}
+	K(\bt,\bx) = (1 +  \norm{\bt-\bx}) \exp(-\norm{\bt-\bx}),
 	\end{equation}
-	where $\norm{\cdot}$ denotes the Euclidean norm, and $\theta = 1$.
+	where $\norm{\cdot}$ denotes the Euclidean norm.
 	We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
 	Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 	
@@ -538,45 +546,56 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Inferring the Parameters Defining the Reproducing Kernel}
+\subsection{Inferring the Parameters Defining the Reproducing Kernel} \label{sec:adaptTheta}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Until now, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know for what RKHS $f$ is typical.  We do not expect there to be a single such RKHS, but we want to infer an appropriate RKHS from the data.  
 
-Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is the Mat\'ern family defined in terms of a scalar parameter in \eqref{eq:Matern}.  More diverse families are possible.  From this section forward, we highlight the dependence of the reproducing kernel, the function approximation, and related quantities on $\btheta$ by a subscript.
+Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is an extension of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
+\begin{equation} \label{eq:MaternTheta}
+K(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)}),
+\end{equation}
+where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel, the function approximation, and related quantities on $\btheta$ by a subscript.
 
-Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the interpolant from the observed data:
+Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoidal solid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the interpolant from the observed data:
 \begin{align*}
 \vEll(\btheta,\mX,\by) &= \vol\bigl(\{ \bz \in \reals^n : \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\bz)}  \le \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\by)} \} \bigr) \\
 & = \vol\Bigl( \bigl \{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \} \Bigr) \\
 & = \vBall \sqrt{\det(\mK_{\btheta})  \, [\by^T \mK_\btheta^{-1} \by]^n } \qquad \text{by \cite{bibid}}
 \end{align*}
 
-The volume of the ellipsoid, $\vEll(\btheta,\mX,\by)$, can be considered a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  They do not change if the reproducing kernel $K_\btheta$ is replaced by the reproducing kernel $cK_{\btheta}$ for any positive constant $c$.  
+The volume of the ellipsoidal solid, $\vEll(\btheta,\mX,\by)$, can be considered a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  They do not change if the reproducing kernel $K_\btheta$ is replaced by the reproducing kernel $cK_{\btheta}$ for any positive constant $c$.  
 
-Figure \ref{fig:ellipPlot} displays the Mat\'ern kernel in \eqref{eq:Matern} for three different values of $\btheta$ and the corresponding  ellipsoids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Of these, $\btheta = 2$ has the smallest volume (area).
-
-The reproducing kernel describes how close to each other two values of a function may be:
-\begin{equation} \label{eq:diff_f}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2
-\end{equation}
-The Mat\'ern kernel with small $\theta$ is relatively flat, which means that function values do not change much with location.  This explains why the ellipsoid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Mat\'ern kernel is peaked, which explains why the ellipsoid for $\theta = 8$ is more spherical in shape.
+Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqref{eq:MaternTheta} for three different values of $\btheta = \theta$ and the corresponding  ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Of these, $\theta = 2$ has the smallest volume (area).
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height = 6cm]{ProgramsImages/KthetaPlot.eps} \qquad
 	\includegraphics[height = 6cm]{ProgramsImages/ellipsesPlot.eps}
-	\caption{The ellipsoids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:Matern}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
+	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:Matern}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
 \end{figure}
 
-We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoid.   That is, our choice of $\btheta$ is
+The reproducing kernel describes how large function values may be and how close to each other two values of a function at different locations may be:
+\begin{equation} \label{eq:diff_f}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
+\end{equation}
+For the Mat\'ern kernel in \eqref{eq:MaternTheta} this corresponds to 
+\begin{equation} \label{eq:diff_f_Matern}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [(1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})]^2.
+\end{equation}
+The Mat\'ern kernel with small $\theta$ is relatively flat, which means that function values in this RKHS do not vary much with location.  This explains why the ellipsoidal solid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Mat\'ern kernel is peaked, which explains why the ellipsoidal solid for $\theta = 8$ is more spherical in shape.
+
+
+
+We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoidal solid.   That is, our choice of $\btheta$ is
 \begin{equation} \label{eq:thetEB}
 \btheta  =  \argmin_{\theta'}  \vEll(\btheta' ,\mX,\by) 
  = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\btheta'}) \bigr) + \log \bigl ( \by^T \mK_{\btheta'}^{-1} \by \bigr)\right].
 \end{equation}
-A small volume of the ellipsoid means that this data is considered small in the RKHS $\calf_{\btheta}$-norm as what is observed. 
+A small volume of the ellipsoidal solid means that this data is considered small in the RKHS $\calf_{\btheta}$-norm as what is observed. 
 
 Inferring the reproducing kernel from the data necessitates defining a new candidate set of functions to be approximated:
 \begin{align} \label{eq:RKHSconeTheta}
@@ -624,16 +643,26 @@ Because $\btheta$ must be chosen by optimization, the asymptotic computational c
 \end{equation}
 where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $\Ntheta n^3$ and $\NT n^2$.  
 
-Example again.
+Example again. Show how inferring $\btheta$ helps.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{A Bayesian Numerical Analysis Digression} \label{sec:Bayes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Inferring the Spatial Dependence of the Reproducing Kernel}
+\subsection{Inferring the Spatial Dependence of the Reproducing Kernel} \label{sec:InferSpace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Although the function data, $\by$, appears in the selection criterion for $\btheta$, the form of reproducing kernel that we have considered thus far does not allow us to deduce that the function may vary more in one part of the domain than another.  The adaptive design defined by \eqref{eq:nextsample} may still be a space-filling design only slightly influenced by the observed function data.
+
+\FredNote{Insert Example}
 
 In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only a function of the distance between the locations:
 \begin{equation} \label{eq:diff_f_Matern}
@@ -649,7 +678,7 @@ Given any reproducing kernel,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\FredNote{Summary Theorem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Experiments}
