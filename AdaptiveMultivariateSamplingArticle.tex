@@ -110,6 +110,7 @@
 \newcommand{\LS}{\textup{LS}}
 
 \newcommand{\NT}{{N_{\mT}}}
+\newcommand{\Ntheta}{{N_{\btheta}}}
 
 
 \newcommand{\reals}{{\mathbb{R}}}
@@ -366,9 +367,9 @@ Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error boun
 This data-based error bound provides what is needed for our adaptive algorithm.  Note that $n$ is implicit in the definition of $\mX$, but we do not show this explicitly to for notational simplicity.
 
 \begin{algorithm}[H]
-\caption{Featuring Adaptive Sample Size \label{alg:basicadapt}}
+\caption{Adaptive Sample Size \label{alg:basicadapt}}
 	\begin{algorithmic}
-	\PARAM the RKHS space, $\calf$; a sequence of data sites, $\{\bx_1, \bx_2, \ldots \}$; an initial sample size, $n_0$; the factor defining the candidate set, $A(\cdot)$
+	\PARAM the RKHS, $\calf$; the factor, $A(\cdot)$, which defines  the candidate set, $\cc$, in \eqref{eq:RKHScone};  a sequence of data sites, $\{\bx_1, \bx_2, \ldots \}$; an initial sample size, $n_0$
 	\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 
     \Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
@@ -422,9 +423,9 @@ The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minim
 	
 	A commonly used reproducing kernel is the following member of the Mat\'ern family:
 	\begin{equation} \label{eq:Matern}
-	K(\bt,\bx) = (1 + \theta \norm[2]{\bt-\bx}) \exp(-\theta\norm[2]{\bt-\bx}),
+	K(\bt,\bx) = (1 + \theta \norm{\bt-\bx}) \exp(-\theta\norm{\bt-\bx}),
 	\end{equation}
-	where $\theta = 1$.
+	where $\norm{\cdot}$ denotes the Euclidean norm, and $\theta = 1$.
 	We have \[f: x \mapsto \exp(-6x) \sin(8x+0.1) - 0.1.\]
 	Consider the $n=10$ point design $\mX = (0, 0.1, \ldots, 0.6, 0.8, 0.9, 1)^T$
 	
@@ -479,7 +480,7 @@ Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site
 \begin{subequations} \label{eq:nextsample}
 \begin{gather} 
 \bx_1 \text{ given}, \\
- \bx_{n+1} = \argmax_{\bx \in \Omega} \ACQ(\mX,\by)(\bx), \; n \in \naturals,  \qquad \ACQ(\mX,\by)(\bx) := K(\bx,\bx) - K(\bx,\mX)^T(\bx) \mK^{-1} K(\mX,\bx).
+ \bx_{n+1} = \argmax_{\bx \in \Omega} \ACQ(\mX,\by)(\bx), \; n \in \naturals,  \qquad \ACQ(\mX,\by)(\bx) := K(\bx,\bx) - K(\bx,\mX)^T \mK^{-1} K(\mX,\bx).
 \end{gather}
 \end{subequations}
 As was suggested in Section \ref{sec:compCost}, we can approximate this by a direct search
@@ -491,9 +492,9 @@ where $\ACQ(\mX,\by)(\mT) = \diag\bigl(K(\mT,\mT) - K(\mT,\mX) \mK^{-1} K(\mX,\m
 Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then choose $n_0 = 1$.  The improvement of Algorithm \ref{alg:basicadapt} becomes the following. 
 
 \begin{algorithm}[H]
-	\caption{Featuring Adaptive Data Site Selection \label{alg:adaptsample}}
+	\caption{Adaptive Data Site Selection and Adaptive Sample Size \label{alg:adaptsample}}
 	\begin{algorithmic}
-		\PARAM the RKHS space, $\calf$; an initial data site, $\bx_1$; the parameters defining the candidate set, $A_\infty$ and $B_0$
+		\PARAM the RKHS, $\calf$; $A_\infty$ and $B_0$, which define  the candidate cone, $\cc$, in \eqref{eq:RKHScone}; an initial data site, $\bx_1$
 		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 		
 		\Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
@@ -504,7 +505,7 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 		
 		\If{ $n > 0$}
 		
-		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K(\bx,\bx) - K(\bx,\mX)^T(\bx) \mK^{-1} K(\mX,\bx)]$
+		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K(\bx,\bx) - K(\bx,\mX)^T \mK^{-1} K(\mX,\bx)]$
 		
 		\EndIf
 		
@@ -543,36 +544,53 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 
 Until now, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know for what RKHS $f$ is typical.  We do not expect there to be a single such RKHS, but we want to infer an appropriate RKHS from the data.  
 
-Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is the Mat\'ern family defined in terms of a scalar parameter in \eqref{eq:Matern}.  More diverse families are possible.  Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoid in $\reals^n$ consisting of all possible function data for which the minimum-norm interpolant has an $\calf_{\btheta}$ norm no greater than that of the interpolant from the observed data:
+Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is the Mat\'ern family defined in terms of a scalar parameter in \eqref{eq:Matern}.  More diverse families are possible.  From this section forward, we highlight the dependence of the reproducing kernel, the function approximation, and related quantities on $\btheta$ by a subscript.
+
+Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the interpolant from the observed data:
 \begin{align*}
 \vEll(\btheta,\mX,\by) &= \vol\bigl(\{ \bz \in \reals^n : \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\bz)}  \le \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\by)} \} \bigr) \\
 & = \vol\Bigl( \bigl \{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \} \Bigr) \\
 & = \vBall \sqrt{\det(\mK_{\btheta})  \, [\by^T \mK_\btheta^{-1} \by]^n } \qquad \text{by \cite{bibid}}
 \end{align*}
 
-The volume of the ellipsoid, $\vEll(\btheta,\mX,\by)$, is a measure of how large the observed function data is.  Note that they do not depend on the vertical scale of the reproducing kernel.  They are invariant if the reproducing kernel $K_\btheta$ is replaced by the reproducing kernel $cK_{\btheta}$ for any positive constant $c$.  Figure \ref{fig:ellipPlot} displays the ellipsoids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined by the Mat\'ern kernel in \eqref{eq:Matern} for a two-sample design for three different values of $\btheta$.  Of these shown, the one with $\btheta = 2$ has the smallest volume (area).
+The volume of the ellipsoid, $\vEll(\btheta,\mX,\by)$, can be considered a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  They do not change if the reproducing kernel $K_\btheta$ is replaced by the reproducing kernel $cK_{\btheta}$ for any positive constant $c$.  
+
+Figure \ref{fig:ellipPlot} displays the Mat\'ern kernel in \eqref{eq:Matern} for three different values of $\btheta$ and the corresponding  ellipsoids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Of these, $\btheta = 2$ has the smallest volume (area).
+
+The reproducing kernel describes how close to each other two values of a function may be:
+\begin{equation} \label{eq:diff_f}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2
+\end{equation}
+The Mat\'ern kernel with small $\theta$ is relatively flat, which means that function values do not change much with location.  This explains why the ellipsoid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Mat\'ern kernel is peaked, which explains why the ellipsoid for $\theta = 8$ is more spherical in shape.
 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width = 8cm]{ProgramsImages/ellipsesplot.eps}
+	\includegraphics[height = 6cm]{ProgramsImages/KthetaPlot.eps} \qquad
+	\includegraphics[height = 6cm]{ProgramsImages/ellipsesplot.eps}
 	\caption{The ellipsoids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:Matern}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
 \end{figure}
 
-We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoid because so small a volume of data could generate an approximation as large in $\calf_{\btheta}$-norm as what is observed.  That is, our choice of $\btheta$ is
-\begin{align} \label{eq:thetEB}
-\btheta & =  \argmin_{\theta'}  \vEll(\btheta' ,\mX,\by) \\
-\nonumber
-& = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\theta'}) \bigr) + \log \bigl ( \by^T \mK_{\theta'}^{-1} \by \bigr)\right].
-\end{align}
+We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoid.   That is, our choice of $\btheta$ is
+\begin{equation} \label{eq:thetEB}
+\btheta  =  \argmin_{\theta'}  \vEll(\btheta' ,\mX,\by) 
+ = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\btheta'}) \bigr) + \log \bigl ( \by^T \mK_{\btheta'}^{-1} \by \bigr)\right].
+\end{equation}
+A small volume of the ellipsoid means that this data is considered small in the RKHS $\calf_{\btheta}$-norm as what is observed. 
 
-For 
+Inferring the reproducing kernel from the data necessitates defining a new candidate set of functions to be approximated:
+\begin{align} \label{eq:RKHSconeTheta}
+\calc &: = \biggl \{f \in \bigcup_{\btheta' \in \Theta} \calf_{\btheta'} : \bignorm[\calf]{f - \APP_{\btheta}(f)} \le A_{\btheta}(\mX) \bignorm[\calf]{\APP_{\btheta}(\mX,\by)} \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \\
+& \hspace{8cm} \text{where $\btheta$ is selected by \eqref{eq:thetEB}} \biggr \}.
+\nonumber
+\end{align}
+This candidate set is neither a subset or superset of the candidate cone defined in \eqref{eq:RKHScone}.  Since it includes elements of multiple RKHSs, this new candidate cone is not a subset of the earlier one.  On the other hand, the condition that  the norm of the error of our approximation is bounded by the norm of the approximation for whatever $\btheta$ our criterion selects is a stricter condition than what is required in \eqref{eq:RKHScone}. 
 
 
 \begin{algorithm}[H]
-	\caption{Featuring Adaptive Data Site and RKHS Selection \label{alg:adaptsample}}
+	\caption{Adaptive Data Site and RKHS Selection and Adaptive Sample Size \label{alg:adapttheta}}
 	\begin{algorithmic}
-		\PARAM the RKHS space, $\calf$; an initial data site, $\bx_1$; the parameters defining the candidate set, $A_\infty$ and $B_0$
+		\PARAM the family of RKHSs, $\{\calf_{\btheta} : \btheta \in \Theta\}$; $A_\infty$ and $B_0$, which define the candidate cone, $\cc$, in \eqref{eq:RKHSconeTheta}; an initial data site, $\bx_1$
 		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 		
 		\Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
@@ -583,13 +601,13 @@ For
 		
 		\If{ $n > 0$}
 		
-		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX)^T(\bx) \mK_\btheta^{-1} K_\btheta(\mX,\bx)]$
+		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX)^T \mK_\btheta^{-1} K_\btheta(\mX,\bx)]$
 		
 		\EndIf
 		
 		\State Let $n \leftarrow n + 1$
 		
-		\State Update $\displaystyle\btheta = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\theta'}) \bigr) + \log \bigl ( \by^T \mK_{\theta'}^{-1} \by \bigr)\right]$
+		\State Update $\displaystyle\btheta = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\btheta'}) \bigr) + \log \bigl ( \by^T \mK_{\btheta'}^{-1} \by \bigr)\right]$
 		
 		\State Compute $\by$, $A_\btheta(\mX)$, $\mK_\btheta = K_\btheta(\mX,\mX)$, and $K_\btheta(\mX,\cdot)$
 		
@@ -600,16 +618,30 @@ For
 	\end{algorithmic}
 \end{algorithm}
 
+Because $\btheta$ must be chosen by optimization, the asymptotic computational cost of Algorithm \ref{alg:adapttheta} is more than the earlier two algorithms.  Let $\Ntheta$ denote the number of $\btheta'$ values that must be tried at each step in the algorithm to obtain the optimum, $\btheta$.  The objective function for this optimization requires $\Order(n^3)$ operations to evaluate.  Moreover, since $\btheta$ changes for each $n$, the data-based error bound in the stopping criterion requires an evaluation of the sup-norm from scratch.  Therefore, the total cost of the algorithm is 
+\begin{equation} \label{eq:compcosttheta}
+\Order\bigl(\$(f)n + \Ntheta n^4 + \NT n^3 \bigr),
+\end{equation}
+where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $\Ntheta n^3$ and $\NT n^2$.  
+
+Example again.
 
 
-
-The \FredNote{Continue}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inferring the Spatial Dependence of the Reproducing Kernel}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Although the function data, $\by$, appears in the selection criterion for $\btheta$, the form of reproducing kernel that we have considered thus far does not allow us to deduce that the function may vary more in one part of the domain than another.  The adaptive design defined by \eqref{eq:nextsample} may still be a space-filling design only slightly influenced by the observed function data.
+
+In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only a function of the distance between the locations:
+\begin{equation} \label{eq:diff_f_Matern}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [(1 + \theta \norm{\bt-\bx}) \exp(-\theta\norm{\bt-\bx})]^2
+\end{equation}
+The same holds for stationary kernels, i.e., those that are functions of $\bt - \bx$.  Even for non-stationary kernels, it is difficult to know a priori where $K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2$ should be relatively larger or smaller.  We would like to infer this from the data.
+
+Given any reproducing kernel, 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
