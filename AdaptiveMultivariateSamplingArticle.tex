@@ -653,7 +653,7 @@ and the related Gaussian process modeling \cite{Dia88a,RasWil06a,Ste99}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Inferring the Spatial Dependence of the Reproducing Kernel} \label{sec:InferSpace}
+\subsection{Inferring the Location Dependence of the Reproducing Kernel} \label{sec:InferSpace}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -661,13 +661,22 @@ Although the function data, $\by$, appears in the selection criterion for $\bthe
 
 \FredNote{Insert Example}
 
-In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only a function of the distance between the locations:
-\begin{equation} \label{eq:diff_f_Matern}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [(1 + \theta \norm{\bt-\bx}) \exp(-\theta\norm{\bt-\bx})]^2
-\end{equation}
-The same holds for stationary kernels, i.e., those that are functions of $\bt - \bx$.  Even for non-stationary kernels, it is difficult to know a priori where $K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2$ should be relatively larger or smaller.  We would like to infer this from the data.
+In the example above the function oscillates more on the left than the right, but \label{eq:diff_f_Matern} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only a function of the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$, i.e., the difference between the arguments.  Even for kernels that are not functions of the difference between the arguments, we would like to infer their location dependence from the data.
 
-Given any reproducing kernel, 
+Given any reproducing kernel, $K(\bt ,\bx)$, it follows that $w(\bt)w(\bx)K(\bt ,\bx)$ is also a reproducing kernel for any function $w$.  Starting with the Mat\'ern kernel in \eqref{eq:MaternTheta}, we can generalize it further as follows:
+\begin{align} \label{eq:MaternAB}
+K_\btheta(\bt,\bx) &= \exp(\bb^T(\bt + \bx))(1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)}),  \quad \btheta=(\ba, \bb), \\
+\nonumber
+%\label{eq:diff_f_MaternAB}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 &= \exp(2\bb^T\bx), \\
+\nonumber
+\MoveEqLeft[4]{\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2} = \\
+\nonumber 
+& \qquad \exp(2\bb^T(\bt + \bx))\{ 1 - 2 (1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)})]^2\}.
+\end{align}
+For this kernel, the size of the function value and the difference between function values at different locations can generally rise or fall depending on the parameter $\bb$.
+
+\FredNote{Repeat Example with new kernel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
