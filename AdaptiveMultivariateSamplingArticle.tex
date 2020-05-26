@@ -291,7 +291,7 @@
 \section{Introduction}
 Rigorous error bounds for numerical approximations typically consist of the norm of the input function multiplied by the norm of the error operator.  Because the norm of the input function is unknown, these error bounds cannot tell us whether a prescribed error tolerance has been met.  Adaptive numerical algorithms typically use heuristic data-driven error bounds, which means that we don't know under what conditions they can be trusted.
 
-We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate cone}, $\cc$.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$, which makes $\cc$ a cone.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant with an explicit error bound.  Baking into $\cc$ the assumption that the norm of a function is not arbitrarily larger than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which 
+We propose an adaptive function approximation algorithm based on rigorous, data-driven error bounds.  This algorithm assumes that the function to be approximated lies in a \emph{candidate cone}, $\cc$.  ``Candidate'' means those functions that our algorithm can approximate accurately.  The definition of $\cc$ formalizes the idea that \emph{what you observe is nearly what you get}.  If $f \in \cc$, then any constant multiple of $f$ is also in $\cc$, which makes $\cc$ a cone.  The underlying numerical approximation is the well-known reproducing kernel Hilbert space (RKHS) minimum norm interpolant with an explicit error bound.  Baking into $\cc$ the assumption that the norm of a function is not arbitrarily larger than the norm of its interpolant allows us to construct a rigorous adaptive function approximation algorithm. Given a black-box input function, $f$, and an error tolerance, $\varepsilon$, our algorithm returns an approximation, $\ALG(f,\varepsilon) \in L^\infty$---defined only in terms of function values---for which 
 \begin{equation} \label{eq:errorcrit}
 \norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon \qquad \forall f\in \cc.
 \end{equation}
@@ -302,25 +302,22 @@ Adaption can take several forms, including
     \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,  (Section \ref{sec:adaptSites}), and
     \item Adaptive choice of the function space, $\calf$, for which the input function is typical  (Section \ref{sec:adaptF}).
 \end{itemize}
-Algorithm \ref{alg:basicadapt} incorporates the idea of the candidate cone and the first kind of adaption.  Algorithm \ref{alg:adaptsample} adds the second kind of adaption, and Algorithm \ref{alg:adapttheta} adds the third kind of adaption.  Our theory is developed initially for functions lying purely in a RKHS.  In Section{sec:poly} and Algorithm \ref{alg:poly} we generalize to the setting where a low-dimensional space of functions, e.g., polynomials of fixed degre, are exactly reproduced.
+Algorithm \ref{alg:basicadapt} incorporates the idea of the candidate cone and the first kind of adaption.  Algorithm \ref{alg:adaptsample} adds the second kind of adaption, and Algorithm \ref{alg:adapttheta} adds the third kind of adaption.  Our theory is developed initially for functions lying purely in a RKHS.  In Section \ref{sec:poly} and Algorithm \ref{alg:poly} we generalize to the setting where a low-dimensional space of functions, e.g., polynomials of fixed degre, are exactly reproduced.
 
-These algorithms rely on the well-developed literature of RKHS function approximation.  Our main contributions are 
+These algorithms draw upon the well-developed literature of RKHS function approximation \cite{Buh03a,Fas07a,FasMcC15a,ForFly15a,ForEtal09,RasWil06a,SchWen06a,Wah85a,Wen05a}.  Our main contributions are 
 \begin{itemize}
-	\item The idea of a candidate cone (Section \ref{sec:basicIdea}),
-	\item A geometric interpretation of the condition for inferring the suitable Hilbert space (Section  \ref{sec:adaptTheta}), and
-	\item .
+	\item The candidate cone (Section \ref{sec:basicIdea}),
+	\item A geometric interpretation of the condition to infer the suitable Hilbert space (Section  \ref{sec:adaptTheta}), and
+	\item Inferring the location dependence of the reproducing kernel ( Section \ref{sec:InferSpace}) .
 \end{itemize}
-
-
 
 Any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly do so for a candidate set corresponding to an infinite dimensional vector space.  If there were such an algorithm, then $\ALG(0,\varepsilon)$ would terminate after evaluating the zero function at some $\bx_1, \ldots, \bx_n$.  Since $\cc$ is an infinite dimensional vector space, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  That is, $g$ looks like $0$ to the algorithm, but is not close enough to $0$.  In this case, $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, and it is impossible for the error criterion \eqref{eq:errorcrit} to be satisfied for both $f=0$ and $f = g$.
 
-Function approximation algorithms are often constructed to satisfy \eqref{eq:errorcrit} for a ball candidate set, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  Choosing this convex, symmetric  candidate set guarantees that adaption is of no value \cite{Bak71}.  Here we choose candidate sets that are unbounded and non-convex, which are amenable to adaptive algorithms.
+Function approximation algorithms are often constructed to satisfy error criterion \eqref{eq:errorcrit} for a candidate ball, e.g., $\cc = \{f \in \calf : \norm[\calf]{f} \le 1\}$.  Choosing this convex, symmetric candidate set guarantees that adaption is of no value \cite{Bak71}.  Here we choose candidate cones that are unbounded and non-convex, which are amenable to adaptive algorithms.
 
-The algorithms constructed here put a premium on the cost of obtaining function values.  We have in mind the situation where one function value may be the result of an expensive simulation costing hours or days of CPU time, denoted $\$(f)$.  Our algorithm produces an inexpensive surrogate or approximation of the expensive simulation.  If $n$ function values are required to obtain a satisfactory function approximation, then we do not mind if the manipulation of that data to form our function approximation requires $\Order(n^p)$ operations, since practically speaking this will be smaller than $\$(f) n$.  RKHS minimum  norm interpolants typically require $\Order(n^3)$ operations, and we may require a bit more to obtain a satisfactory error bound.
+The algorithms constructed here put a premium on the cost of obtaining function values.  We have in mind the situation where one function value may be the result of an expensive simulation costing hours or days of CPU time, denoted $\$(f)$.  Our algorithm produces an inexpensive surrogate or approximation of the expensive simulation.  If $n$ function values are required to obtain a satisfactory function approximation, then we do not mind if the manipulation of that data to form our function approximation requires $\Order(n^p)$ operations, since practically speaking this will be smaller than $\$(f) n$.  RKHS minimum  norm interpolants typically require $\Order(n^3)$ operations, and we may require a bit more to obtain a satisfactory error bound.  Methods to reduce the computational effort required to construct RKHS minimum norm interpolants include an estimating equation approach \cite{AniCheSte16a}, approximation by incomplete Cholesky factorizations \cite{OwhEtal19a}, and matching designs with kernels to obtain Gram matrices that can be inverted using fast transforms \cite{RatHic19a}.
 
 
-\FredNote{Continue}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -338,12 +335,12 @@ Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Le
 The minimum norm interpolant of $f$ is 
 \begin{subequations} \label{eq:RKHSAPP}
 \begin{align} 
-\APP(\mX,\by) &= \sum_{i=1}^n c_i K(\bx_i,\cdot) = \bc^T K(\mX,\cdot) =  K(\cdot, \mX) \mK^{-1} \by \, \\
+\APP(\mX,\by) &= \sum_{i=1}^n c_i K(\bx_i,\cdot) = \bc^T K(\mX,\cdot) =  K(\cdot, \mX) \mK^{-1} \by, \\
  \text{where } & \qquad \bc = \mK^{-1} \by, \quad \mK = K(\mX,\mX) = \bigl( K(\bx_i,\bx_j) \bigr)_{i,j=1}^n,  \\
 & \qquad  K(\mX,\bx) = \bigl(K(\bx,\bx_i) \bigr)_{i=1}^n =  K(\bx, \mX)^T.
 \end{align}
 \end{subequations}
-This has a known pointwise error bound of
+This has a known pointwise error bound of \cite{bibid}
 \begin{align}
 \label{eq:RKHSErrBd}
 \abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx)} \, \bignorm[\calf]{f - \APP(f)} \\
@@ -351,7 +348,7 @@ This has a known pointwise error bound of
 & \le \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx) } \, \norm[\calf]{f} .
 \end{align}
 
-Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$ does cannot be computed from function data.  What we can compute from data is $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$.  Moreover, it is known that the error is orthogonal to the approximation, so by the Pythagorean Theorem,  $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we consider a candidate set
+Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$, which cannot be computed from function data.  What we can compute from data is $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$.  Moreover, it is known that the error is orthogonal to the approximation, so by the Pythagorean Theorem,  $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we define a candidate cone
 \begin{align} \label{eq:RKHScone}
 \calc &:= \Bigl\{f \in \calf : \norm[\calf]{f}^2 \le (1 + A^2(\mX)) \bignorm[\calf]{\APP(\mX,\by)}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
 \nonumber
@@ -359,11 +356,11 @@ Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient 
 \nonumber
 & = \Bigl \{f \in \calf : \bignorm[\calf]{f - \APP(f)}^2 \le \frac{A^2(\mX)}{1 + A^2(\mX)} \bignorm[\calf]{f}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \},
 \end{align}
-where $A(\mX)$ is positive and fixed in advance. Larger $A(\mX)$ yields a more inclusive candidate set.  This candidate set is a cone because if $f \in \calc$, then $c f \in \calc$ for any real $c$. 
+where $A(\mX)$ is positive and fixed in advance. Larger $A(\mX)$ yields a more inclusive candidate cone.  This candidate set is a cone because if $f \in \calc$, then $c f \in \calc$ for any real $c$. 
 
-The intuition leading to the definition of our cone candidate set is \emph{what you have not seen is not much worse than what you can see}. All adaptive algorithms are based on this philosophy. The definition of the cone in \eqref{eq:RKHScone} is a way of formalizing this key idea. 
+The intuition that inspires our candidate cone is \emph{what you have not yet seen is not much worse than what you have seen}. All adaptive algorithms are based on this philosophy. The definition of the cone in \eqref{eq:RKHScone} is a way of formalizing this. 
 
-Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error bound \eqref{eq:RKHSErrBd} implies an error bound that can be computed solely based on the output data: 
+Because $\bignorm[\calf]{\APP(\mX,\by)} = \sqrt{\by^T \mK^{-1} \by}$, error bound \eqref{eq:RKHSErrBd} implies an error bound that can be computed solely based on the function data: 
 \begin{subequations} \label{eq:DataErrBd}
 \begin{align}
 \label{eq:DataErrBdA}
@@ -377,7 +374,7 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 \begin{algorithm}[H]
 \caption{Adaptive Sample Size \label{alg:basicadapt}}
 	\begin{algorithmic}
-	\PARAM the RKHS, $\calf$; the factor, $A(\cdot)$, which defines  the candidate set, $\cc$, in \eqref{eq:RKHScone};  a sequence of data sites, $\{\bx_1, \bx_2, \ldots \}$; an initial sample size, $n_0$
+	\PARAM the RKHS, $\calf$; the factor, $A(\cdot)$, which defines  the candidate cone, $\cc$, in \eqref{eq:RKHScone};  a sequence of data sites, $\{\bx_1, \bx_2, \ldots \}$; an initial sample size, $n_0$
 	\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 
     \Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
@@ -397,9 +394,9 @@ This data-based error bound provides what is needed for our adaptive algorithm. 
 \end{algorithmic}
 \end{algorithm}
 
-This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate set $\cc$.  For a well chosen design, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
+This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate cone $\cc$.  For a well chosen design, $\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
 
-However, there are several deficiencies in this algorithm.  The choice of the design does not yet depend in on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.
+However, there are several deficiencies in this algorithm.  The choice of the design does not yet depend in on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.  These matters are addressed in the coming sections.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,23 +405,23 @@ However, there are several deficiencies in this algorithm.  The choice of the de
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The candidate set depends on the factor $A(\mX)$, which, according to \ref{eq:RKHScone}, reflects how much larger one expects $\bignorm[\calf]{f  - \APP(\mX,\by)}$ might be than $\bignorm[\calf]{\APP(\mX,\by)}$ is.  It is natural for $A(\mX)$ to depend  on the quality of the design and the number of data sites.  One measure of the quality of the design is 
+The candidate cone depends on the factor $A(\mX)$, which, according to \ref{eq:RKHScone}, reflects how much larger one expects $\bignorm[\calf]{f  - \APP(\mX,\by)}$ might be than $\bignorm[\calf]{\APP(\mX,\by)}$ is.  It is natural for $A(\mX)$ to depend  on the quality of the design and the number of data sites.  One measure of the quality of the design is 
 \begin{equation} \label{eq:BX}
 B(\mX) : = \frac{ \sup \{\norm[\infty]{f} :  \norm[\calf]{f}  \le 1 , \ f(\mX) = 0 \}   }  {\sup \{ \norm[\infty]{f}  : \norm[\calf]{f}  \le 1  \} }
 = \sqrt{ \frac{\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}}{\norm[\infty]{K(\cdot,\cdot)}}} \le 1.
 \end{equation}
 As the sample size increases using well-placed data, $B(\mX)$ tends to zero.
 
-The choice of $A(\mX)$ is rather a value judgment.  We propose
+The choice of $A(\mX)$ is  a value judgment.  We propose
 \begin{equation} \label{eq:an}
 A(\mX): = \begin{cases} \displaystyle
 \frac{A_\infty B_0}{B_0 - B(\mX)}, & B(\mX) < B_0, \\
 \infty, & B(\mX) \ge B_0.
 \end{cases}
 \end{equation}
-The parameter $A_\infty > 0$ represents the limiting value of $A(\mX)$ as the design tends to perfection.  The parameter $B_0$ represents the maximum value of $B(\mX)$ for which one is willing to infer a bound on $\bignorm[\calf]{f  - \APP(\mX,\by)}$ in terms of $\bignorm[\calf]{\APP(\mX,\by)}$.  Making $A_\infty$ larger or $B_0$ smaller makes the candidate set, $\cc$ more inclusive.
+The parameter $A_\infty > 0$ represents the limiting value of $A(\mX)$ as the design tends to perfection.  The parameter $B_0$ represents the maximum value of $B(\mX)$ for which one is willing to infer a bound on $\bignorm[\calf]{f  - \APP(\mX,\by)}$ in terms of $\bignorm[\calf]{\APP(\mX,\by)}$.  Making $A_\infty$ larger or $B_0$ smaller makes the candidate cone, $\cc$ more inclusive.
 
-The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minimum sample size for which $B(\mX) < B_0$.  This leaves only the two parameters, $A_\infty$ and $B_0$ as needing to be given default values or be chosen by the user.
+The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minimum sample size for which $B(\mX) < B_0$.  This leaves only the two parameters $A_\infty$ and $B_0$ as requiring default values or to be chosen by the user.
 
 \begin{example}
 	Here we use one 1-d example to illustrate it.
@@ -450,7 +447,7 @@ The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minim
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Algorithm \ref{alg:basicadapt} requires numerical optimization to  
-approximate the sup-norms that appear in via the data-based error bound in \eqref{eq:DataErrBdB} and the definition of $B(\mX)$ in \eqref{eq:BX}.  Finding the locations of optima is required below in \eqref{label} for adaptively choosing the next data site and for adaptively choosing the correct kernel in \eqref{} in Section \ref{label}.  We do not consider identifying the best numerical optimization algorithms for these purposes in this article but recognize it as a problem for further research.  
+approximate the sup-norms that appear in via the data-based error bound in \eqref{eq:DataErrBdB} and the definition of $B(\mX)$ in \eqref{eq:BX}.  Finding the locations of optima is required below in \eqref{eq:nextsample} for adaptively choosing the next data site and for adaptively choosing the correct kernel in \eqref{eq:thetEB} in Section \ref{sec:adaptF}.  We do not consider identifying the best numerical optimization algorithms for these purposes in this article but recognize it as a problem for further research.  
 
 Moreover, these optimization problems do not require high accuracy answers.  Underestimating 
 \[\norm[\infty]{K(\cdot,\cdot) - K(\cdot,\mX) \mK^{-1} K(\mX,\cdot)}\]
@@ -484,7 +481,7 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  It is better to choose the next data site where the pointwise error bound of $\APP(\mX,\by)$ in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to maximizing a data-based acquisition function, $\ACQ(\mX,\by)$:
+Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  It makes sense to choose the next data site where the pointwise error bound of the present approximation in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to maximizing a data-based acquisition function, $\ACQ(\mX,\by)$:
 \begin{subequations} \label{eq:nextsample}
 \begin{gather} 
 \bx_1 \text{ given}, \\
@@ -530,7 +527,7 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 
 Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \ref{alg:basicadapt}, which is given in \eqref{eq:compcostbasic}.  The cost of optimizing the acquisition function is the same as evaluating the error bound.
 
-Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It cannot choose data sites more densely where the function is fluctuating more.  The next section improves upon our algorithm to make the acquisition function strongly dependent on $\by$.
+Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It cannot choose data sites more densely where the function  fluctuates more.  In the next section we improve our algorithm to make the acquisition function strongly dependent on $\by$.
 
 
 
@@ -550,34 +547,34 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Until now, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know for what RKHS $f$ is typical.  We do not expect there to be a single such RKHS, but we want to infer an appropriate RKHS from the data.  
+Until now, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know whether $f$ is typical for  that RKHS.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a suitable RKHS from the data.  
 
-Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is an extension of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
+Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
 \begin{equation} \label{eq:MaternTheta}
-K(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)}),
+K_\btheta(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)}),
 \end{equation}
-where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel, the function approximation, and related quantities on $\btheta$ by a subscript.
+where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel, the function approximation, and related quantities on $\btheta$.
 
-Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoidal solid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the interpolant from the observed data:
+Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoidal solid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the observed interpolant:
 \begin{align*}
 \vEll(\btheta,\mX,\by) &= \vol\bigl(\{ \bz \in \reals^n : \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\bz)}  \le \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\by)} \} \bigr) \\
 & = \vol\Bigl( \bigl \{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \} \Bigr) \\
 & = \vBall \sqrt{\det(\mK_{\btheta})  \, [\by^T \mK_\btheta^{-1} \by]^n } \qquad \text{by \cite{bibid}}
 \end{align*}
 
-The volume of the ellipsoidal solid, $\vEll(\btheta,\mX,\by)$, can be considered a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  They do not change if the reproducing kernel $K_\btheta$ is replaced by the reproducing kernel $cK_{\btheta}$ for any positive constant $c$.  
+The volume of the ellipsoidal solid, $\vEll(\btheta,\mX,\by)$, is a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  It does not change if the reproducing kernel $K_\btheta$ is replaced by $cK_{\btheta}$ for any positive constant $c$.  
 
-Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqref{eq:MaternTheta} for three different values of $\btheta = \theta$ and the corresponding  ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Of these, $\theta = 2$ has the smallest volume (area).
+Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqref{eq:MaternTheta} for three different values of $\btheta = \theta$ and the corresponding  ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Here, $\theta = 2$ has the smallest volume (area).
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height = 6cm]{ProgramsImages/KthetaPlot.eps} \qquad
 	\includegraphics[height = 6cm]{ProgramsImages/ellipsesPlot.eps}
-	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:Matern}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
+	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:MaternTheta}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
 \end{figure}
 
-The reproducing kernel describes how large function values may be and how close to each other two values of a function at different locations may be:
+The reproducing kernel describes how large function values may be and how far apart two values of a function at different locations may be:
 \begin{equation} \label{eq:diff_f}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
 \end{equation}
@@ -590,20 +587,19 @@ The Mat\'ern kernel with small $\theta$ is relatively flat, which means that fun
 
 
 
-We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoidal solid.   That is, our choice of $\btheta$ is
+We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoidal solid, i.e., the RKHS for which the observed function data is small.   Our choice of $\btheta$ is
 \begin{equation} \label{eq:thetEB}
 \btheta  =  \argmin_{\theta'}  \vEll(\btheta' ,\mX,\by) 
  = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\btheta'}) \bigr) + \log \bigl ( \by^T \mK_{\btheta'}^{-1} \by \bigr)\right].
 \end{equation}
-A small volume of the ellipsoidal solid means that this data is considered small in the RKHS $\calf_{\btheta}$-norm as what is observed. 
 
-Inferring the reproducing kernel from the data necessitates defining a new candidate set of functions to be approximated:
+Inferring the reproducing kernel from the data necessitates a new candidate cone of functions to be approximated:
 \begin{align} \label{eq:RKHSconeTheta}
 \calc &: = \biggl \{f \in \bigcup_{\btheta' \in \Theta} \calf_{\btheta'} : \bignorm[\calf]{f - \APP_{\btheta}(f)} \le A_{\btheta}(\mX) \bignorm[\calf]{\APP_{\btheta}(\mX,\by)} \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \\
 & \hspace{8cm} \text{where $\btheta$ is selected by \eqref{eq:thetEB}} \biggr \}.
 \nonumber
 \end{align}
-This candidate set is neither a subset or superset of the candidate cone defined in \eqref{eq:RKHScone}.  Since it includes elements of multiple RKHSs, this new candidate cone is not a subset of the earlier one.  On the other hand, the condition that  the norm of the error of our approximation is bounded by the norm of the approximation for whatever $\btheta$ our criterion selects is a stricter condition than what is required in \eqref{eq:RKHScone}. 
+This candidate cone is neither a subset or superset of the candidate cone defined in \eqref{eq:RKHScone}.  Since it includes elements of multiple RKHSs, this new candidate cone is not a subset of the earlier one.  On the other hand, the condition that  the norm of the error of our approximation is bounded by the norm of the approximation for whatever $\btheta$ our criterion selects is a stricter condition than what is required in \eqref{eq:RKHScone}. 
 
 
 \begin{algorithm}[H]
@@ -637,7 +633,7 @@ This candidate set is neither a subset or superset of the candidate cone defined
 	\end{algorithmic}
 \end{algorithm}
 
-Because $\btheta$ must be chosen by optimization, the asymptotic computational cost of Algorithm \ref{alg:adapttheta} is more than the earlier two algorithms.  Let $\Ntheta$ denote the number of $\btheta'$ values that must be tried at each step in the algorithm to obtain the optimum, $\btheta$.  The objective function for this optimization requires $\Order(n^3)$ operations to evaluate.  Moreover, since $\btheta$ changes for each $n$, the data-based error bound in the stopping criterion requires an evaluation of the sup-norm from scratch.  Therefore, the total cost of the algorithm is 
+Because $\btheta$ must be chosen by optimization, the asymptotic computational cost of Algorithm \ref{alg:adapttheta} is more than the earlier two algorithms.  Let $\Ntheta$ denote the number of $\btheta'$ values that must be tried at each step in the algorithm to obtain the optimum, $\btheta$.  The objective function for this optimization requires $\Order(n^3)$ operations to evaluate.  Moreover, since $\btheta$ may change for each $n$, the data-based error bound in the stopping criterion requires an evaluation of the sup-norm from scratch.  Therefore, the total cost of the algorithm is 
 \begin{equation} \label{eq:compcosttheta}
 \Order\bigl(\$(f)n + \Ntheta n^4 + \NT n^3 \bigr),
 \end{equation}
@@ -651,6 +647,7 @@ Example again. Show how inferring $\btheta$ helps.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+and the related Gaussian process modeling \cite{Dia88a,RasWil06a,Ste99}
 
 
 
@@ -674,7 +671,7 @@ Given any reproducing kernel,
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Recovering Low Degree Polynomials Exactly}
+\section{Recovering Low Degree Polynomials Exactly} \ref{sec:poly}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
