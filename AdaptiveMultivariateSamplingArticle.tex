@@ -156,6 +156,7 @@
 \newcommand{\mT}{\mathsf{T}}
 \newcommand{\mU}{\mathsf{U}}
 \newcommand{\mX}{\mathsf{X}}
+\newcommand{\mZero}{\mathsf{0}}
 \newcommand{\mPhi}{\mathsf{\Phi}}
 \newcommand{\mPsi}{\mathsf{\Psi}}
 \newcommand{\mLambda}{\mathsf{\Lambda}}
@@ -186,6 +187,8 @@
 \newcommand{\bL}{{\boldsymbol{L}}}
 \newcommand{\bg}{{\boldsymbol{g}}}
 \newcommand{\bn}{{\boldsymbol{n}}}
+\newcommand{\bp}{{\boldsymbol{p}}}
+\newcommand{\bP}{{\boldsymbol{P}}}
 \newcommand{\br}{{\boldsymbol{r}}}
 \newcommand{\bv}{{\boldsymbol{v}}}
 \newcommand{\bu}{{\boldsymbol{u}}}
@@ -683,6 +686,25 @@ For this kernel, the size of the function value and the difference between funct
 \section{Recovering Low Degree Polynomials Exactly} \label{sec:poly}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_0$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  To recover all functions in $\calf_0$ exactly, we modify our approximation in \eqref{eq:RKHSAPP} to take the form 
+\begin{subequations} \label{eq:RKHSAPP_P}
+	\begin{align} 
+	\APP_\btheta(\mX,\by) &= \sum_{i=1}^n c_i K_\btheta(\bx_i,\cdot) + \sum_{j=1}^s \gamma_i p_j = \bc^T K_\btheta(\mX,\cdot) + \bgamma^T \bp(\cdot), \\
+	\text{where } & \qquad \begin{pmatrix} \bc \\ \bgamma \end{pmatrix} = 
+	\begin{pmatrix} \mK_\btheta  & \mP \\ \mP^T & \mZero_s \end{pmatrix}^{-1} 
+	\begin{pmatrix}\by \\ \bzero_s \end{pmatrix}, 
+	\quad \mK_\btheta = K_\btheta(\mX,\mX) = \bigl( K_\btheta(\bx_i,\bx_j) \bigr)_{i,j=1}^n,  \\
+	& \qquad  K_\btheta(\mX,\bx) = \bigl(K_\btheta\bx,\bx_i) \bigr)_{i=1}^n =  K_\btheta(\bx, \mX)^T, \quad \mP = \bp^T(\mX) = \bigl( p_j(\bx_i)\bigr )_{i,j=1}^{n,s}.
+	\end{align}
+\end{subequations}
+For any design $\mX$ and function data $\by$, let $\calg(\mX,\by) = \{ g = g_0 + g_{\btheta} : g_0 \in \calf_0, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  Then $\APP_\btheta(\mX,\by) $ is the element of $\calg(\mX,\by)$ with minimum $\norm[\calf_\btheta]{g_{\btheta}}$.
+
+
+
+
+
+
 
 \FredNote{Summary Theorem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
