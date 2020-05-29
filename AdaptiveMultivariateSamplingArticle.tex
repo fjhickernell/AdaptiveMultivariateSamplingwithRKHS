@@ -679,6 +679,7 @@ K_\btheta(\bt,\bx) &= \exp(\bb^T(\bt + \bx))(1 +  \norm{\ba \odot (\bt-\bx)}) \e
 \end{align}
 For this kernel, the size of the function value and the difference between function values at different locations can generally rise or fall depending on the parameter $\bb$.
 
+
 \FredNote{Repeat Example with new kernel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -699,6 +700,17 @@ The algorithm developed so far must be extended to recover even constant functio
 	\end{align}
 \end{subequations}
 For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calf_0 \oplus \calf_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_0 + g_{\btheta} : g_0 \in \calf_0, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  Then, $\APP_\btheta(\mX,\by) $ is the element of $\calg(\mX,\by)$ with minimum $\norm[\calf_\btheta]{g_{\btheta}}$.
+
+We assume that $\mP$ has full rank and that $\mK$ is invertible. Then
+\begin{equation}
+\bc = \mM_\btheta \by, \quad \mM_\btheta := \mK_\btheta^{-1} - \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1}, \qquad
+\bgamma = (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by.
+\end{equation}
+Then the error bound for $\APP_\btheta(\mX,\by)$ in \eqref{eq:RKHSErrBd} is extended to become
+\begin{align}
+\label{eq:RKHSErrBdP}
+\abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le \sqrt{K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX) \mM_\btheta K_\btheta(\mX,\bx)} \, \bignorm[\calf]{f - \APP(f)}.
+\end{align}
 
 
 
