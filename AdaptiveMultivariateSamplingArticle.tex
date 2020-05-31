@@ -198,6 +198,8 @@
 \newcommand{\bz}{{\boldsymbol{z}}}
 \newcommand{\bvarphi}{{\boldsymbol{\varphi}}}
 \newcommand{\bgamma}{{\boldsymbol{\gamma}}}
+\newcommand{\bdelta}{{\boldsymbol{\delta}}}
+\newcommand{\bDelta}{{\boldsymbol{\Delta}}}
 \newcommand{\bphi}{{\boldsymbol{\phi}}}
 \newcommand{\bpsi}{{\boldsymbol{\psi}}}
 \newcommand{\btheta}{{\boldsymbol{\theta}}}
@@ -280,6 +282,7 @@
 \newcommand{\ErrN}{\ERR\bigl(\dataN,n\bigr)}
 \newcommand{\fint}{f_{\text{int}}}
 \newcommand{\inflate}{\fC}
+\DeclareMathOperator{\spanV}{span}
 
 \newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
 
@@ -688,10 +691,16 @@ For this kernel, the size of the function value and the difference between funct
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_0$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  To recover all functions in $\calf_0$ exactly, we modify our approximation in \eqref{eq:RKHSAPP} to take the form 
+The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_0$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  We now assume that $f$ lies in $\calf_0 \oplus \calf_\btheta$ and has the following semi-norm:
+\begin{equation} \label{eq:seminorm} 
+\abs{f}_{\calh_\btheta} = \min \{ \norm[\calf_\btheta] {f_\btheta} : f = f_0 + f_\btheta, \ f_0 \in \calf_0, \ f_\btheta \in \calf_\btheta \}.
+\end{equation}
+
+To recover all functions in $\calf_0$ exactly, we modify our approximation in \eqref{eq:RKHSAPP} to take the form 
 \begin{subequations} \label{eq:RKHSAPP_P}
 	\begin{align} 
 	\APP_\btheta(\mX,\by) &= \sum_{i=1}^n c_i K_\btheta(\bx_i,\cdot) + \sum_{j=1}^s \gamma_i p_j = \bc^T K_\btheta(\mX,\cdot) + \bgamma^T \bp(\cdot), \\
+	\label{eq:RKHSAPP_PB}
 	\text{where } & \qquad \begin{pmatrix} \bc \\ \bgamma \end{pmatrix} = 
 	\begin{pmatrix} \mK_\btheta  & \mP \\ \mP^T & \mZero_s \end{pmatrix}^{-1} 
 	\begin{pmatrix}\by \\ \bzero_s \end{pmatrix}, 
@@ -699,21 +708,25 @@ The algorithm developed so far must be extended to recover even constant functio
 	& \qquad  K_\btheta(\mX,\bx) = \bigl(K_\btheta\bx,\bx_i) \bigr)_{i=1}^n =  K_\btheta(\bx, \mX)^T, \quad \mP = \bp^T(\mX) = \bigl( p_j(\bx_i)\bigr )_{i,j=1}^{n,s}.
 	\end{align}
 \end{subequations}
-For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calh_\btheta = \calf_0 \oplus \calf_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_0 + g_{\btheta} : g_0 \in \calf_0, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  Moreover, defined a semi-norm for $\calf_0 \oplus \calf_\btheta$ as follows:
-\begin{equation}
-\abs{f}_{\calh_\btheta} = \min \{ \norm[\calf_\btheta] {f_\btheta} : f = f_0 + f_\btheta, \ f_0 \in \calf_0, \ f_\btheta \in \calf_\btheta \}
-\end{equation}
-Then, $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.
-
-We assume that $\mP$ has full rank and that $\mK$ is invertible. Then
+We assume that $\mP$ has full rank and that $\mK$ is invertible. Then the solution of \eqref{eq:RKHSAPP_PB} is
 \begin{equation}
 \bc = \mM_\btheta \by, \quad \mM_\btheta := \mK_\btheta^{-1} - \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1}, \qquad
 \bgamma = (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by.
 \end{equation}
-Then the error bound for $\APP_\btheta(\mX,\by)$ in \eqref{eq:RKHSErrBd} is extended to become
+
+
+For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calh_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_0 + g_{\btheta} : g_0 \in \calf_0, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  
+Then, $\APP_\btheta(\mX,\by)$ is the minimum--semi-norm interpolant. i.e., $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.
+
+As noted in  \eqref{eq:seminorm}, function to be approximated is the sum of two parts: $f_0 = (\bgamma + \bdelta)^T \bp \in \calf_0$ and $f_\btheta \in \calf_\btheta$.  Furthermore, given the design, $\mX$, $f_\btheta$ can be split into two parts: $f_{\btheta\parallel} = (\bc + \bDelta)^T K_\btheta(\mX,\cdot) )$ and $f_{\btheta\perp} \in \{g \in \calf_\btheta : g(\mX) = \bzero\}$.  Due to the interpolation condition, $\mK_\btheta \bDelta  + \mP \bdelta = \bzero$, so $\bDelta = - \mK_\btheta^{-1} \mP \bdelta$.
+
+The error in $\APP_\btheta(\mX,\by)$ is comprised of two parts
 \begin{align}
 \label{eq:RKHSErrBdP}
-\abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le \sqrt{K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX) \mM_\btheta K_\btheta(\mX,\bx)} \, \bignorm[\calf_\btheta]{f - \APP(f)}.
+\abs{f(\bx) - \APP(\mX,\by)(\bx)} 
+& \le \abs{ f_\btheta(\bx) - \APP(\mX,\by)(\bx)} + \abs{f_{\btheta\perp}(\bx)} 
+\\
+&\le \sqrt{K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX) \mM_\btheta K_\btheta(\mX,\bx)} \, \bignorm[\calf_\btheta]{f - \APP(f)}.
 \end{align}
 
 
