@@ -347,7 +347,7 @@ The minimum $\calf$-norm interpolant of $f$ is
 & \qquad  K(\mX,\bx) = \bigl(K(\bx,\bx_i) \bigr)_{i=1}^n =  K(\bx, \mX)^T.
 \end{align}
 \end{subequations}
-The approximation lies in the $n$-dimensional subspace $\{\bc^T K(\mX,\cdot) : \bc \in \reals^n \}$, and the error of the approximation lies in the orthogonal infinite dimensional subspace $\{g \in \calf : g(\mX) = \bzero\}$.
+The approximation lies in the $n$-dimensional subspace $\calf_{\parallel} := \{\bc^T K(\mX,\cdot) : \bc \in \reals^n \}$, and the error of the approximation lies in the orthogonal infinite dimensional subspace $\calf_{\perp} := \{g \in \calf : g(\mX) = \bzero\}$.
 The approximation has a known pointwise error bound of \cite{bibid}
 \begin{align}
 \label{eq:RKHSErrBd}
@@ -695,16 +695,16 @@ Now, the size of the function values and the difference between function values 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Recovering Low Degree Polynomials Exactly} \label{sec:poly}
+\section{Recovering Pure Trends Exactly} \label{sec:poly}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_0$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  We now assume that $f$ lies in $\calf_0 \oplus \calf_\btheta$ and has the following semi-norm:
+The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_t$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  We can think of $\calf_t$ as the space of possible \emph{trends}, and $\calf_{\btheta}$ as the infinite dimensional space of possible \emph{fluctuations}.  We now assume that $f$ lies in the vector space $\calh_\btheta := \calf_t \oplus \calf_\btheta$ with the following semi-norm that measures the size of its fluctuation:
 \begin{equation} \label{eq:seminorm} 
-\abs{f}_{\calh_\btheta} = \min \{ \norm[\calf_\btheta] {f_\btheta} : f = f_0 + f_\btheta, \ f_0 \in \calf_0, \ f_\btheta \in \calf_\btheta \}.
+\abs{f}_{\calh_\btheta} = \min \{ \norm[\calf_\btheta] {f_\btheta} : f = f_t + f_\btheta, \ f_t \in \calf_t, \ f_\btheta \in \calf_\btheta \}.
 \end{equation}
 
-To recover all functions in $\calf_0$ exactly, we modify our approximation in \eqref{eq:RKHSAPP} to take the form 
+To recover all pure trends exactly, we modify our approximation in \eqref{eq:RKHSAPP} to take the form 
 \begin{subequations} \label{eq:RKHSAPP_P}
 	\begin{align} 
 	\APP_\btheta(\mX,\by) &= \sum_{i=1}^n c_i K_\btheta(\bx_i,\cdot) + \sum_{j=1}^s \gamma_i p_j = \bc^T K_\btheta(\mX,\cdot) + \bgamma^T \bp(\cdot), \\
@@ -723,17 +723,28 @@ We assume that $\mP$ has full rank and that $\mK$ is invertible. Then the soluti
 \end{equation}
 
 
-For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calh_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_0 + g_{\btheta} : g_0 \in \calf_0, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  
-Then, $\APP_\btheta(\mX,\by)$ is the minimum--semi-norm interpolant. i.e., $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.
+For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calh_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_t + g_{\btheta} : g_t \in \calf_t, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  
+Then, $\APP_\btheta(\mX,\by)$ is the minimum--semi-norm interpolant. i.e., $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.  This property of  $\APP_\btheta(\mX,\by)$, which is follows from  the constraint $\mP^T \bc = \bzero_s$, also ensures that  $\APP_\btheta(\mX,\by)$ exactly reproduces all elements of $\calf_t$.
 
-As noted in  \eqref{eq:seminorm}, function to be approximated is the sum of two parts: $f_0 = (\bgamma + \bdelta)^T \bp \in \calf_0$ and $f_\btheta \in \calf_\btheta$.  Furthermore, given the design, $\mX$, $f_\btheta$ can be split into two parts: $f_{\btheta\parallel} = (\bc + \bDelta)^T K_\btheta(\mX,\cdot) )$ and $f_{\btheta\perp} \in \{g \in \calf_\btheta : g(\mX) = \bzero\}$.  Due to the interpolation condition, $\mK_\btheta \bDelta  + \mP \bdelta = \bzero$, so $\bDelta = - \mK_\btheta^{-1} \mP \bdelta$.
+The function, $f$, to be approximated is the sum of two parts: $f_t = (\bgamma + \bdelta)^T \bp \in \calf_t$,  $f_{\btheta\parallel} = (\bc + \bDelta)^T K_\btheta(\mX,\cdot)$ and $f_{\btheta\perp} \in \{g \in \calf_\btheta : g(\mX) = \bzero\}$.  Due to the interpolation condition, $\mK_\btheta \bDelta  + \mP \bdelta = \bzero$, so $\bDelta = - \mK_\btheta^{-1} \mP \bdelta$.
 
 The error in $\APP_\btheta(\mX,\by)$ is comprised of two parts
 \begin{align}
 \label{eq:RKHSErrBdP}
-\abs{f(\bx) - \APP(\mX,\by)(\bx)} 
-& \le \abs{ f_\btheta(\bx) - \APP(\mX,\by)(\bx)} + \abs{f_{\btheta\perp}(\bx)} 
+\MoveEqLeft\abs{f(\bx) - \APP(\mX,\by)(\bx)} \\
+\nonumber
+& \le \abs{ f_t(\bx) + f_\btheta(\bx) - \APP(\mX,\by)(\bx)} + \abs{f_{\btheta\perp}(\bx)} 
 \\
+\nonumber
+& = \abs{ \bdelta^T [\bp(\bx)- \mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  ] } + \abs{f_{\btheta\perp}(\bx)} 
+\\
+\nonumber
+& \le \sqrt{\bp^T(\bx)\bp(\bx) - 2 \bp^T(\bx)\mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  
+	+  K_\btheta(\bx,\mX)  \mK_\btheta^{-1} \mP \mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  } \norm{\bdelta} \\
+\nonumber
+ & \qquad \qquad + \sqrt{K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX) \mM_\btheta K_\btheta(\mX,\bx)} \norm[\calf_\btheta]{f_{\btheta\perp}(\bx)} 
+\\
+\nonumber
 &\le \sqrt{K_\btheta(\bx,\bx) - K_\btheta(\bx,\mX) \mM_\btheta K_\btheta(\mX,\bx)} \, \bignorm[\calf_\btheta]{f - \APP(f)}.
 \end{align}
 
