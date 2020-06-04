@@ -536,6 +536,8 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 
 Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \ref{alg:basicadapt}, which is given in \eqref{eq:compcostbasic}.  The cost of optimizing the acquisition function is the same as evaluating the error bound.
 
+\FredNote{Example again}
+
 Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It does not choose data sites more densely where the function  fluctuates more.  In the next section we improve our algorithm to make the acquisition function strongly dependent on $\by$.
 
 
