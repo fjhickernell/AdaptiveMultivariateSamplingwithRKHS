@@ -1,10 +1,10 @@
 %% Plotting the ellipses for different values of theta
 gail.InitializeWorkspaceDisplay
 
-f = @(x) exp(-6.*(x-1/2).^2) - 0.6;
 xplot = (0:0.001:1)';
 nxplot = size(xplot,1);
-fplot = f(xplot);
+fplot = simpleFun(xplot);
+avgFun = mean(fplot) %should be roughly zero
 plot(xplot,fplot)
 xlabel('\(x\)')
 ylabel('\(f(x)\)')
@@ -14,7 +14,7 @@ phiplot = xplot*(2*pi);
 spherevec = [cos(phiplot) sin(phiplot)];
 
 xdata = [0.3; 0.6];
-ydata = f(xdata);
+ydata = simpleFun(xdata);
 
 efigh = figure;
 hold on
@@ -22,7 +22,7 @@ kfigh = figure;
 hold on
 colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple];
 cOrder = [1 3 2 4];
-thetavec = [0.5 8 2]';
+thetavec = [1 16 4]';
 thOrder = [1 3 2];
 ntheta = size(thetavec,1);
 h=zeros(ntheta,1);
