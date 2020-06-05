@@ -13,5 +13,7 @@ end
 if ~exist('nrange','var')
    nrange = 1;
 end
+x = lattice_gen(nrange(1),nrange(end),d);
+x = mod(x + shift,1);
 
 
