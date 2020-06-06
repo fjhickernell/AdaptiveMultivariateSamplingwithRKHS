@@ -1,16 +1,10 @@
-function [powkeval,powpeval] = powerfun(xeval,xdata,kernel,kerneldiag,trend)
-Kmat = kernel(xdata,xdata);
-Kdateval = kernel(xdata,xeval);
-powkeval = sqrt(kerneldiag(xeval) ...
-   - sum(Kdateval .* (Kmat\Kdateval),1)');
-if nargin < 5
-   powpeval = [];
-else
-   Pmat = trend(xdata);
-   Peval = trend(xeval);
-   PTKinv = Pmat'/Kmat;
+function [errKXx,errKX,whKX,errPXx,errPX] = powerfun(Kmat, Kdateval, Kdiageval, Peval, PTKinv)
+errKXx = sqrt(Kdiageval - sum(Kdateval .* (Kmat\Kdateval),1)');
+[errKX,whKX] = max(errKXx);
+if nargin >= 5
    PTKinvKdateval = PTKinv*Kdateval;
-   powpeval = sqrt(sum((Peval-PTKinvKdateval').^2,2));
+   errPXx = sqrt(sum((Peval-PTKinvKdateval').^2,2));
+   errPX = max(errPXx);
 end
 
    
