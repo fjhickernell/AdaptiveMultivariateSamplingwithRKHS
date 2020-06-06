@@ -313,7 +313,7 @@ Adaption can take several forms, including
     \item Adaptive choice of the data sites, $\{\bx_1, \bx_2, \ldots\}$,  (Section \ref{sec:adaptSites} and Algorithm \ref{alg:adaptsample}), and
     \item Adaptive choice of the function space, $\calf$, for which the input function is typical  (Section \ref{sec:adaptF} and Algorithm \ref{alg:adapttheta}).
 \end{itemize}
-Our theory develops progressively by adding additional forms of adaption for functions lying purely in a RKHS.  In Section \ref{sec:poly} and Algorithm \ref{alg:poly} we generalize to the setting where a low-dimensional space of functions, e.g., polynomials of fixed degree, are exactly reproduced.
+Our theory develops progressively by adding additional forms of adaption for functions lying purely in a RKHS.  In Section \ref{sec:poly} and Algorithm \ref{alg:poly} we generalize to the setting where a low-dimensional space of possible trends, e.g., polynomials of fixed degree, are exactly reproduced.
 
 These algorithms draw upon the well-developed literature of RKHS function approximation \cite{Buh03a,Fas07a,FasMcC15a,ForFly15a,ForEtal09,RasWil06a,SchWen06a,Wah85a,Wen05a}.  Our main contributions are 
 \begin{itemize}
@@ -340,7 +340,7 @@ The algorithms constructed here put a premium on the cost of obtaining function 
 \subsection{The Basic Idea Our Adaptive Algorithm} \label{sec:basicIdea}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Suppose that $f$, belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
+Suppose that $f$ belongs to an RKHS $\calf$ of functions with domain $\cx$.  Let $K: \Omega \times \Omega \to \reals$ denote the reproducing kernel.  Let $\mX = (\bx_1, \ldots, \bx_n)^T \in \cx^n \subseteq \reals^{n \times d}$ be an array of $n$ data sites, and let $\by  = f(\mX) \in \reals^n$ denote the array of function values at these data sites.  
 The minimum $\calf$-norm interpolant of $f$ is 
 \begin{subequations} \label{eq:RKHSAPP}
 \begin{align} 
@@ -349,14 +349,15 @@ The minimum $\calf$-norm interpolant of $f$ is
 & \qquad  K(\mX,\bx) = \bigl(K(\bx,\bx_i) \bigr)_{i=1}^n =  K(\bx, \mX)^T.
 \end{align}
 \end{subequations}
-The approximation lies in the $n$-dimensional subspace $\calf_{\parallel} := \{\bc^T K(\mX,\cdot) : \bc \in \reals^n \}$, and the error of the approximation lies in the orthogonal infinite dimensional subspace $\calf_{\perp} := \{g \in \calf : g(\mX) = \bzero\}$.
-The approximation has a known pointwise error bound of \cite{bibid}
+This approximation lies in the $n$-dimensional subspace $\calf_{\mX} := \{\bc^T K(\mX,\cdot) : \bc \in \reals^n \}$, and the error of the approximation lies in the orthogonal infinite dimensional subspace $\calf_{\mX \perp} := \{g \in \calf : g(\mX) = \bzero\}$.
+The approximation has a known pointwise error bound of \cite{bibid}:
+\begin{subequations} \label{eq:RKHSErrBd}
 \begin{align}
-\label{eq:RKHSErrBd}
-\abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le  \errK(\mX,\bx) \, \bignorm[\calf]{f - \APP(\mX,\by)} \le \errK(\mX,\bx) \, \norm[\calf]{f} \qquad \forall f \in \calf,  \\
- \text{where } & \qquad\errK(\mX,\bx) : = \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx)}.
+\abs{f(\bx) - \APP(\mX,\by)(\bx)} & \le  \errK(\mX,\bx) \, \bignorm[\calf]{f - \APP(\mX,\by)}  \qquad \forall f \in \calf,  \\
+\text{where} & \qquad\errK(\mX,\bx) : = \sqrt{K(\bx,\bx) - K(\bx,\mX) \mK^{-1} K(\mX,\bx)}.
 \end{align}
-Here, $\errK(\mX,\bx)$ represents the norm of the error functional for approximating $f(\bx)$ by $\APP(\mX,\by)(\bx)$.  It is also the represents the largest possible value of $\abs{f(\bx)}$ for any function of unit norm in the subspace $\calf_{\perp}$ of functions that vanish at the data sites.
+\end{subequations}
+Here, $\errK(\mX,\bx)$ represents the norm of the error functional for approximating $f(\bx)$ by $\APP(\mX,\by)(\bx)$.  It is also the represents the largest possible value of $\abs{g(\bx)}$ for any $g$ of unit norm in the subspace $\calf_{\mX \perp}$ of functions that vanish at the data sites.
 
 \begin{figure}[H]
 	\centering
@@ -380,7 +381,7 @@ which is a van der Corput sequence \cite{} shifted by $1/3$ modulo one.  As expe
 
 
 
-Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$, which cannot be computed from function data.  What we can compute from data is $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$.  Moreover, since the error is orthogonal to the approximation,  the Pythagorean Theorem implies that $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we define a candidate cone
+Data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$, which cannot be computed from function data.  What we can compute from data is $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$.  Moreover, since the error is orthogonal to the approximation,  the Pythagorean Theorem implies that $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we define a candidate cone as follows:
 \begin{align} \label{eq:RKHScone}
 \calc &:= \Bigl\{f \in \calf : \norm[\calf]{f}^2 \le (1 + A^2(\mX)) \bignorm[\calf]{\APP(\mX,\by)}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
 \nonumber
@@ -720,15 +721,16 @@ Now the kernel is strongly dependent on $\by$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_t$ be a finite dimensional vector space with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  We can think of $\calf_t$ as the space of possible \emph{trends}, and $\calf_{\btheta}$ as the infinite dimensional space of possible \emph{fluctuations}.  We now assume that $f$ lies in the vector space $\calh_\btheta := \calf_t \oplus \calf_\btheta$ with the following semi-norm that measures the size of its fluctuation:
+The algorithm developed so far must be extended to recover even constant functions exactly.  Let $\calf_t$ be a finite dimensional vector space of possible \emph{trends} with basis $\{p_1, \ldots, p_s\}$.  For example, it might be space of polynomials.  We think of $\calf_{\btheta}$ as the infinite dimensional space of possible \emph{fluctuations} around the trend.  So, our function to be approximated, $f$, lies in the vector space $\calh_\btheta := \calf_t \oplus \calf_\btheta$ with the following semi-norm that measures the size of its fluctuation:
 \begin{equation} \label{eq:seminorm} 
 \abs{f}_{\calh_\btheta} = \min \{ \norm[\calf_\btheta] {f_\btheta} : f = f_t + f_\btheta, \ f_t \in \calf_t, \ f_\btheta \in \calf_\btheta \}.
 \end{equation}
+It is possible to have a non-unique decomposition of $f$ into a trend and fluctuation.
 
-We modify our approximation in \eqref{eq:RKHSAPP} to take the form 
+We modify our approximation in \eqref{eq:RKHSAPP} to include a trend
 \begin{subequations} \label{eq:RKHSAPP_P}
 	\begin{align} 
-	\APP_\btheta(\mX,\by) &= \sum_{i=1}^n c_i K_\btheta(\bx_i,\cdot) + \sum_{j=1}^s \gamma_i p_j = \bc^T K_\btheta(\mX,\cdot) + \bgamma^T \bp(\cdot), \\
+	\APP_\btheta(\mX,\by) &= \sum_{i=1}^n c_i K_\btheta(\bx_i,\cdot) + \sum_{j=1}^s \gamma_i p_j = \bc^T K_\btheta(\mX,\cdot) + \bgamma^T \bp(\cdot) \in \calf_{\btheta \mX}, \\
 	\label{eq:RKHSAPP_PB}
 	\text{where } & \qquad \begin{pmatrix} \bc \\ \bgamma \end{pmatrix} = 
 	\begin{pmatrix} \mK_\btheta  & \mP \\ \mP^T & \mZero_s \end{pmatrix}^{-1} 
@@ -742,20 +744,20 @@ We assume that $\mP$ has full rank and that $\mK$ is invertible. Then the soluti
 \bc = \mM_\btheta \by, \quad \mM_\btheta := \mK_\btheta^{-1} - \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1}, \qquad
 \bgamma = (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by.
 \end{equation}
-Note that if $f = \balpha^T \bp$ for some constant $\balpha$, then $\APP_\btheta(\mX,\by) = \balpha^T \bp$ by straightforward calculation.  So our approximation recovers pure trends exactly.
+Note that if $f$ is pure trend, i.e., $f = \balpha^T \bp \in \calf_t$ for some constant $\balpha$, then $\APP_\btheta(\mX,\by) = \balpha^T \bp$ by straightforward calculation.  So our approximation recovers pure trends exactly.
 
 
 For any design $\mX$ and function data $\by$, let $\calg_\btheta(\mX,\by)$ denote the subset of $\calh_\btheta$ that interpolates the data, i.e., $\calg_\btheta(\mX,\by) := \{ g = g_t + g_{\btheta} : g_t \in \calf_t, \ g_{\btheta} \in \calf_{\btheta}, \ g(\mX)  = \by\}$.  
-Then, $\APP_\btheta(\mX,\by)$ is the minimum semi-norm interpolant. i.e., $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.  This property of  $\APP_\btheta(\mX,\by)$, which is follows from  the constraint $\mP^T \bc = \bzero_s$, also ensures that  $\APP_\btheta(\mX,\by)$ exactly reproduces all elements of $\calf_t$.
+Then, $\APP_\btheta(\mX,\by)$ is the minimum semi-norm interpolant, i.e., $\APP_\btheta(\mX,\by) = \argmin_{g \in \calg(\mX,\by)}  \abs{g}_{\calh_\btheta}$.  This property of  $\APP_\btheta(\mX,\by)$ is related to the fact that  $\APP_\btheta(\mX,\by)$ exactly reproduces all trends.
 
-The function, $f$, to be approximated is the sum of three parts: $f_t = (\bgamma + \bdelta)^T \bp \in \calf_t$,  $f_{\btheta\parallel} = (\bc + \bDelta)^T K_\btheta(\mX,\cdot)$ and $f_{\btheta\perp} \in \{g \in \calf_\btheta : g(\mX) = \bzero\}$.  Due to the interpolation condition, $\mK_\btheta \bDelta  + \mP \bdelta = \bzero$, so $\bDelta = - \mK_\btheta^{-1} \mP \bdelta$.  The error in approximating $f$ by $\APP_\btheta(\mX,\by)$ is comprised of two parts: i) the error in approximating $f_t + f_{\btheta \parallel}$ by $\APP_\btheta(\mX,\by)$, and ii) $f_{\btheta \perp}$.  The latter part is bounded as in \eqref{eq:RKHSErrBd}, but the former part is absent in \eqref{eq:RKHSErrBd}: 
+The function, $f$, to be approximated is the sum of three parts: $f_t = (\bgamma + \bdelta)^T \bp \in \calf_t$,  $f_{\btheta \mX} = (\bc + \bDelta)^T K_\btheta(\mX,\cdot) \in \calf_{\btheta \mX}$ and $f_{\btheta \mX \perp} \in \{g \in \calf_\btheta : g(\mX) = \bzero\} \in \calf_{\btheta \mX \perp}$.  The interpolation condition implies that, $\mK_\btheta \bDelta  + \mP \bdelta = \bzero$, so $\bDelta = - \mK_\btheta^{-1} \mP \bdelta$.  The error in approximating $f$ by $\APP_\btheta(\mX,\by)$ is comprised of two parts: i) the error in approximating $f_t + f_{\btheta \mX}$ by $\APP_\btheta(\mX,\by)$, and ii) $f_{\btheta \mX \perp}$.  The latter part is bounded as in \eqref{eq:RKHSErrBd}, but the former part is absent in \eqref{eq:RKHSErrBd}: 
 \begin{align}
 \label{eq:RKHSErrBdP}
 \abs{f(\bx) - \APP(\mX,\by)(\bx)}
 & \le \abs{ f_t(\bx) + f_\btheta(\bx) - \APP(\mX,\by)(\bx)} + \abs{f_{\btheta\perp}(\bx)} 
 \\
 \nonumber
-& = \abs{ \bdelta^T [\bp(\bx)- \mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  ] } + \abs{f_{\btheta\perp}(\bx)} 
+& = \abs{ \bdelta^T [\bp(\bx)- \mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  ] } + \errK(\mX,\bx) \norm[\calf_\btheta]{f_{\btheta\perp}(\bx)}
 \\
 \nonumber
 & \le \errP(\mX,\bx) \norm{\bdelta} + \errK(\mX,\bx) \norm[\calf_\btheta]{f_{\btheta\perp}(\bx)},
@@ -766,24 +768,76 @@ where
 	+  K_\btheta(\bx,\mX)  \mK_\btheta^{-1} \mP \mP^T \mK_\btheta^{-1}K_\btheta(\mX,\bx)  }
 \end{equation}
 
-As was done in Section \ref{sec:basicIdea}, we must assume that $f$ lies in a cone of functions for which $\norm{\delta}$ and $\norm[\calf_\btheta]{f_{\btheta\perp}(\bx)}$ are bounded by quantities derived from data so that we may construct a data driven error bound for our approximation to $f$.  We assume that the error in the coefficient of the trend in $f$ is not much larger than the  coefficient of the trend in $\APP(\mX,\by)$, i.e., 
+As was done in Section \ref{sec:basicIdea}, we must assume that $f$ lies in a cone of functions for which $\norm{\delta}$ and $\norm[\calf_\btheta]{f_{\btheta\perp}(\bx)}$ are bounded by quantities derived from data.  This allows us to  construct a data-driven error bound for our approximation to $f$.  We assume that the error in the coefficient of the trend in $f$ is not much larger than the  coefficient of the trend in $\APP(\mX,\by)$, i.e., 
 \begin{gather*}
 \norm{\bdelta} \le A_{t\btheta}(\mX) \norm{\bgamma}, \qquad A_{t\btheta}(\mX): = \begin{cases} \displaystyle
-\frac{A_\infty B_0}{B_0 - B_{t \btheta}(\mX)}, & B_{t \btheta}(\mX) < B_0, \\
-\infty, & B(\mX) \ge B_0.
+\frac{A_{t\infty} B_{t0}}{B_{t0} - B_{t \btheta}(\mX)}, & B_{t \btheta}(\mX) < B_{t0}, \\
+\infty, & B(\mX) \ge B_{t0}.
 \end{cases}\\
 B_{t\btheta}(\mX) : =   \frac{\errP(\mX)}{\sqrt{\norm[\infty]{\bp^T(\cdot)\bp(\cdot)}}}, \qquad \errP(\mX) := \norm[\infty]{\errP(\mX,\cdot)}.
 \end{gather*} 
-We make an analogous assumption as in \eqref{} for the norm of $f_{\btheta \perp}$ being bounded in terms of the norm of the part of $\APP(\mX,\by)$ lying in $\calf_{\btheta \parallel}$.  Again we assume that $\btheta$ is inferred from data.
 
+We make an analogous assumption as in \eqref{eq:RKHScone} for the norm of $f_{\btheta \perp}$ being bounded in terms of the norm of the part of $\APP(\mX,\by)$ lying in $\calf_{\btheta \mX}$.  Noting that $M_\btheta K_\btheta^{-1} M_\btheta = M_\btheta$.  It follows that $\norm[\calf_{\btheta}]{bc^T K_\btheta(\mX,\cdot)} = \sqrt{\by^T \mM_\btheta \by}$.
+
+As in Section \ref{sec:adaptF}, we assume that $\btheta$ is inferred from data, however, we modify the selection criterion in \eqref{eq:thetEB} by replacing $\mK_\btheta$ by $\mM_{\btheta}^{-1}$.  The geometric interpretation of choosing $\btheta$ to make the data as small as possible still applies, but the ellipsoid solid has a bit different definition.
+
+The candidate cone allowing for trends is now defined as
 \begin{multline} \label{eq:RKHSPconeTheta}
 \calc : = \biggl \{f \in \calf_t \oplus \bigcup_{\btheta' \in \Theta} \calf_{\btheta'} : 
-\bignorm[\calf]{f_{\btheta \perp}} \le A_{\btheta}(\mX) \sqrt{\by^T \mM_\btheta \mK_\btheta \mM_\btheta^{-1} \by} \text{ and} \\ 
+\bignorm[\calf]{f_{\btheta \perp}} \le A_{\btheta}(\mX) \sqrt{\by^T \mM_\btheta \by} \quad \text{and} \\ 
 \norm{\bdelta} \le A_{t \btheta}(\mX) \sqrt{\by^T \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by} \qquad \forall \mX \in \Omega^d, \ \by = f(\mX),  \\
-\text{where }\btheta = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mK_{\btheta'}) \bigr) + \log \bigl ( \by^T \mK_{\btheta'}^{-1} \by \bigr)\right] \biggr \}.
+\text{where }\btheta = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mM^{-1}_{\btheta'}) \bigr) + \log \bigl ( \by^T \mM_{\btheta'} \by \bigr)\right] \biggr \}.
 \end{multline}
+A data-driven error bound for functions in this cone follows immediately from \eqref{eq:RKHSErrBdP} and \eqref{eq:RKHSPconeTheta}:
+\begin{subequations}  \label{eq:DataErrBdPoly}
+\begin{align}
+\abs{f(\bx) - \APP(\mX,\by)(\bx)}
+& \le A_{t \btheta}(\mX) \errP(\mX,\bx) \sqrt{\by^T \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by} \\
+\nonumber
+&\qquad \qquad + A_{\btheta}(\mX) \errK(\mX,\bx) \sqrt{\by^T \mM_\btheta \by} 
+=:\ERR(\mX,\by,\bx) \qquad \forall f \in \calc,\\
+\norm[\infty]{f - \APP(\mX,\by)}
+& \le A_{t \btheta}(\mX) \errP(\mX) \sqrt{\by^T \mK_\btheta^{-1}\mP (\mP^T \mK_\btheta^{-1} \mP)^{-1} \mP^T \mK_\btheta^{-1} \by} \\
+\nonumber
+&\qquad \qquad + A_{\btheta}(\mX) \errK(\mX)  \sqrt{\by^T \mM_\btheta \by}  
+=:\ERR(\mX,\by), \qquad \forall f \in \calc.
+\end{align}
+\end{subequations}
 
+In contrast to the situation without a trend, the pointwise error bound for the function approximation has two terms, each of which depends on location.  Therefore, our acquisition function used to iteratively choose the next data site should include the whole pointwise error bound.  We choose it to be $\ERR(\mX,\by,\cdot)$.
 
+Our adaptive function algorithm including perfect recovery of pure trends takes the  form below.  It is the culmination of starting with the idea of a candidate cone in Algorithm \ref{alg:basicadapt} and adding additional levels of sophistication.
+
+\begin{algorithm}[H]
+	\caption{Adaptive Data Site and RKHS Selection and Adaptive Sample Size; Trends Included \label{alg:trend}}
+	\begin{algorithmic}
+		\PARAM the family of RKHSs, $\{\calf_{\btheta} : \btheta \in \Theta\}$; $A_\infty$, $B_0$, $A_{t\infty}$, and  $B_{t0}$, which define the candidate cone, $\cc$, in \eqref{eq:RKHSPconeTheta}; an initial data site, $\bx_1$
+		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
+		
+		\Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
+		
+		\State Let $n \leftarrow 0$
+		
+		\Repeat
+		
+		\If{ $n > 0$}
+		
+		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} \ERR(\mX,\by,\bx)$
+		
+		\EndIf
+		
+		\State Let $n \leftarrow n + 1$
+		
+		\State Update $\displaystyle\btheta = \argmin_{\theta'}  \left[\frac 1n \log \bigl( \det(\mM^{-1}_{\btheta'}) \bigr) + \log \bigl ( \by^T \mM_{\btheta'} \by \bigr)\right]$
+		
+		\State Update all necessary quantities to compute the data-driven error bound
+		
+		\Until  $\ERR(\mX,\by) \le \varepsilon$
+		
+		\RETURN $\ALG(f,\varepsilon) = \APP(\mX,\by)$ given by \eqref{eq:RKHSAPP_P}
+		
+	\end{algorithmic}
+\end{algorithm}
 
 
 
