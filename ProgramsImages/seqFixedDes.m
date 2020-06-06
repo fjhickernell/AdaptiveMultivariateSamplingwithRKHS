@@ -1,13 +1,14 @@
 function x = seqFixedDes(nrange, d, shift)
 %SEQFIXEDDES gives an extensible lattice design that is shifted
+defShift = 1/3;
 if ~exist('d','var')
    if ~exist('shift','var')
       d = 1;
-      shift = 1/3;
+      shift = defShift;
    end
 else
    if ~exist('shift','var')
-      shift = 1/3*ones(1,d);
+      shift = defShift*ones(1,d);
    end
 end
 if ~exist('nrange','var')

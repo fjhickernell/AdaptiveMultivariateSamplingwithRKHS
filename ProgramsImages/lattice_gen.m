@@ -1,4 +1,3 @@
-
 function xlat = lattice_gen(nmin,nmax,d)
 % d: dimension of the problem, 1<=d<=100.
 % nmin,nmax: minimum and maximum indexes of the sequence:
