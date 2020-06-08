@@ -27,12 +27,14 @@ thOrder = [1 3 2];
 ntheta = size(thetavec,1);
 h=zeros(ntheta,1);
 hK=zeros(ntheta,1);
+ellipsevol=zeros(ntheta,1);
 legendLabel = cell(length(thetavec));
 for i = 1:ntheta
    theta = thetavec(i);
    Kmat = MaternKernel(xdata,xdata,theta);
    L = chol(Kmat,'lower');
    ellipsevec = sqrt(ydata'*(Kmat\ydata))*spherevec*L';
+   ellipsevol(i) = sqrt(ydata'*(Kmat\ydata)* (1/det(Kmat)) );
    figure(efigh);
    h(i)= fill(ellipsevec(:,1), ellipsevec(:,2), colorScheme(cOrder(i),:), ...
       'EdgeColor', colorScheme(cOrder(i),:));
@@ -56,7 +58,7 @@ legend(hK(thOrder),legendLabel{thOrder},  ...
    'location','south','box','off');
 print -depsc KthetaPlot.eps
 
-
+ellipsevol(thOrder)
 
 
 % 

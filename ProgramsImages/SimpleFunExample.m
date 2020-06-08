@@ -91,7 +91,7 @@ xlabel('\(x\)')
 
 
 %% Algorithm 3 Sample location and kernel are adaptive
-n0 = 4;
+n0 = 2;
 plotn = [0 n0:8 nmax];
 ploti = 2;
 figure
