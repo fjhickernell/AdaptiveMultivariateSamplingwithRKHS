@@ -14,6 +14,7 @@ phiplot = xplot*(2*pi);
 spherevec = [cos(phiplot) sin(phiplot)];
 
 xdata = [0.3; 0.6];
+ndata = size(xdata,1);
 ydata = simpleFun(xdata);
 
 efigh = figure;
@@ -34,7 +35,7 @@ for i = 1:ntheta
    Kmat = MaternKernel(xdata,xdata,theta);
    L = chol(Kmat,'lower');
    ellipsevec = sqrt(ydata'*(Kmat\ydata))*spherevec*L';
-   ellipsevol(i) = sqrt(ydata'*(Kmat\ydata)* (1/det(Kmat)) );
+   ellipsevol(i) = sqrt((ydata'*(Kmat\ydata)).^ndata * det(Kmat) );
    figure(efigh);
    h(i)= fill(ellipsevec(:,1), ellipsevec(:,2), colorScheme(cOrder(i),:), ...
       'EdgeColor', colorScheme(cOrder(i),:));
@@ -58,7 +59,4 @@ legend(hK(thOrder),legendLabel{thOrder},  ...
    'location','south','box','off');
 print -depsc KthetaPlot.eps
 
-ellipsevol(thOrder)
-
-
-% 
+[thetavec(thOrder) ellipsevol(thOrder)]

@@ -91,7 +91,7 @@ xlabel('\(x\)')
 
 
 %% Algorithm 3 Sample location and kernel are adaptive
-n0 = 2;
+n0 = 3;
 plotn = [0 n0:8 nmax];
 ploti = 2;
 figure
@@ -107,7 +107,8 @@ for n = n0:nmax
       xdata(n) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
-   lnthOptim = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n));
+   lnthOptim = selectTheta(thetaRange,kernelth,kerneldiag,xdata(1:n),fdata(1:n), ...
+      xeval,errKNull,Ainf,B0);
    thetaOptim = exp(lnthOptim)
    kernel = @(t,x) MaternKernel(t,x,thetaOptim);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
