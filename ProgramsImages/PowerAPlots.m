@@ -4,20 +4,20 @@ gail.InitializeWorkspaceDisplay
 xplot = (0:0.001:1)';
 nxplot = size(xplot,1);
 
-thetavec = [0.1 1 10]';
+thetavec = [1 4 16]';
 nth = size(thetavec,1);
 theta = 1;
 
 kerneldiag = @(x) ones(size(x,1),1);
 colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
-cOrder = [1:6];
+cOrder = 1:6;
 
 %% Plot of errK(X,.) for different theta
 n = 8;
 xdata = seqFixedDes(1:n);
 figpow = figure;
 set(gca,'Yscale','log')
-axis([0 1 1e-6 10])
+axis([0 1 1e-5 10])
 hold on
 legendLabel = cell(length(nth));
 
@@ -39,11 +39,11 @@ print('-depsc','errKplotth.eps')
 Ainf = 0.2;
 B0 = 0.5;
 errKNull = 1;
-nmax = 20;
+nmax = 100;
 xdata = seqFixedDes(1:nmax);
 figpow = figure;
 set(gca,'Xscale','log')
-axis([1 nmax 0 1.2])
+axis([1 nmax 0 0.8])
 hold on
 legendLabel = cell(length(nth));
 AX(nth,nmax) = 0;
