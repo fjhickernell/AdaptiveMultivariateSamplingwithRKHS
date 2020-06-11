@@ -601,6 +601,8 @@ K_\btheta(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \
 \end{equation}
 where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel and related quantities on $\btheta$.
 
+\FredNote{Perhaps show some figures of how $\errK(\mX,\bx)$ and $A(\mX)$ vary with $\btheta$ and the importance of choosing the correct $\btheta$}
+
 Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoidal solid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the observed interpolant:
 \begin{align*}
 \vEll(\btheta,\mX,\by) &= \vol\bigl(\{ \bz \in \reals^n : \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\bz)}  \le \norm[\calf_{\btheta}]{\APP_{\btheta}(\mX,\by)} \} \bigr) \\
