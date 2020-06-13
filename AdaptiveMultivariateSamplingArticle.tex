@@ -601,6 +601,31 @@ K_\btheta(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \
 \end{equation}
 where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel and related quantities on $\btheta$.
 
+Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$ for three different values of $\btheta = \theta$.  Under this parameterization, the kernel becomes flatter for small $\theta$ and more peaked for large $\theta$.  
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[height = 5.5cm]{ProgramsImages/KthetaPlot.eps} \qquad
+	\includegraphics[height = 5.5cm]{ProgramsImages/errKplotth.eps}
+	\caption{The Mat\'ern kernel defined in \eqref{eq:MaternTheta} for various values of $\btheta$ \label{fig:MaternThPlot}}
+\end{figure}
+
+These differences in kernel shape translate into assumptions about the functions in the RKHS.  Every reproducing kernel describes how large function values may be and how far apart two function values at different locations may be:
+\begin{equation} \label{eq:diff_f}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx\bx) - 2 K_{\btheta}(\bt,\bx).
+\end{equation}
+Clearly these statements are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
+\begin{equation} \label{eq:diff_f_Matern}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 - (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})].
+\end{equation}
+For small $\theta$ function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location. For large $\theta$ function values in the RKHS may vary quite a bit over short distances.
+
+These variations in kernel shape, affect other quantities in our function approximation algorithm.
+
+
+The value of $\btheta$ strongly affects the values of $\errK(\mX)$, $A(\mX)$, and 
+
 \FredNote{Perhaps show some figures of how $\errK(\mX,\bx)$ and $A(\mX)$ vary with $\btheta$ and the importance of choosing the correct $\btheta$}
 
 Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(\btheta,\mX,\by)$ denote the volume of the ellipsoidal solid in $\reals^n$ consisting of all possible function data whose minimum-norm interpolants have an $\calf_{\btheta}$-norm no greater than that of the observed interpolant:
