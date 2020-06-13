@@ -74,7 +74,7 @@ xlabel('\(\theta\)')
 ylabel('\(A(\mathsf{X})\)ERRK\((\mathsf{X}) \sqrt{\textit{\textbf{y}}^T\mathsf{K}^{-1}\textit{\textbf{y}}}\)')
 print('-depsc','errBdplotthlots.eps')
 
-%%
+%% Plot function, approximation and error bars
 [~,whth] = min(errBd);
 theta = lotsthvec(whth);
 kernel = @(t,x) MaternKernel(t,x,theta);
@@ -87,7 +87,13 @@ yplot = simpleFun(xplot);
 figure
 hold on
 h = plot(xplot,yplot,xdata,ydata,'.');
-h = [h; plot(xplot,Appx,xplot,Appx+errKXx*[-1,1])];
+h = [h; plot(xplot,Appx,'color', MATLABGreen)];
+h = [h; plot(xplot,Appx+errKXx*[-1,1],'color', MATLABPurple)];
+legend(h([1 2 3 4]), {'\(f(x)\)','APP\((\mathsf{X},\textit{\textbf{y}})\)', ...
+   'APP\((\mathsf{X},\textit{\textbf{y}}) \pm \)ERRBD\((\mathsf{X},\textit{\textbf{y}},x)\)'}, ...
+   'location','north','orientation','horizontal')
+trueErr = max(abs(yplot-Appx))
+ErrBd
 
 
 %% Plot of A(X) for different theta and n
