@@ -9,7 +9,7 @@ colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; 
 cOrder = 1:6;
 
 %% Plot of errK(X,.) and error bound for different theta
-n = 16;
+n = 8;
 xdata = seqFixedDes(1:n);
 ydata = simpleFun(xdata);
 figerrK = figure;
@@ -26,9 +26,8 @@ for ii = 1:nth
    kernel = @(t,x) MaternKernel(t,x,theta);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel, kerneldiag);
    [errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-   [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
-   normAppx = sqrt(ydata'*(Kmat\ydata));
-   errBdx = errKXx*(AX*normAppx);
+   AX = ABfun(errKX,errKNull,Ainf,B0);
+   [~,~,errBdx] = Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
    figure(figerrK)
    plot(xplot,errKXx,'color',colorScheme(cOrder(ii),:))
    figure(figerrBd);
@@ -66,9 +65,8 @@ for ii = 1:nthlots
    kernel = @(t,x) MaternKernel(t,x,theta);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel, kerneldiag);
    [errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-   [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
-   normAppx = sqrt(ydata'*(Kmat\ydata));
-   errBd(ii) = errKX*(AX*normAppx);
+   AX = ABfun(errKX,errKNull,Ainf,B0);
+   [~,~,~,errBd(ii)] = Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
 end
 figure(figerrBdLots);
 plot(lotsthvec,errBd,'.');
@@ -78,6 +76,18 @@ print('-depsc','errBdplotthlots.eps')
 
 %%
 [~,whth] = min(errBd);
+theta = lotsthvec(whth);
+kernel = @(t,x) MaternKernel(t,x,theta);
+[Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel, kerneldiag);
+[errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
+AX = ABfun(errKX,errKNull,Ainf,B0);
+[Appx, fluctNorm, ErrBdx, ErrBd] = ...
+   Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
+yplot = simpleFun(xplot);
+figure
+hold on
+h = plot(xplot,yplot,xdata,ydata,'.');
+h = [h; plot(xplot,Appx,xplot,Appx+errKXx*[-1,1])];
 
 
 %% Plot of A(X) for different theta and n
