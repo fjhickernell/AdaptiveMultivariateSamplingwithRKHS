@@ -334,14 +334,14 @@ Figure \ref{fig:errK} displays   $\errK(\mX,\cdot)$  for a reproducing kernel fr
 	\begin{equation} \label{eq:MaternOne}
 K(\bt,\bx) = (1 +  \norm{\bt-\bx}) \exp(-\norm{\bt-\bx}),
 \end{equation}
-where $\norm{\cdot}$ denotes the Euclidean norm.  The sequence of data sites is 
-\[
+where $\norm{\cdot}$ denotes the Euclidean norm.  The space-filling sequence of data sites is 
+\begin{equation} \label{eq:FixedVDCDes}
 \begin{array}{rccccccccc}
 i  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & \cdots\\
 \midrule
 x_i & 1/3 & 5/6 & 7/12 & 1/12 & 11/24 & 23/24 & 17/24 & 5 /24 & \cdots
 \end{array}
-\]
+\end{equation}
 which is a van der Corput sequence \cite{} shifted by $1/3$ modulo one.  By definition, $\errK(\mX,\cdot)$ vanishes at the data sites.  Moreover, increasing the number of data sites decreases the magnitude of $\errK(\mX,\cdot)$, which likewise decreases the error bound in \eqref{eq:RKHSErrBd}.
 
 
@@ -424,24 +424,6 @@ The parameter $A_\infty > 0$ represents the limiting value of $A(\mX)$ as the de
 
 The parameter $n_0$ in Algorithm \ref{alg:basicadapt} can be chosen as the minimum sample size for which $B(\mX) < B_0$.  This leaves only the two parameters $A_\infty$ and $B_0$ as requiring default values or user choices.  Adaptive algorithms always require such default values.  For example, Chebfun \cite{DriHalTre14a}, a popular MATLAB package that solves numerical problems by representing functions by their Chebyshev series, requires a default initial number of data sites.
 
-\begin{example}
-\label{ex:adpsamplesize}
-To illustrate our algorithm, we consider the univariate function 
-\begin{equation}
-f: x \mapsto 2 [\exp(-6(x-1/2)^2)- 0.6], \qquad x \in [0,1].
-\end{equation}
-		
-	We have \[f: x \mapsto 2 (\exp(-6(x-1/2)^2)- 0.6), \qquad \varepsilon = 0.02.\]
-	Here, we use the van der Corput sequence mentioned above with the initial sample size $n_0=1$.
-	Let's choose $A_\infty = 0.1$ and $B_0 =0.2$ to implement Algorithm
-	\ref{alg:basicadapt}.
-	We finally get $n=14$ to satisfy the error tolerance with true error 0.0157.
-	
-	\begin{figure}
-		\centering
-		\includegraphics[height = 5.5cm]{}
-	\end{figure}
-\end{example}
 
 
 
@@ -462,7 +444,27 @@ In our numerical examples, we approximate this quantity by direct search:
 \end{equation}
 where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test points.
 
-
+\begin{example}
+	\label{ex:adpsamplesize}
+	To illustrate our algorithm, we consider a rather tame  univariate function 
+	\begin{equation}
+	f: x \mapsto 2 [\exp(-6(x-1/2)^2)- 0.6], \qquad x \in [0,1],
+	\end{equation}
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.
+	
+	\input{ProgramsImages/Example1Table.txt}
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 5.5cm]{ProgramsImages/SimpleFunPlot.eps} \qquad
+		\includegraphics[height = 5.5cm]{ProgramsImages/SimpleFunAlg1.eps}
+		\caption{ \label{fig:ex1}}
+	\end{figure}
+	
+Not suprisingly, the function approximation for $n=1$ is poor, but it improves as the sample size increases.  The true  maximum absolute error of the adaptive approximation does not exceed the data-driven error bound $\errBd(\mX,\by)$ for every tolerance selected here, and by design this error bound does not exceed the tolerance.  Moreover, the true pointwise error of the adaptive approximation does not exceed the pointwise error bound $\errBd(\mX,\by,\cdot)$ at any point $\mT$ for every tolerance selected here.  Moreover, for every $n$ up to $182$, the pointwise error bound holds for all points in  $\mT$.
+	
+\end{example} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

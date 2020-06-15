@@ -6,6 +6,6 @@ nth = size(thetavec,1);
 xplot = (0:0.001:1)';
 nxplot = size(xplot,1);
 Ainf = 0.2;
-B0 = 0.5;
+B0 = 0.2;
 end
 
