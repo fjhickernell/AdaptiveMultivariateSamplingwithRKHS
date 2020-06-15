@@ -1,0 +1,9 @@
+\[ 
+ \begin{array}{rccccccc} 
+n &  14 &  22 &  30 &  54 &  86 & 182 \\ \hline 
+\varepsilon & 5\text{E}{-}2 & 2\text{E}{-}2 & 1\text{E}{-}2 & 5\text{E}{-}3 & 2\text{E}{-}3 & 1\text{E}{-}3 \\ \hline 
+\errBd & 2\text{E}{-}2 & 1\text{E}{-}2 & 8\text{E}{-}3 & 3\text{E}{-}3 & 1\text{E}{-}3 & 9\text{E}{-}4\\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 6\text{E}{-}3 & 2\text{E}{-}3 & 2\text{E}{-}3 & 4\text{E}{-}4 & 2\text{E}{-}4 & 9\text{E}{-}5\\ \hline 
+\abs{f(x) - \APP(\mX,\by)(x)} \le \errBd(\mX,\by)(x) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]
