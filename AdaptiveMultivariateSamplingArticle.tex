@@ -450,7 +450,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	\begin{equation}
 	f: x \mapsto 2 [\exp(-6(x-1/2)^2)- 0.6], \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.
 	
 	\input{ProgramsImages/Example1Table.txt}
 	
@@ -530,20 +530,23 @@ Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then 
 
 Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \ref{alg:basicadapt}, which is given in \eqref{eq:compcostbasic}.  The cost of optimizing the acquisition function is the same as evaluating the error bound.
 
-\FredNote{Example again}
 \begin{example}
 \label{ex:adpdataselect}
-	Here we use the same kernel and error tolerance as in Example \ref{ex:adpsamplesize}.
+Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an initial data site of $x_1=1/3$.
+Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
-	\[K(\bt,\bx) = (1 +  \norm{\bt-\bx}) \exp(-\norm{\bt-\bx}),\qquad \varepsilon = 0.02.\]
+		\input{ProgramsImages/Example2Table.txt}
 	
-We also use the van der Corput sequence mentioned above with the initial sample data site $\bx_1=1/3$.
-	Let's choose $A_\infty = 0.1$ and $B_0 =0.2$ to implement Algorithm
-	\ref{alg:adaptsample}.
 	
-	We finally get $n=7$ to satisfy the error tolerance with true error 0.0109. The number of points is half as in Example \ref{ex:adpsamplesize},
-	as we can use the acquisition function to find the next point.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 5.5cm]{ProgramsImages/SimpleFunAlg2.eps}
+		\caption{ \label{fig:ex1}}
+	\end{figure}
+	
 \end{example}
+
+However, unlike Example  \ref{ex:adpsamplesize}, the overall and pointwise error bounds do not hold for small values of $n$ in this
 
 
 
