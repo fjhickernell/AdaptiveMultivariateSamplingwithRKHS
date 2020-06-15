@@ -1,0 +1,9 @@
+\[ 
+ \begin{array}{rccccccc} 
+n &  13 &  20 &  29 &  41 &  78 & 114 \\ \hline 
+\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
+\errBd & 4.4\text{E}{-}2 & 2.0\text{E}{-}2 & 7.7\text{E}{-}3 & 4.8\text{E}{-}3 & 1.8\text{E}{-}3 & 9.4\text{E}{-}4\\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 2.8\text{E}{-}3 & 5.8\text{E}{-}4 & 8.6\text{E}{-}5 & 3.2\text{E}{-}5 & 3.7\text{E}{-}5 & 9.1\text{E}{-}6\\ \hline 
+\abs{f(x) - \APP(\mX,\by)(x)} \le \errBd(\mX,\by)(x) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]
