@@ -541,7 +541,7 @@ Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:ba
 	\begin{figure}[H]
 		\centering
 		\includegraphics[height = 5.5cm]{ProgramsImages/SimpleFunAlg2.eps}
-		\caption{ \label{fig:ex1}}
+		\caption{ \label{fig:ex2}}
 	\end{figure}
 	
 \end{example}
@@ -687,6 +687,23 @@ Because $\btheta$ must be chosen by optimization, the asymptotic computational c
 where $n$ is the final number of data sites required.  Again, our intended application is that for which $\$(f)$ dominates $\Ntheta n^3$ and $\NT n^2$.  
 
 \FredNote{Example again. Show how inferring $\btheta$ helps.}
+
+\begin{example}
+	\label{ex:adpdatachooseth}
+	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Mat'ern kernel \eqref{eq:MaternTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
+		
+	\input{ProgramsImages/Example3Table.txt}
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 5.5cm]{ProgramsImages/SimpleFunAlg3.eps}
+		\caption{ \label{fig:ex3}}
+	\end{figure}
+	
+\end{example}
+
+
 
 \begin{example}
 \label{ex:adpattheta}

@@ -6,7 +6,7 @@ objectThTest(nth,1) = 0;
 for i = 1:nth
    objectThTest(i) = objectTh(thetaTest(i,:),kernelth,kerneldiag,xdata,ydata,xeval,errKNull,Ainf,B0);
 end
-[smallObjTh,wh] = min(objectThTest)
+[smallObjTh,wh] = min(objectThTest);
 theta0 = thetaTest(wh,:);
 thetaOptim = fminsearch(@(th) objectTh(th,kernelth,kerneldiag,xdata,ydata,xeval,errKNull,Ainf,B0),theta0);
 
