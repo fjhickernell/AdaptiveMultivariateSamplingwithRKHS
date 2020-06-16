@@ -4,7 +4,7 @@ gail.InitializeWorkspaceDisplay
 format short e
 warning('off')
 
-[~,~,xeval,neval,Ainf,B0,errFudge] = StdParam;
+[~,~,xeval,neval,Ainf,B0] = StdParam;
 abstolVec = [0.05 0.02 0.01 0.005 0.002 0.001]';
 ntol = size(abstolVec,1);
 theta = 1;
@@ -53,6 +53,7 @@ for n = 1:nmax
    [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
+   errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
    if n == plotn(ploti)
       h(coli) = plot(xeval,Appx,'color',colorScheme(mod(coli-1,6)+1,:));
@@ -151,6 +152,7 @@ for n = 1:nmax
    [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX);
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
+   errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
    if n == plotn(ploti)
       h(coli) = plot(xeval,Appx,'color',colorScheme(mod(coli-1,6)+1,:));
@@ -256,7 +258,7 @@ for n = n0:nmax
    [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
-   errFudge = eps*sqrt(cond(Kmat));
+   errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
    %if InErrBars(n) < 1, keyboard, end
    if n == plotn(ploti)
