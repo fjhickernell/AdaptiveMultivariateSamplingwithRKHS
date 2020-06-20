@@ -68,9 +68,9 @@ for n = n0:nmax
    [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
-   errFudge = eps*sqrt(cond(Kmat));
+   errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
-   %if InErrBars(n) < 1, keyboard, end
+   if InErrBars(n) < 1 && n> 50, keyboard, end
    if n == plotn(ploti)
       h(coli) = plot(xeval,Appx,'color',colorScheme(mod(coli,6)+1,:));
       legendLabel{coli} = ['\(n = ' int2str(n) '\)'];
