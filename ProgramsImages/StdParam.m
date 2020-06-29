@@ -5,9 +5,8 @@ thetavec = [1 4 16]';
 nth = size(thetavec,1);
 xplot = (0:0.001:1)';
 nxplot = size(xplot,1);
-Ainf = 0.2;
-%B0 = 0.2;
-B0 = 0.95;
+Ainf = 0.3;
+B0 = 0.1;
 errFudge = 1000*eps;
 end
 
