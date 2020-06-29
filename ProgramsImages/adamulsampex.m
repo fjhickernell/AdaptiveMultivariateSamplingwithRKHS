@@ -132,4 +132,77 @@ fprintf(fid,'\\end{array} \n \\]');
 
 
 %% Algorithm 3 Sample location and kernel with a and b
-
+%% Algorithm 3 Sample location and kernel with a and b
+n0 = 3;
+plotn = [0 n0 nmax];
+ploti = 2;
+h(ntol+length(plotn)+1,1) = 0; 
+legendLabel = cell(ntol+length(plotn)+1,1);
+figure
+h(1) = plot(xeval,feval,'color',colorScheme(1,:));
+legendLabel{1} = '\(f(x)\)';
+hold on
+itol = 1;
+abstol = abstolVec(itol);
+nNeed(ntol,1) = 0;
+ErrBdVec(nmax,1) = 0;
+trueErr(nmax,1) = 0;
+InErrBars(nmax,1) = 0;
+nstart = 0;
+coli = ploti;
+AXvec(nmax,1) = 0;
+BXvec(nmax,1) = 0;
+thOptimVec(nmax,2) = 0;
+kernelth = @(t,x,lnth) MaternKernel(t,x,exp(lnth));
+tmp = (-5:0.5:5)';
+reptemp = repmat(tmp, 1, length(tmp));
+reptempp = repmat(tmp',length(tmp),1);
+thetaRange  = [reptempp(:) reptemp(:)];
+for n = n0:nmax
+   if n == n0
+      xdata(1:n0) = seqFixedDes(1:n0);
+      fdata(1:n0) = f(xdata(1:n0));
+   else
+      xdata(n) = xeval(whKX);
+      fdata(n) = f(xdata(n));
+   end
+   lnthOptim = selectTheta(thetaRange,kernelth,kerneldiag,xdata(1:n),fdata(1:n), ...
+      xeval,errKNull,Ainf,B0);
+   thetaOptim = exp(lnthOptim);
+   thOptimVec(n,:) = thetaOptim;
+   kernel = @(t,x) MaternKernel(t,x,thetaOptim);
+   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
+   [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
+   [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
+   AXvec(n) = AX;
+   BXvec(n) = BX;   
+   [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
+   ErrBdVec(n) = ErrBd;
+   trueErr(n) = max(abs(feval - Appx));
+   errFudge = eps*sqrt(cond(Kmat));
+   InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
+   %if InErrBars(n) < 1, keyboard, end
+   if n == plotn(ploti)
+      h(coli) = plot(xeval,Appx,'color',colorScheme(mod(coli,6)+1,:));
+      legendLabel{coli} = ['\(n = ' int2str(n) '\)'];
+      nrange = nstart+1:n;
+      plot(xdata(nrange),fdata(nrange),'.','color',colorScheme(mod(coli,6)+1,:))
+      ploti = ploti+1;
+      coli = coli+1;
+      nstart = n;
+   end
+   if ErrBd < abstol
+      if abstol >= 0.01
+         h(coli) = plot(xeval,Appx,'color',colorScheme(mod(coli,6)+1,:));
+         legendLabel{coli} = ['\(n = ' int2str(n) '\)'];
+         nrange = nstart+1:n;
+         plot(xdata(nrange),fdata(nrange),'.','color',colorScheme(mod(coli,6)+1,:))
+         nstart = n;
+         coli = coli+1;
+      end
+      nNeed(itol) = n;
+      itol = itol + 1;
+      if itol > ntol, break, end
+      abstol = abstolVec(itol);
+   end
+end
