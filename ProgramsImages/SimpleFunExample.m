@@ -15,7 +15,6 @@ colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; 
 nmax = 500;
 xdata(nmax,1) = 0;
 fdata(nmax,1) = 0;
-kerneldiag = @(x) ones(size(x,1),1);
 errKNull = 1;
 
 figure %simple function
@@ -46,7 +45,7 @@ AXvec(nmax,1) = 0;
 for n = 1:nmax
    xdata(n) = seqFixedDes(n);
    fdata(n) = f(xdata(n));
-   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
+   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX] = powerfun(Kmat, Kdateval, Kdiageval);
    AX = ABfun(errKX,errKNull,Ainf,B0);
    AXvec(n) = AX;
@@ -144,7 +143,7 @@ for n = 1:nmax
       xdata(n) = xeval(whKX);
    end
    fdata(n) = f(xdata(n));
-   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
+   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
    AXvec(n) = AX;
@@ -245,12 +244,12 @@ for n = n0:nmax
       xdata(n) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
-   lnthOptim = selectTheta(thetaRange,kernelth,kerneldiag,xdata(1:n),fdata(1:n), ...
+   lnthOptim = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
       xeval,errKNull,Ainf,B0);
    thetaOptim = exp(lnthOptim);
    thOptimVec(n) = thetaOptim;
    kernel = @(t,x) MaternKernel(t,x,thetaOptim);
-   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
+   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
    AXvec(n) = AX;

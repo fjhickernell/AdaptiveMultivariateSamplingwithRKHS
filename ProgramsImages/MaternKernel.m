@@ -1,4 +1,4 @@
-function kerval = MaternKernel(t,x,theta)
+function [kerval,kdiageval] = MaternKernel(t,x,theta)
     [nt,d] = size(t);
     [nx,dx] = size(x);
     dth = length(theta);
@@ -14,6 +14,7 @@ function kerval = MaternKernel(t,x,theta)
            .* reshape(theta,[1 1 dth]);
        normtmx = reshape(sqrt(sum(tmx.^2,3)),[nt,nx]);
        kerval = (1 + normtmx) .*  exp(-normtmx);
+       kdiageval = ones(size(x,1),1);
     else
        dd = dth/2;
        thetaa = theta(1:dd);
@@ -24,6 +25,7 @@ function kerval = MaternKernel(t,x,theta)
        tmpl = reshape(sum((reshape(t,[nt,1,d]) + reshape(x,[1,nx,d]))...
            .* reshape(thetab,[1 1 dd]),3),[nt,nx]);
        kerval = exp(tmpl).*(1 + normtmx) .*  exp(-normtmx); 
+       kdiageval = exp(x*(2*thetab'));
     end
 end
 

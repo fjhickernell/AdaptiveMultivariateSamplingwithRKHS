@@ -14,11 +14,11 @@ colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; 
 nmax = 500;
 xdata(nmax,1) = 0;
 fdata(nmax,1) = 0;
-kerneldiag = @(x) ones(size(x,1),1);
 errKNull = 1;
+d = 1;
 
 %% Algorithm 3 Sample location and kernel are adaptive
-n0 = 3;
+n0 = 5;
 plotn = [0 n0 nmax];
 ploti = 2;
 h(ntol+length(plotn)+1,1) = 0; 
@@ -35,16 +35,20 @@ trueErr(nmax,1) = 0;
 InErrBars(nmax,1) = 0;
 nstart = 0;
 coli = ploti;
+normvec(nmax,1) = 0;
+errKXvec(nmax,1) = 0;
 AXvec(nmax,1) = 0;
 BXvec(nmax,1) = 0;
 thOptimVec(nmax,2) = 0;
-kernelth = @(t,x,lnth) MaternKernel(t,x,lnth);
-tmp = (0.1:0.1:3);
+%tranTh = @(th) [log(th(1:d)) th(d+1:2*d)];
+invTranTh = @(th) [exp(th(1:d)) th(d+1:2*d)];
+kernelth = @(t,x,th) MaternKernel(t,x,invTranTh(th));
+tmp = (-5:0.5:5);
 temp = (-5:0.5:3)';
 reptemp = repmat(tmp,length(temp),1);
 reptempp = repmat(temp,1,length(tmp));
 thetaRange  = [reptemp(:) reptempp(:)];
-for n = n0:10
+for n = n0:20
    if n == n0
       xdata(1:n0) = seqFixedDes(1:n0);
       fdata(1:n0) = f(xdata(1:n0));
@@ -52,17 +56,19 @@ for n = n0:10
       xdata(n) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
-   lnthOptim = selectTheta(thetaRange,kernelth,kerneldiag,xdata(1:n),fdata(1:n), ...
+   lnthOptim = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
       xeval,errKNull,Ainf,B0);
-   thetaOptim = lnthOptim;
+   thetaOptim = invTranTh(lnthOptim);
    thOptimVec(n,:) = thetaOptim;
    kernel = @(t,x) MaternKernel(t,x,thetaOptim);
-   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel, kerneldiag);
+   [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
    AXvec(n) = AX;
    BXvec(n) = BX;   
    [Appx, fluctNorm, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
+   errKXvec(n) = errKX;
+   normvec(n) = fluctNorm;
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
    errFudge = eps*sqrt(cond(Kmat));
@@ -78,6 +84,7 @@ for n = n0:10
       ploti = ploti+1;
       coli = coli+1;
       nstart = n;
+      %keyboard
    %end
    %if ErrBd < abstol
     %  if abstol >= 0.01
