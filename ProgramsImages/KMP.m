@@ -1,7 +1,10 @@
 function [Kmat, Kdateval, Kdiageval, Pdat, Peval, PTKinv, PTKinvP, Mmat] = ...
    KMP(xdata, xeval, kernel, trend)
 Kmat = kernel(xdata,xdata);
-[Kdateval, Kdiageval] = kernel(xdata,xeval);
+if nargout > 2
+   [Kdateval, Kdiageval] = kernel(xdata,xeval);
+end
+
 if nargin >= 4
    Pdat = trend(xdata);
    Peval = trend(xeval);
