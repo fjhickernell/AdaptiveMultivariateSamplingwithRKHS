@@ -741,20 +741,24 @@ To illustrate it is still a space-filling design,  we consider the following uni
 	f: x \mapsto 
  \exp(-6x)\sin(8x+0.1) - 0.1,  \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex4}.  We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$ and for a sequence of error tolerances.  We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.
-	
-	
-	\input{ProgramsImages/Example4Table.txt}
-	
+	which is plotted in Figure \ref{fig:ex4a}. 
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunPlot.eps}
+		\caption{ \label{fig:ex4a}}
+	\end{figure}
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$. 
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunPlot.eps} \qquad
-		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunAlg3.eps}
-		\caption{ \label{fig:ex4}}
+		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunAlg3.eps} \qquad
+		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunAlg3SamplePoints.eps}
+		\caption{ \label{fig:ex4b}}
 	\end{figure}
 
-However, unlike Example  \ref{ex:adpdatachooseth}, the overall and pointwise error bounds do not hold for small values of $n$ in this example; pointwise error bounds do not hold even for larger value of $n$.
+
+
 
 \end{example}
 In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f_Matern} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only depends on the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$.  Even for more general kernels, we want to be able to infer their location dependence from the data, not have it baked in.
@@ -775,9 +779,21 @@ Now, the size of the function values and the difference between function values 
 
 \FredNote{Repeat Example with new kernel}
 
-\YuhanNote{Should we choose the same range
-for $\bb$ \ as $\ba$}
 Now the kernel is strongly dependent on $\by$
+
+\begin{example}
+\label{ex:compfun2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunAlg3AdpTheta.eps} \qquad
+		\includegraphics[height = 5.5cm]{ProgramsImages/UniFunAlg3AdpThetaSamplePoints.eps}
+		\caption{ \label{fig:ex5}}
+	\end{figure}
+
+
+
+
+\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
