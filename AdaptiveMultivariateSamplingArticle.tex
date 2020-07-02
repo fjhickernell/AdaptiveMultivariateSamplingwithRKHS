@@ -571,7 +571,7 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-So far, we have assumed a fixed RKHS.  However, unless there is strong a priori knowledge about the function to be approximated, $f$, there is no way to know whether $f$ is typical for  that RKHS.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
+So far, we have assumed that the function to be approximation belongs to a fixed RKHS.  However, unless there is strong a priori knowledge, there is no way to know whether our $f$ is typical for  the RKHS chosen.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
 
 Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
 \begin{equation} \label{eq:MaternTheta}
@@ -592,14 +592,14 @@ These differences in kernel shape translate into assumptions about the functions
 \begin{equation} \label{eq:diff_f}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx\bx) - 2 K_{\btheta}(\bt,\bx).
 \end{equation}
-Clearly these statements are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
+These upper bounds are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
 \begin{equation} \label{eq:diff_f_Matern}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 - (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})].
 \end{equation}
 For small $\theta$ function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location. For large $\theta$ function values in the RKHS may vary quite a bit over short distances.
 
-These variations in kernel shape, affect other quantities in our function approximation algorithm.
+These variations in kernel shape affect our function approximation and error bound. quantities in our function approximation algorithm.
 
 
 The value of $\btheta$ strongly affects the values of $\errK(\mX)$, $A(\mX)$, and 
@@ -622,7 +622,7 @@ Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqre
 	\centering
 	\includegraphics[height = 6cm]{ProgramsImages/KthetaPlot.eps} \qquad
 	\includegraphics[height = 6cm]{ProgramsImages/ellipsesPlot.eps}
-	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:MaternTheta}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
+	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:MaternTheta}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3, 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
 \end{figure}
 
 The reproducing kernel describes how large function values may be and how far apart two values of a function at different locations may be:
