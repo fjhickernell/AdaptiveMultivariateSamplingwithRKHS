@@ -10,7 +10,7 @@ warning('off','MATLAB:handle_graphics:exceptions:SceneNode');
 colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
 cOrder = 1:6;
 
-n = 16;
+n = 4;
 
 myFun = @(x) 2 * (exp(-60.*(x-1/2).^2) - 0.6);
 xdata = seqFixedDes(1:n);
@@ -95,7 +95,7 @@ hold on
 h = plot(xplot,yplot,xdata,ydata,'.');
 h = [h; plot(xplot,Appx,'color', MATLABGreen)];
 h = [h; plot(xplot,Appx+ErrBdx*[-1,1],'color', MATLABPurple)];
-legend(h([1 2 3 4]), {'\(f(x)\)','APP\((\mathsf{X},\textit{\textbf{y}})\)', ...
+legend(h(1:3), {'\(f(x)\)','APP\((\mathsf{X},\textit{\textbf{y}})\)', ...
    'APP\((\mathsf{X},\textit{\textbf{y}}) \pm \)ERRBD\((\mathsf{X},\textit{\textbf{y}},x)\)'}, ...
    'location','south','orientation','vertical','box','off')
 trueErr = max(abs(yplot-Appx))
@@ -119,14 +119,12 @@ hold on
 h = plot(xplot,yplot,xdata,ydata,'.');
 h = [h; plot(xplot,Appx,'color', MATLABGreen)];
 h = [h; plot(xplot,Appx+ErrBdx*[-1,1],'color', MATLABPurple)];
-legend(h([1 2 3 4]), {'\(f(x)\)','APP\((\mathsf{X},\textit{\textbf{y}})\)', ...
+legend(h(1:3), {'\(f(x)\)','APP\((\mathsf{X},\textit{\textbf{y}})\)', ...
    'APP\((\mathsf{X},\textit{\textbf{y}}) \pm \)ERRBD\((\mathsf{X},\textit{\textbf{y}},x)\)'}, ...
    'location','south','orientation','vertical','box','off')
 trueErr = max(abs(yplot-Appx))
 ErrBd
 print('-depsc','OurSelectThAppx.eps')
-
-return
 
 
 %% Plot of A(X) for different theta and n
@@ -168,7 +166,7 @@ axis([0 1 0.5 nmax+3])
 hold on
 legendLabel = cell(length(nth));
 shift = [-0.3 0 0.3];
-h(nth,1) = 0;
+h = zeros(nth,1);
 
 for ii = 1:nth
    theta = thetavec(ii);
@@ -190,4 +188,32 @@ xlabel('\(x\)')
 legend(h,legendLabel,'box','off','Orientation','horizontal','location','north')
 print('-depsc','Desplotth.eps')
 
-    
+%% Plot of orthonormal basis for different theta
+thetaVec = [0.25 1 4 16]';
+nth = size(thetaVec,1);
+
+n = 3;
+xdata = seqFixedDes(1:n);
+
+figure
+axis([0 1 -1 1.5])
+hold on
+legendLabel = cell(length(nth));
+h = zeros(nth,1);
+
+for ii = 1:nth
+   theta = thetaVec(ii);
+   kernel = @(t,x) MaternKernel(t,x,theta);
+   [Kmat, Kdateval] = KMP(xdata, xplot, kernel);
+   [eigvec,eigval] = eig(Kmat);
+   Fbasis = (((diag(eigval).^(-1/2)).*eigvec')*Kdateval)';
+   htemp = plot(xplot,Fbasis,'color',colorScheme(cOrder(ii),:));
+   h(ii) = htemp(1);
+   legendLabel{ii} = ['\(\theta = ' num2str(theta) ' \quad \)'];
+end
+plot([0 1],[0 0],'color','k','linewidth',1)
+plot(xdata,zeros(n,1),'.k')
+xlabel('\(x\)')
+ylabel('Bases')
+legend(h,legendLabel,'box','off','Orientation','vertical','location','north','NumColumns',2)
+print('-depsc','Basisplotth.eps')

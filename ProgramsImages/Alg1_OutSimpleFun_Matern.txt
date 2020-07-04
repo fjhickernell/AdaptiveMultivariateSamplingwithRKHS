@@ -4,6 +4,6 @@ n &  14 &  22 &  54 &  55 &  86 & 214 \\ \hline
 \varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
 \errBd & 3.9\text{E}{-}2 & 1.6\text{E}{-}2 & 4.4\text{E}{-}3 & 4.4\text{E}{-}3 & 1.9\text{E}{-}3 & 5.4\text{E}{-}4 \\ \hline 
 \norm[\infty]{f - \APP(\mX,\by)} & 5.9\text{E}{-}3 & 2.4\text{E}{-}3 & 4.4\text{E}{-}4 & 4.4\text{E}{-}4 & 1.6\text{E}{-}4 & 2.9\text{E}{-}5 \\ \hline 
-\abs{f(x) - \APP(\mX,\by)(x)} \le \errBd(\mX,\by)(x) & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]

@@ -1,7 +1,7 @@
 function [Kmat, Kdateval, Kdiageval, errKNull, Pdat, Peval, PTKinv, PTKinvP, Mmat] = ...
-   KMP(xdata, xeval, kernel, trend)
+KMP(xdata, xeval, kernel, trend)
 Kmat = kernel(xdata,xdata);
-if nargout > 2
+if nargout > 1
    [Kdateval, Kdiageval, errKNull] = kernel(xdata,xeval);
 end
 
