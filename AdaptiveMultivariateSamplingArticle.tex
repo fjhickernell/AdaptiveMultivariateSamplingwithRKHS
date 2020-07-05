@@ -460,7 +460,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	\begin{equation}
 	f: x \mapsto 2 [\exp(-6(x-1/2)^2)- 0.6], \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.  the bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
 	\input{ProgramsImages/Alg1_OutSimpleFun_Matern.txt}
 	
@@ -469,10 +469,10 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 		\centering
 		\includegraphics[height = 4.5cm]{ProgramsImages/SimpleFunPlot.eps} \qquad
 		\includegraphics[height = 4.5cm]{ProgramsImages/Alg1_SimpleFun_Matern.eps}
-		\caption{ \label{fig:ex1}}
+		\caption{A plot of our example $f$ (left) and a plot of our RKHS minimum norm interpolant approximations for various $\varepsilon$ and  $n$ using Algorithm \ref{alg:basicadapt}.  Approximation improves as $n$ increases. \label{fig:ex1}}
 	\end{figure}
 	
-Not suprisingly, the function approximation for $n=1$ is poor, but it improves as the sample size increases.  The true  maximum absolute error of the adaptive approximation does not exceed the data-driven error bound $\errBd(\mX,\by)$ for every tolerance selected here, and by design this error bound does not exceed the tolerance.  Moreover, the true pointwise error of the adaptive approximation does not exceed the pointwise error bound $\errBd(\mX,\by,\cdot)$ at any point $\mT$ for every tolerance selected here.  Moreover, for every $n$ up to $182$, the pointwise error bound holds for all points in  $\mT$.
+Not suprisingly, the function approximation for $n=1$ is poor, but it improves as the sample size increases.  The true  maximum absolute error of the adaptive approximation does not exceed the data-driven error bound $\errBd(\mX,\by)$ for every tolerance selected here, and by design this error bound does not exceed the tolerance.  Moreover, the true pointwise error of the adaptive approximation does not exceed the pointwise error bound $\errBd(\mX,\by,\cdot)$ at any point $\mT$ for every tolerance selected here.  Moreover, for every $n$ up to $TBD$, the pointwise error bound holds for all points in  $\mT$.
 	
 \end{example} 
 
@@ -481,7 +481,7 @@ Not suprisingly, the function approximation for $n=1$ is poor, but it improves a
 \subsection{Computational Cost} \label{sec:compCost}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We noted in the introduction that we are primarily concerned with the computational cost of obtaining function data, but we do count the cost of our algorithms.  The sequence of data vectors, $\by_1, \ldots, \by_n$, costs $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations as shown in the appendix.  The quantity on the right side of \eqref{eq:normappx} can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( \NT n^2 \bigr)$ operations, as shown in the appendix.  
+We noted in the introduction that we are primarily concerned with the computational cost of obtaining function data, but we do count the cost of our algorithms.  The sequence of data vectors, $\by_1, \ldots, \by_n$, costs $\$(f)n$, explicitly showing that the cost of a function value might be quite large.  The Cholesky decompositions of $\mK_1, \ldots, \mK_n$ and $\mK_1^{-1}, \ldots, \mK_n^{-1}$ can all be computed in $\Order(n^3)$ operations using clever updating.  The quantity on the right side of \eqref{eq:normappx} can be computed recursively for $1, \ldots, n$ data sites using a total of $\Order\bigl( \NT n^2 \bigr)$ operations as well.  
 
 Thus, the computational cost of Algorithm \ref{alg:basicadapt} is
 \begin{equation} \label{eq:compcostbasic}
@@ -497,31 +497,30 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  We propose choosing  the next data site where the pointwise error bound of the present approximation in \eqref{eq:RKHSErrBd} is greatest.  This corresponds to 
+Algorithm \ref{alg:basicadapt} makes no use of data to choose the next data site.  We propose choosing  the next data site where the pointwise error bound of the present approximation in \eqref{eq:RKHSErrBd} is greatest, after an initial screening sample.  This corresponds to 
 \begin{equation}  \label{eq:nextsample}
-\bx_1 \text{ given}, \qquad
- \bx_{n+1} = \argmax_{\bx \in \Omega}\errK(\mX,\bx), \quad n \in \naturals.
+\bx_1, \ldots, \bx_{n_0}\text{ given}, \qquad
+ \bx_{n+1} = \argmax_{\bx \in \Omega}\errK(\mX,\bx), \quad n = n_0, n_0+1, \ldots.
 \end{equation}
 As was suggested in Section \ref{sec:compCost}, we can approximate this by a direct search
 \begin{equation} \label{eq:nextsampleAPPX}
 \bx_{n+1} \approx \argmax_{\bt_1, \ldots, \bt_\NT} \errK(\mX,\bt).
 \end{equation}
-
-Under this adaptive choice of data sites in  \eqref{eq:nextsample} one may then choose $n_0 = 1$.  The improvement of Algorithm \ref{alg:basicadapt} becomes the following. 
+Algorithm \ref{alg:basicadapt} with adaptive data site location becomes the following. 
 
 \begin{algorithm}[H]
 	\caption{Adaptive Data Site Selection and Adaptive Sample Size \label{alg:adaptsample}}
 	\begin{algorithmic}
-		\PARAM the RKHS, $\calf$; $A_\infty$ and $B_0$, which define  the candidate cone, $\cc$, in \eqref{eq:RKHScone}; an initial data site, $\bx_1$
+		\PARAM the RKHS, $\calf$; $A_\infty$ and $B_0$, which define  the candidate cone, $\cc$, in \eqref{eq:RKHScone}; an initial data sites, $\bx_1, \ldots, \bx_{n_0}$
 		\INPUT a black-box function, $f \in \cc$; an absolute error tolerance, $\varepsilon>0$
 		
 		\Ensure Error criterion $\norm[\infty]{f - \ALG(f,\varepsilon)} \le \varepsilon$
 		
-		\State Let $n \leftarrow 0$
+		\State Let $n \leftarrow n_0 -1$
 		
 		\Repeat
 		
-		\If{ $n > 0$}
+		\If{ $n \ge  n_0$}
 		
 		\State Let $ \bx_{n+1} = \displaystyle \argmax_{\bx \in \Omega} [K(\bx,\bx) - K(\bx,\mX)^T \mK^{-1} K(\mX,\bx)]$
 		

@@ -1,4 +1,4 @@
-function thetaOptim = selectTheta(thetaTest,kernelth,xdata,ydata,xeval,Ainf,B0,whobj)
+function [realTheta,thetaOptim] = selectTheta(thetaTest,kernelth,xdata,ydata,xeval,Ainf,B0,whobj)
 % Here theta might be some transformation of theta
 %objectKy = @(K,y) mean(log(max(eig(K),100*eps))) + log(y'*(K\y));
 if nargin < 8; whobj = 'EmpBayesAx'; end
@@ -10,6 +10,7 @@ end
 [smallObjTh,wh] = min(objectThTest);
 theta0 = thetaTest(wh,:);
 thetaOptim = fminsearch(@(th) objectTh(th,kernelth,xdata,ydata,xeval,Ainf,B0,whobj),theta0);
+[~,~,~,realTheta] = kernelth(0,0,thetaOptim);
 
 function obj = objectTh(theta,kernelth,xdata,ydata,xeval,Ainf,B0,whobj)
 kernel = @(t,x) kernelth(t,x,theta);

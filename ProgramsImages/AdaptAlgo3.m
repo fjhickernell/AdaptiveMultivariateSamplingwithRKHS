@@ -1,5 +1,5 @@
 %% Algorithm 3 Sample location is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
    AdaptAlgo3(f,kernelth,xdata,fdata,xeval,feval, ...
    abstolVec,Ainf,B0,n0,thetaRange,isDiagnose,colorScheme,fname,kername)
 if nargin < 12, isDiagnose = false; end
@@ -17,6 +17,7 @@ nNeed(ntol,1) = 0;
 ErrBdVec(nmax,1) = 0;
 trueErr(nmax,1) = 0;
 InErrBars(nmax,1) = 0;
+AppxNorm(nmax,1) = 0;
 nstart = 0;
 coli = ploti;
 AXvec(nmax,1) = 0;
@@ -31,17 +32,15 @@ for n = n0:nmax
       xdata(n) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
-   lnthOptim = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
+   thOptimVec(n) = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
       xeval,Ainf,B0);
-   thetaOptim = exp(lnthOptim);
-   thOptimVec(n) = thetaOptim;
-   kernel = @(t,x) kernelth(t,x,lnthOptim);
+   kernel = @(t,x) kernelth(t,x,thOptimVec(n));
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,Ainf,B0);
    AXvec(n) = AX;
    BXvec(n) = BX;
-   [Appx, ~, ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
+   [Appx, AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    ErrBdVec(n) = ErrBd;
    trueErr(n) = max(abs(feval - Appx));
    errFudge = eps*cond(Kmat);
@@ -50,7 +49,7 @@ for n = n0:nmax
       if n == plotn(ploti)
          [h,legendLabel,coli,nstart] =  ...
             multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-            xdata,fdata,xeval,Appx,colorScheme);
+            xdata,fdata,xeval,Appx,colorScheme,NaN);
          ploti = ploti+1;
       end
    end
@@ -59,7 +58,7 @@ for n = n0:nmax
          if isDiagnose
             [h,legendLabel,coli,nstart] =  ...
                multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-               xdata,fdata,xeval,Appx,colorScheme);
+               xdata,fdata,xeval,Appx,colorScheme,abstol);
          end
       end
       nNeed(itol) = n;
