@@ -1,0 +1,9 @@
+\[ 
+ \begin{array}{rccccccc} 
+n &  15 &  20 &  32 \\ \hline 
+\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 \\ \hline 
+\errBd & 4.8\text{E}{-}2 & 2.0\text{E}{-}2 & 9.7\text{E}{-}3 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 1.0\text{E}{-}2 & 2.8\text{E}{-}3 & 6.4\text{E}{-}4 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% 
+\end{array} 
+ \]

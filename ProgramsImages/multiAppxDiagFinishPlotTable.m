@@ -1,23 +1,23 @@
 function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
-   coli,n,n0,ntol,nNeed,fname,kername,algname)
+   coli,n,ntol,nNeed,prm,algname)
 
    AlgSummaryData = [(1:n)' ErrBdVec trueErr InErrBars];
    xlabel('\(x\)')
    ylabel('\(f(x), \ f(x_i), \ \)APP\((\mathsf{X},\textbf{\textit{y}})\)')
-   legend(h(1:coli-1),legendLabel{1:coli-1},'location','south','orientation','vertical','box','off')
-   print('-depsc',[algname '_' fname '_' kername '.eps'])
-   whEBfails = find(AlgSummaryData(n0:n,2) < AlgSummaryData(n0:n,3));
+   legend(h(1:coli-1),legendLabel{1:coli-1},'location',prm.legendPos,'orientation','vertical','box','off')
+   print('-depsc',[algname '_' prm.fname '_' prm.kername '.eps'])
+   whEBfails = find(AlgSummaryData(prm.n0:n,2) < AlgSummaryData(prm.n0:n,3));
    disp(['Error bound fails ' int2str(length(whEBfails)) ' times'])
    disp('    for n = ')
-   disp(whEBfails+n0-1)
-   whEBPointfails = find(AlgSummaryData(n0:n,4) < 1);
+   disp(whEBfails+prm.n0-1)
+   whEBPointfails = find(AlgSummaryData(prm.n0:n,4) < 1);
    disp(['Pointwise error bound fails ' int2str(length(whEBPointfails)) ' times'])
    disp('    for n = ')
-   disp(whEBPointfails+n0-1)
-   fprintf(1,'\n\n\n')
+   disp(whEBPointfails+prm.n0-1)
+   fprintf(1,'\n')
 
-   fid = fopen([algname '_Out' fname '_' kername '.txt'],'w+');
+   fid = fopen([algname '_Out' prm.fname '_' prm.kername '.txt'],'w+');
    fprintf(fid,'\\[ \n \\begin{array}{rccccccc} \n');
    fprintf(fid,'n & ');
    fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));

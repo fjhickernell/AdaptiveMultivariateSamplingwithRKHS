@@ -10,44 +10,48 @@ ntol = size(abstolVec,1);
 theta = 1;
 
 f = @simpleFun;
-fname = 'SimpleFun';
+prm.fname = 'SimpleFun';
 kernel = @(t,x) MaternKernel(t,x,theta);
-kername = 'Matern';
+prm.kername = 'Matern';
 feval = f(xeval);
-colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
-nmax = 500;
-xdata(nmax,1) = 0;
-fdata(nmax,1) = 0;
-errKNull = 1;
+prm.colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
+prm.legendPos = 'south';
+prm.isDiagnose = true;
+prm.Ainf = Ainf;
+prm.B0 = B0;
+prm.n0 = 1;
+prm.nmax = 500;
+prm.whDes = 'uniform';
+prm.plotSites = false;
+
 
 figure %simple function
 plot(xeval,feval);
 xlabel('\(x\)')
 ylabel('\(f(x)\)');
-print('-depsc','SimpleFunPlot.eps')
+print('-depsc',[prm.fname 'Plot.eps'])
 
 %% Algorithm 1 Sample size is adaptive
 disp('Algorithm 1')
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-   AdaptAlgo1(f, kernel, xdata, fdata, xeval, feval, ...
-   abstolVec, Ainf, B0, true, colorScheme, fname, kername);
+   AdaptAlgo1(f, kernel, xeval, feval, abstolVec, prm);
 disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
+fprintf(1,'\n\n')
 
 %% Algorithm 2 Sample location is adaptive
 disp('Algorithm 2')
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-   AdaptAlgo2(f, kernel, xdata, fdata, xeval, feval, ...
-   abstolVec, Ainf, B0, true, colorScheme, fname, kername);
+   AdaptAlgo2(f, kernel, xeval, feval, abstolVec, prm);
 disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
+fprintf(1,'\n\n')
 
 %% Algorithm 3 Sample location and kernel are adaptive
 disp('Algorithm 3')
 kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
-n0 = 3;
-thetaRange = (-5:0.5:5)';
+prm.n0 = 3;
+prm.thetaRange = (-5:0.5:5)';
+prm.whobj = 'EmpBayesAx';
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
-   AdaptAlgo3(f, kernelth, xdata, fdata, xeval, feval, ...
-   abstolVec, Ainf, B0, n0, thetaRange, ...
-   true, colorScheme, fname, kername);
-
+   AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
+fprintf(1,'\n\n')
    

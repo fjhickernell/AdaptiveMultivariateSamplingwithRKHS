@@ -1,37 +1,35 @@
 %% Algorithm 1 Sample size is adaptive
 function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-   AdaptAlgo1(f,kernel,xdata,fdata,xeval,feval, ...
-   abstolVec,Ainf,B0,isDiagnose,colorScheme,fname,kername)
-if nargin < 10, isDiagnose = false; end
-nmax = 500;
+   AdaptAlgo1(f, kernel, xeval, feval, abstolVec, prm)
+xdata(prm.nmax,1) = 0;
+fdata(prm.nmax,1) = 0;
 ntol = size(abstolVec,1);
 neval = size(xeval,1);
-n0 = 1;
-plotn = [0 1 3 nmax];
-if isDiagnose
+plotn = [0 1 3 prm.nmax];
+if prm.isDiagnose
    [h,ploti,legendLabel] =  ...
-      multiAppxDiagPrelim(plotn,ntol,xeval,feval,colorScheme);
+      multiAppxDiagPrelim(plotn,ntol,xeval,feval,prm);
+   coli = ploti;
 end
 itol = 1;
 abstol = abstolVec(itol);
 nNeed(ntol,1) = 0;
-ErrBdVec(nmax,1) = 0;
-trueErr(nmax,1) = 0;
-InErrBars(nmax,1) = 0;
-AppxNorm(nmax,1) = 0;
+ErrBdVec(prm.nmax,1) = 0;
+trueErr(prm.nmax,1) = 0;
+InErrBars(prm.nmax,1) = 0;
+AppxNorm(prm.nmax,1) = 0;
 nstart = 0;
-coli = ploti;
-AXvec(nmax,1) = 0;
-minNormf(nmax,1) = 0;
-maxNormf = inf(nmax,1);
-NeccFlag(nmax,1) = 0;
-for n = 1:nmax
+AXvec(prm.nmax,1) = 0;
+minNormf(prm.nmax,1) = 0;
+maxNormf = inf(prm.nmax,1);
+NeccFlag(prm.nmax,1) = 0;
+for n = 1:prm.nmax
    gail.print_iterations(n,'n',true)
    xdata(n) = seqFixedDes(n);
    fdata(n) = f(xdata(n));
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-   AX = ABfun(errKX,errKNull,Ainf,B0);
+   AX = ABfun(errKX,errKNull,prm.Ainf,prm.B0);
    AXvec(n) = AX;
    [Appx, AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    minNormf(n+1) = max(minNormf(n),AppxNorm(n));
@@ -45,20 +43,23 @@ for n = 1:nmax
    trueErr(n) = max(abs(feval - Appx));
    errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
-   if isDiagnose
+   if prm.isDiagnose
       if n == plotn(ploti)
          [h,legendLabel,coli,nstart] =  ...
             multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-            xdata,fdata,xeval,Appx,colorScheme,NaN);
+            xdata,fdata,xeval,Appx,prm,NaN);
          ploti = ploti+1;
       end
    end
    if ErrBd < abstol
       if abstol >= 0.01
-         if isDiagnose
+         if prm.isDiagnose
             [h,legendLabel,coli,nstart] =  ...
                multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-               xdata,fdata,xeval,Appx,colorScheme,abstol);
+               xdata,fdata,xeval,Appx,prm,abstol);
+            if prm.plotSites
+               plot(xdata(1:n),zeros(n,1),'k.')
+            end
          end
       end
       nNeed(itol) = n;
@@ -75,8 +76,8 @@ AppxNorm = AppxNorm(1:n);
 NeccFlag = NeccFlag(2:n+1);
 
 
-if isDiagnose
+if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
       (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
-      coli,n,n0,ntol,nNeed,fname,kername,'Alg1');
+      coli,n,ntol,nNeed,prm,'Alg1');
 end

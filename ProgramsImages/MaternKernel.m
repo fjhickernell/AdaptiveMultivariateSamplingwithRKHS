@@ -35,9 +35,8 @@ function [kerval,kdiageval,errKNull,theta] = ...
       tmpl = reshape(sum((reshape(t,[nt,1,d]) + reshape(x,[1,nx,d]))...
          .* reshape(thetab,[1 1 dd]),3),[nt,nx]);
       kerval = exp(tmpl).*(1 + normtmx) .*  exp(-normtmx); 
-      kdiageval = exp(x*(2*thetab'));
       if nargout > 1
-         kdiageval = ones(size(x,1),1);
+         kdiageval = exp(sum(x.*(2*thetab),2));
          errKNull = max(kdiageval);
       end
    end
