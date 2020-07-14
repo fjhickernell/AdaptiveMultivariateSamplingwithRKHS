@@ -9,20 +9,35 @@ ntol = size(abstolVec,1);
 theta = 1;
 
 f = @(x) exp(-6*x).*sin(8*x+0.1) - 0.1;
+fname = 'LeftPeakFun';
+kernel = @(t,x) MaternKernel(t,x,theta);
+kername = 'Matern';
 feval = f(xeval);
 colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon;];
+legendPos = 'northeast';
 nmax = 500;
 xdata(nmax,1) = 0;
 fdata(nmax,1) = 0;
-errKNull = 1;
 
 figure %Univariate function
 plot(xeval,feval);
 xlabel('\(x\)')
 ylabel('\(f(x)\)');
-print('-depsc','UniFunPlot.eps')
+print('-depsc',[fname 'Plot.eps'])
 
 %% Algorithm 3 Sample location and kernel are adaptive
+disp('Algorithm 3')
+kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
+n0 = 3;
+thetaRange = (-5:0.5:5)';
+[Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
+   AdaptAlgo3(f, kernelth, xdata, fdata, xeval, feval, ...
+   abstolVec, Ainf, B0, n0, thetaRange, ...
+   true, colorScheme, fname, kername, legendPos);
+fprintf(1,'\n\n')
+return
+
+
 n0 = 3;
 plotn = [0 n0 nmax];
 ploti = 2;

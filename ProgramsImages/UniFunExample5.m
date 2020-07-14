@@ -17,8 +17,10 @@ fdata(nmax,1) = 0;
 errKNull = 1;
 d = 1;
 
+whobj = 'EmpBayes';
+
 %% Algorithm 3 Sample location and kernel are adaptive
-n0 = 5;
+n0 = 10;
 plotn = [0 n0 nmax];
 ploti = 2;
 h(ntol+length(plotn)+1,1) = 0; 
@@ -57,8 +59,8 @@ for n = n0:20
       fdata(n) = f(xdata(n));
    end
    lnthOptim = selectTheta(thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
-      xeval,errKNull,Ainf,B0);
-   thetaOptim = invTranTh(lnthOptim);
+      xeval,Ainf,B0,whobj);
+   thetaOptim = invTranTh(lnthOptim)
    thOptimVec(n,:) = thetaOptim;
    kernel = @(t,x) MaternKernel(t,x,thetaOptim);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n,:), xeval, kernel);
