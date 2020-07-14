@@ -460,7 +460,8 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	\begin{equation}
 	f: x \mapsto 2 [\exp(-6(x-1/2)^2)- 0.6], \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = B_0 = 0.2$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.  the bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances with
+	$n_0 = 1$.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = 1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.  the bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
 	\input{ProgramsImages/Alg1_OutSimpleFun_Matern.txt}
 	
