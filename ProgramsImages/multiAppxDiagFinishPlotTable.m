@@ -34,4 +34,5 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(fid,'\\text{Ptwise Error Bound} & ');
    fprintf(fid,'%3.0f\\%% & ',100*InErrBars(nNeed(1:ntol-1)));
    fprintf(fid,'%3.0f\\%% \n', 100*InErrBars(nNeed(ntol)));
-   fprintf(fid,'\\end{array} \n \\]');end
+   fprintf(fid,'\\end{array} \n \\]');
+end
