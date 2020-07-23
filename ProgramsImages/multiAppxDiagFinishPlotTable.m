@@ -18,20 +18,22 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(1,'\n')
 
    fid = fopen([algname '_Out' prm.fname '_' prm.kername '.txt'],'w+');
-   fprintf(fid,'\\[ \n \\begin{array}{rccccccc} \n');
-   fprintf(fid,'n & ');
+   fprintf(fid,'\\[ \n \\begin{array}{lrccccccc} \n');
+   fprintf(fid,['A_\\infty = ' cleanStringFJH(sprintf('%2.2f',prm.Ainf))]); 
+   fprintf(fid,'& n & ');
    fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));
    fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntol));
-   fprintf(fid,'\\varepsilon & ');
+   fprintf(fid,['B_0 = ' cleanStringFJH(sprintf('%2.2g',prm.B0))]);
+   fprintf(fid,'& \\varepsilon & ');
    fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',abstolVec(1:ntol-1))));
    fprintf(fid,[cleanStringFJH(sprintf('%3.1E', abstolVec(ntol))) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\errBd & ');
+   fprintf(fid,'\\multicolumn{2}{r}{\\errBd} & ');
    fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',ErrBdVec(nNeed(1:ntol-1)))));
    fprintf(fid,[cleanStringFJH(sprintf('%3.1E', ErrBdVec(nNeed(ntol)))) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\norm[\\infty]{f - \\APP(\\mX,\\by)} & ');
+   fprintf(fid,'\\multicolumn{2}{r}{\\norm[\\infty]{f - \\APP(\\mX,\\by)}} & ');
    fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',trueErr(nNeed(1:ntol-1)))));
    fprintf(fid,[cleanStringFJH(sprintf('%3.1E',trueErr(nNeed(ntol)) )) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\text{Ptwise Error Bound} & ');
+   fprintf(fid,'\\multicolumn{2}{r}{\\text{Ptwise Error Bound}} & ');
    fprintf(fid,'%3.0f\\%% & ',100*InErrBars(nNeed(1:ntol-1)));
    fprintf(fid,'%3.0f\\%% \n', 100*InErrBars(nNeed(ntol)));
    fprintf(fid,'\\end{array} \n \\]');
