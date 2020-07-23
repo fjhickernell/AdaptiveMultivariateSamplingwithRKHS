@@ -1,0 +1,315 @@
+\documentclass[]{mcom-l}
+
+
+\usepackage{latexsym,amsfonts,amsmath,amssymb,amsthm,epsfig,extdash,multirow}
+\usepackage{stackrel,tabularx,mathtools,enumitem,longtable,xspace}
+\usepackage[dvipsnames]{xcolor}
+%\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref,accents, booktabs}
+\usepackage{algorithm, algorithmicx}
+\usepackage{anyfontsize}
+\usepackage{cleveref}
+\usepackage{wrapfig}
+\usepackage[font=small,labelfont=bf]{caption}
+
+\usepackage{algpseudocode}
+\usepackage{algorithm, algorithmicx}
+\algnewcommand\algorithmicparam{\textbf{Parameters:}}
+\algnewcommand\PARAM{\item[\algorithmicparam]}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\RETURN{\State \textbf{Return }}
+\usepackage{algpseudocode}
+
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{remark}
+\newtheorem{example}{Example}
+%%list of acronyms with links
+\newcommand{\QMCSoft}{QMCSoft\xspace}
+\newcommand{\GAIL}{GAIL\xspace}
+\newcommand{\QMC}{QMC\xspace}
+\newcommand{\IIDMC}{IID MC\xspace}
+\newcommand{\SAMSIQMC}{SAMSI-QMC\xspace}
+\newcommand{\SciPy}{SciPy\xspace}
+\newcommand{\GSL}{GSL\xspace}
+\newcommand{\NAG}{NAG\xspace}
+\newcommand{\MATLAB}{MATLAB\xspace}
+\newcommand{\Chebfun}{Chebfun\xspace}
+\newcommand{\Rlang}{R\xspace}
+\newcommand{\Julia}{Julia\xspace}
+
+
+%\textwidth6.5in
+%\setlength{\oddsidemargin}{0in}
+%\setlength{\evensidemargin}{0in}
+%\textheight9.0in
+%\textheight9.1in
+
+
+
+\providecommand{\FJHickernell}{Hickernell}
+\newcommand{\hf}{\widehat{f}}
+\newcommand{\hg}{\widehat{g}}
+\newcommand{\hI}{\hat{I}}
+\newcommand{\hatf}{\hat{f}}
+\newcommand{\hatg}{\hat{g}}
+\newcommand{\tf}{\widetilde{f}}
+\newcommand{\tbf}{\tilde{\bff}}
+\newcommand{\vBall}{\text{vBall}_n}
+\newcommand{\vEll}{\text{vEll}}
+
+% Math operators
+\DeclareMathOperator{\GP}{\mathcal{G} \! \mathcal{P}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\ALG}{ALG}
+\DeclareMathOperator{\ACQ}{ACQ}
+\DeclareMathOperator{\ERR}{ERR}
+\DeclareMathOperator{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\errP}{ERRP}
+\DeclareMathOperator{\errK}{ERRK}
+\DeclareMathOperator{\errBd}{ERRBD}
+\DeclareMathOperator{\APP}{APP}
+\DeclareMathOperator{\Ex}{\mathbb{E}}
+\newcommand{\TREND}{\textup{T}}
+\newcommand{\VAR}{\textup{V}}
+\newcommand{\LS}{\textup{LS}}
+
+\newcommand{\NT}{{N_{\mT}}}
+\newcommand{\Ntheta}{{N_{\btheta}}}
+
+
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\naturals}{{\mathbb{N}}}
+\newcommand{\natzero}{{\mathbb{N}_0}}
+\newcommand{\integers}{{\mathbb{Z}}}
+\def\expect{{\mathbb{E}}}
+\def\il{\left \langle}
+\def\ir{\right \rangle}
+\def\e{\varepsilon}
+\def\g{\gamma}
+\def\l{\lambda}
+\def\b{\beta}
+\def\a{\alpha}
+\def\lall{\Lambda^{{\rm all}}}
+\def\lstd{\Lambda^{{\rm std}}}
+
+\newcommand{\vf}{\boldsymbol{f}}
+\newcommand{\hV}{\widehat{V}}
+\newcommand{\tV}{\widetilde{V}}
+\newcommand{\fraku}{\mathfrak{u}}
+\newcommand{\hcut}{\mathfrak{h}}
+\newcommand{\tOmega}{\widetilde{\Omega}}
+\newcommand{\tvarrho}{\widetilde{\varrho}}
+
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\tQ}{\widetilde{Q}}
+\newcommand{\mA}{\mathsf{A}}
+\newcommand{\mB}{\mathsf{B}}
+\newcommand{\mC}{\mathsf{C}}
+\newcommand{\mD}{\mathsf{D}}
+\newcommand{\mG}{\mathsf{G}}
+\newcommand{\mH}{\mathsf{H}}
+\newcommand{\mI}{\mathsf{I}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\mK}{\mathsf{K}}
+\newcommand{\tmK}{\widetilde{\mathsf{K}}}
+\newcommand{\mL}{\mathsf{L}}
+\newcommand{\mM}{\mathsf{M}}
+\newcommand{\mP}{\mathsf{P}}
+\newcommand{\mQ}{\mathsf{Q}}
+\newcommand{\mR}{\mathsf{R}}
+\newcommand{\mT}{\mathsf{T}}
+\newcommand{\mU}{\mathsf{U}}
+\newcommand{\mX}{\mathsf{X}}
+\newcommand{\mZero}{\mathsf{0}}
+\newcommand{\mPhi}{\mathsf{\Phi}}
+\newcommand{\mPsi}{\mathsf{\Psi}}
+\newcommand{\mLambda}{\mathsf{\Lambda}}
+\newcommand{\cube}{[0,1]^d}
+\newcommand{\design}{\{\bx_i\}_{i=1}^n}
+
+
+
+
+\newcommand{\bone}{\boldsymbol{1}}
+\newcommand{\bzero}{\boldsymbol{0}}
+\newcommand{\binf}{\boldsymbol{\infty}}
+\newcommand{\ba}{{\boldsymbol{a}}}
+\newcommand{\bb}{{\boldsymbol{b}}}
+\newcommand{\bc}{{\boldsymbol{c}}}
+\newcommand{\bd}{{\boldsymbol{d}}}
+\newcommand{\be}{{\boldsymbol{e}}}
+\newcommand{\bff}{{\boldsymbol{f}}}
+\newcommand{\bhh}{{\boldsymbol{h}}}
+\newcommand{\beps}{{\boldsymbol{\varepsilon}}}
+\newcommand{\tbeps}{\tilde{\beps}}
+\newcommand{\bx}{{\boldsymbol{x}}}
+\newcommand{\bX}{{\boldsymbol{X}}}
+\newcommand{\bh}{{\boldsymbol{h}}}
+\newcommand{\bj}{{\boldsymbol{j}}}
+\newcommand{\bk}{{\boldsymbol{k}}}
+\newcommand{\vell}{{\boldsymbol{\ell}}}
+\newcommand{\bL}{{\boldsymbol{L}}}
+\newcommand{\bg}{{\boldsymbol{g}}}
+\newcommand{\bn}{{\boldsymbol{n}}}
+\newcommand{\bp}{{\boldsymbol{p}}}
+\newcommand{\bP}{{\boldsymbol{P}}}
+\newcommand{\br}{{\boldsymbol{r}}}
+\newcommand{\bv}{{\boldsymbol{v}}}
+\newcommand{\bu}{{\boldsymbol{u}}}
+\newcommand{\by}{{\boldsymbol{y}}}
+\newcommand{\bt}{{\boldsymbol{t}}}
+\newcommand{\bU}{{\boldsymbol{U}}}
+\newcommand{\bz}{{\boldsymbol{z}}}
+\newcommand{\bvarphi}{{\boldsymbol{\varphi}}}
+\newcommand{\bgamma}{{\boldsymbol{\gamma}}}
+\newcommand{\bdelta}{{\boldsymbol{\delta}}}
+\newcommand{\bDelta}{{\boldsymbol{\Delta}}}
+\newcommand{\bphi}{{\boldsymbol{\phi}}}
+\newcommand{\bpsi}{{\boldsymbol{\psi}}}
+\newcommand{\btheta}{{\boldsymbol{\theta}}}
+\newcommand{\bnu}{{\boldsymbol{\nu}}}
+\newcommand{\balpha}{{\boldsymbol{\alpha}}}
+\newcommand{\bbeta}{{\boldsymbol{\beta}}}
+\newcommand{\bo}{{\boldsymbol{\omega}}}  %GF added
+\newcommand{\newton}[2]{\left(\begin{array}{c} #1\\ #2\end{array}\right)}
+\newcommand{\anor}[2]{\| #1\|_{\mu_{#2}}}
+\newcommand{\satop}[2]{\stackrel{\scriptstyle{#1}}{\scriptstyle{#2}}}
+\newcommand{\setu}{{\mathfrak{u}}}
+
+\newcommand{\me}{\textup{e}}
+\newcommand{\mi}{\textup{i}}
+\def\d{\textup{d}}
+\def\dif{\textup{d}}
+\newcommand{\cc}{\mathcal{C}}
+\newcommand{\cb}{\mathcal{B}}
+\newcommand{\cl}{L}
+\newcommand{\ct}{\mathfrak{T}}
+\newcommand{\cx}{{\Omega}}
+\newcommand{\cala}{{\mathcal{A}}}
+\newcommand{\calc}{{\mathcal{C}}}
+\newcommand{\calf}{{\mathcal{F}}}
+\newcommand{\calfd}{{\calf_d}}
+\newcommand{\calh}{{\mathcal{H}}}
+\newcommand{\tcalh}{{\widetilde{\calh}}}
+\newcommand{\calI}{{\mathcal{I}}}
+\newcommand{\calhk}{\calh_d(K)}
+\newcommand{\calg}{{\mathcal{G}}}
+\newcommand{\calgd}{{\calg_d}}
+\newcommand{\caln}{{\mathcal{N}}}
+\newcommand{\calp}{{\mathcal{P}}}
+\newcommand{\cals}{{\mathcal{S}}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\hS}{\widehat{S}}
+
+\def\abs#1{\ensuremath{\left \lvert #1 \right \rvert}}
+\newcommand{\bigabs}[1]{\ensuremath{\bigl \lvert #1 \bigr \rvert}}
+\newcommand{\norm}[2][{}]{\ensuremath{\left \lVert #2 \right \rVert}_{#1}}
+\newcommand{\ip}[3][{}]{\ensuremath{\left \langle #2, #3 \right \rangle_{#1}}}
+\newcommand{\bignorm}[2][{}]{\ensuremath{\bigl \lVert #2 \bigr \rVert}_{#1}}
+\newcommand{\Bignorm}[2][{}]{\ensuremath{\Bigl \lVert #2 \Bigr \rVert}_{#1}}
+\newcommand{\calm}{{\mathfrak{M}}}
+
+\newcommand{\des}{\{\bx_i\}}
+\newcommand{\desinf}{\{\bx_i\}_{i=1}^{\infty}}
+\newcommand{\desn}{\{\bx_i\}_{i=1}^n}
+\newcommand{\wts}{\{g_i\}_{i=1}^N}
+\newcommand{\wtsn}{\{g_i\}_{i=1}^N}
+\newcommand{\datan}{\{y_i\}_{i=1}^N}
+
+%FJH added
+\newcommand{\Order}{\mathcal{O}}
+\newcommand{\ch}{\mathcal{H}}
+\newcommand{\tch}{{\widetilde{\ch}}}
+\newcommand{\veps}{\boldsymbol{\varepsilon}}
+\DeclareMathOperator{\best}{best}
+\newcommand{\hmu}{\hat{\mu}}
+\newcommand{\hsigma}{\hat{\sigma}}
+\newcommand{\tK}{\widetilde{K}}
+%\newcommand{\Matlab}{{\sc Matlab}\xspace}
+\newcommand{\abstol}{\varepsilon_{\text{a}}}
+\newcommand{\reltol}{\varepsilon_{\text{r}}}
+
+\newcommand\starred[1]{\accentset{\star}{#1}}
+
+\newcommand{\designInf}{\{\bx_i\}_{i=1}^\infty}
+\newcommand{\dataN}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^n}
+\newcommand{\dataNp}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^{n'}}
+\newcommand{\dataNo}{\bigl\{\bigl(\bx_i,f(\bx_i)\bigr)\bigr\}_{i=1}^{n_0}}
+\newcommand{\ErrN}{\ERR\bigl(\dataN,n\bigr)}
+\newcommand{\fint}{f_{\text{int}}}
+\newcommand{\inflate}{\fC}
+\DeclareMathOperator{\spanV}{span}
+
+\newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
+\newcommand{\YuhanNote}[1]{{\color{magenta}Yuhan: #1}}
+
+\title[Adaptive Multivariate Function Approximation]{Adaptive Multivariate Function Approximation for Cones of Functions via Minimum Hilbert Space Norm Interpolants}
+\author{Yuhan Ding}
+
+\author{Fred J. Hickernell}
+\address{RE 220, Department of Applied Mathematics, Illinois Institute of Technology, Chicago, IL 60616}
+\email{hickernell@iit.edu}
+\date{\today}
+
+\begin{document}
+\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4.5cm]{ProgramsImages/LeftPeakFunPlot.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/RightPeakFunPlot.eps} \qquad		
+	\end{figure}
+	The following table shows the results of approximating left peak function by Algorithm 3 with different initial number points and the error bound 'EmpBayesAx'
+	\[
+ \begin{array}{rcccccc} 
+n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
+a & 1.9162\text{E}{}1 & 8.4014\text{E}{-}1 & 8.7316\text{E}{-}1 & 8.8463\text{E}{-}1 & 8.7919\text{E}{-}1  \\ \hline 
+b & 4.0249 & -3.1030 & -3.2097 & -3.2532 & -3.2774 \\ \hline 
+\text{Ptwise Error Bound Fails at} & 5,6 & 6 &  &  &  
+\end{array}
+\]
+
+We can obtain the following results with the error bound 'minErrBd'
+\[
+\begin{array}{rcccccc} 
+n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
+a & 1.8217\text{E}{-}3 &  2.1170  \text{E}{-}3 &  2.68026\text{E}{-}3 & 2.6555\text{E}{-}3 &  2.5049 \text{E}{-}3 \\ \hline 
+b & -4.9401\text{E}{-}5 & -1.4875\text{E}{-}4 & -3.2031\text{E}{-}4 &  -4.2018\text{E}{-}4 & -3.9624\text{E}{-}4 \\ \hline 
+\text{ Error Bound Fails at} & 5 & 6 &  &  &  \\ \hline 
+\text{Ptwise Error Bound Fails at} & 5 & 6 & 7 & 8 &  
+\end{array}
+\]
+
+	The following table shows the results of approximating right peak function by Algorithm 3 with different initial number points and the error bound 'EmpBayesAx'
+	\[
+ \begin{array}{rcccccc} 
+n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
+a & 6.6088   &  5.7605e  & 5.0878 & 4.4778    & 3.8886 \\ \hline 
+b &  3.4220 & 3.2113 & 3.07637 & 2.9828 & 2.9130 \\ \hline 
+\text{Ptwise Error Bound Fails at} &  &  &  &  &  
+\end{array}
+\]
+
+We can obtain the following results with the error bound 'minErrBd'
+\[
+\begin{array}{rcccccc} 
+n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
+a & 1.8217\text{E}{-}3 &  2.1170  \text{E}{-}3 &  2.68026\text{E}{-}3 & 2.6555\text{E}{-}3 &  2.5049 \text{E}{-}3 \\ \hline 
+b & -4.9401\text{E}{-}5 & -1.4875\text{E}{-}4 & -3.2031\text{E}{-}4 &  -4.2018\text{E}{-}4 & -3.9624\text{E}{-}4 \\ \hline 
+\text{ Error Bound Fails at} & 5 & 6 &  &  &  \\ \hline 
+\text{Ptwise Error Bound Fails at} & 5 & 6 & 7 & 8 &  
+\end{array}
+\]
+
+\end{document}
