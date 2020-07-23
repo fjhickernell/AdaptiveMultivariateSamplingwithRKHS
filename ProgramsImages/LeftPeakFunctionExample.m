@@ -45,8 +45,8 @@ fprintf(1,'\n\n')
 disp('Algorithm 3')
 prm.kername = 'SpatialMatern';
 kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
-prm.n0 = 5;
-[thaa,thbb] = meshgrid(-5:0.5:5,-5:0.5:1);
+prm.n0 = 10;
+[thaa,thbb] = meshgrid(-5:0.5:5,-5:0.5:5);
 prm.thetaRange  = [thaa(:) thbb(:)];
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
    AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
