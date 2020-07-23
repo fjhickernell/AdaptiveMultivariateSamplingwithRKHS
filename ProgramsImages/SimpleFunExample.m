@@ -21,7 +21,7 @@ prm.Ainf = Ainf;
 prm.B0 = B0;
 prm.n0 = 1;
 prm.nmax = 500;
-prm.whDes = 'uniform';
+prm.whDes = 'unif_grid';
 prm.plotSites = false;
 
 

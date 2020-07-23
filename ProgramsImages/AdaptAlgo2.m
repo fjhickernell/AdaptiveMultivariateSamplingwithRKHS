@@ -87,5 +87,5 @@ NeccFlag = NeccFlag(2:n+1);
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
       (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
-      coli,n,ntol,nNeed,prm,'Alg2');
+      coli,n,ntol,nNeed,prm,xeval,'Alg2');
 end

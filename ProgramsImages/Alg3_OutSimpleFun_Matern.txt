@@ -1,9 +1,10 @@
 \[ 
- \begin{array}{lrccccccc} 
-A_\infty = 0.50& n &  17 &  21 &  33 &  47 &  65 & 128 \\ \hline 
-B_0 = 0.05& \varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\multicolumn{2}{r}{\errBd} & 2.5\text{E}{-}2 & 1.9\text{E}{-}2 & 6.2\text{E}{-}3 & 4.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
-\multicolumn{2}{r}{\norm[\infty]{f - \APP(\mX,\by)}} & 6.1\text{E}{-}4 & 3.1\text{E}{-}4 & 3.4\text{E}{-}6 & 4.9\text{E}{-}5 & 1.6\text{E}{-}5 & 1.7\text{E}{-}5 \\ \hline 
-\multicolumn{2}{r}{\text{Ptwise Error Bound}} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+ \begin{array}{rccccccc} 
+\multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1))\qquad n_0 =  3} \\ \hline 
+n &  17 &  21 &  33 &  47 &  65 & 128 \\ \hline 
+\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
+\errBd & 2.5\text{E}{-}2 & 1.9\text{E}{-}2 & 6.2\text{E}{-}3 & 4.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 6.1\text{E}{-}4 & 3.1\text{E}{-}4 & 3.4\text{E}{-}6 & 4.9\text{E}{-}5 & 1.6\text{E}{-}5 & 1.7\text{E}{-}5 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]

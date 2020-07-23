@@ -1,10 +1,10 @@
 %% Algorithm 3 Sample location is adaptive
 function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, abstolVec, prm)
-xdata(prm.nmax,1) = 0;
-fdata(prm.nmax,1) = 0;
+[neval,d] = size(xeval);
+xdata(prm.nmax,d) = 0;
+fdata(prm.nmax,d) = 0;
 ntol = size(abstolVec,1);
-neval = size(xeval,1);
 plotn = [0 prm.n0 prm.nmax];
 if prm.isDiagnose
    [h,ploti,legendLabel] =  ...
@@ -26,9 +26,9 @@ thOptimVec(prm.nmax,dth) = 0;
 for n = prm.n0:prm.nmax
    gail.print_iterations(n,'n',true)
    if n == prm.n0
-      if strcmp(prm.whDes,'uniform') && n > 1
+      if strcmp(prm.whDes,'unif_grid') && n > 1 && d == 1
          xdata = (0:prm.n0-1)'/(prm.n0-1);
-      else %sequential
+      else %sequential, the default
          xdata(1:prm.n0) = seqFixedDes(1:prm.n0);
       end
       fdata(1:prm.n0) = f(xdata(1:prm.n0));
@@ -83,5 +83,5 @@ InErrBars = InErrBars(1:n);
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
       (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
-      coli,n,ntol,nNeed,prm,'Alg3');
+      coli,n,ntol,nNeed,prm,xeval,'Alg3');
 end
