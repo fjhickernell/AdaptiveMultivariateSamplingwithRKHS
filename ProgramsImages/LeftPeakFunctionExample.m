@@ -10,9 +10,6 @@ theta = 1;
 
 f = @(x) exp(-6*x).*sin(8*x+0.1) - 0.1;
 prm.fname = 'LeftPeakFun';
-kernel = @(t,x) MaternKernel(t,x,theta);
-prm.kername = 'Matern';
-feval = f(xeval);
 prm.colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
 prm.legendPos = 'northeast';
 prm.isDiagnose = true;
@@ -20,7 +17,15 @@ prm.Ainf = Ainf;
 prm.B0 = B0;
 prm.n0 = 1;
 prm.nmax = 500;
-prm.whDes = 'uniform';
+prm.theta = 1;
+prm.whDes = 'unif_grid';
+%prm.whDes = 'adapt_th';
+prm.plotSites = false;
+kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
+kernel = @(t,x) MaternKernel(t,x,prm.theta);
+prm.kername = 'Matern';
+feval = f(xeval);
+
 
 figure %Univariate function
 plot(xeval,feval);
@@ -31,7 +36,6 @@ print('-depsc',[prm.fname 'Plot.eps'])
 
 %% Algorithm 3 Sample location and kernel are adaptive
 disp('Algorithm 3')
-kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
 prm.n0 = 3;
 prm.thetaRange = (-5:0.5:5)';
 prm.whobj = 'EmpBayesAx';
@@ -44,8 +48,8 @@ fprintf(1,'\n\n')
 %% Algorithm 3 Sample location and kernel spatial dependence are adaptive
 disp('Algorithm 3')
 prm.kername = 'SpatialMatern';
-kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
 prm.n0 = 10;
+prm.theta = [1 0];
 [thaa,thbb] = meshgrid(-5:0.5:5,-5:0.5:5);
 prm.thetaRange  = [thaa(:) thbb(:)];
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...

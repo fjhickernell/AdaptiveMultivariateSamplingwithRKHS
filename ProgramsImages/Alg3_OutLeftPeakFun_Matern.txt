@@ -1,9 +1,0 @@
-\[ 
- \begin{array}{rccccccc} 
-n &  30 &  34 &  65 \\ \hline 
-\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 \\ \hline 
-\errBd & 4.8\text{E}{-}2 & 2.0\text{E}{-}2 & 6.8\text{E}{-}3 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 4.3\text{E}{-}3 & 4.3\text{E}{-}3 & 8.7\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% 
-\end{array} 
- \]

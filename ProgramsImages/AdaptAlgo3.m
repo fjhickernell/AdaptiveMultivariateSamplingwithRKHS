@@ -28,6 +28,14 @@ for n = prm.n0:prm.nmax
    if n == prm.n0
       if strcmp(prm.whDes,'unif_grid') && n > 1 && d == 1
          xdata = (0:prm.n0-1)'/(prm.n0-1);
+      elseif strcmp(prm.whDes,'adapt_th') && n > 1
+         kernel = @(t,x) kernelth(t,x,prm.theta);
+         xdata(1,:) = seqFixedDes(1);
+         for ii = 2:prm.n0
+            [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
+            [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
+            xdata(ii) = xeval(whKX);
+         end
       else %sequential, the default
          xdata(1:prm.n0) = seqFixedDes(1:prm.n0);
       end

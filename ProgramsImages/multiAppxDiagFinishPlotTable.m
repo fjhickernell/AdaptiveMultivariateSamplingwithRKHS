@@ -6,7 +6,7 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    xlabel('\(x\)')
    ylabel('\(f(x), \ f(x_i), \ \)APP\((\mathsf{X},\textbf{\textit{y}})\)')
    legend(h(1:coli-1),legendLabel{1:coli-1},'location',prm.legendPos,'orientation','vertical','box','off')
-   print('-depsc',[algname '_' prm.fname '_' prm.kername '.eps'])
+   print('-depsc',[algname '_' prm.fname '_' prm.kername '_' prm.whDes '.eps'])
    whEBfails = find(AlgSummaryData(prm.n0:n,2) < AlgSummaryData(prm.n0:n,3));
    disp(['Error bound fails ' int2str(length(whEBfails)) ' times'])
    disp('    for n = ')
@@ -17,7 +17,7 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    disp(whEBPointfails+prm.n0-1)
    fprintf(1,'\n')
 
-   fid = fopen([algname '_Out' prm.fname '_' prm.kername '.txt'],'w+');
+   fid = fopen([algname '_Out' prm.fname '_' prm.kername '_' prm.whDes '.txt'],'w+');
    fprintf(fid,'\\[ \n \\begin{array}{rccccccc} \n');
    fprintf(fid,['\\multicolumn{7}{l}{A_\\infty = ' cleanStringFJH(sprintf('%2.2f',prm.Ainf))]); 
    fprintf(fid,['\\qquad B_0 = ' cleanStringFJH(sprintf('%2.2g',prm.B0))]);
