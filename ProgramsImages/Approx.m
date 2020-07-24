@@ -6,4 +6,3 @@ fluctNorm = sqrt(abs(y'*c));
 ErrBdx = AX*errKXx*fluctNorm;
 ErrBdx(isnan(ErrBdx))=0;
 ErrBd = AX*errKX*fluctNorm;
-
