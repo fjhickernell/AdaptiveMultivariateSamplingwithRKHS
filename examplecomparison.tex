@@ -268,7 +268,7 @@
 \begin{figure}[H]
 		\centering
 		\includegraphics[height = 4.5cm]{ProgramsImages/LeftPeakFunPlot.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/RightPeakFunPlot.eps} \qquad		
+		\includegraphics[height = 4.5cm]{ProgramsImages/RightPeakFunPlot.eps} 	
 	\end{figure}
 	The following table shows the results of approximating left peak function by Algorithm 3 with different initial number points and the error bound 'EmpBayesAx'
 	\[
@@ -290,26 +290,37 @@ b & -4.9401\text{E}{-}5 & -1.4875\text{E}{-}4 & -3.2031\text{E}{-}4 &  -4.2018\t
 \text{Ptwise Error Bound Fails at} & 5 & 6 & 7 & 8 &  
 \end{array}
 \]
+\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_5_EmpBayesAx.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_5_minErrBd.eps} \qquad		
+	\end{figure}
 
 	The following table shows the results of approximating right peak function by Algorithm 3 with different initial number points and the error bound 'EmpBayesAx'
 	\[
  \begin{array}{rcccccc} 
 n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
-a & 6.6088   &  5.7605e  & 5.0878 & 4.4778    & 3.8886 \\ \hline 
+a & 6.6088   &  5.7605  & 5.0878 & 4.4778    & 3.8886 \\ \hline 
 b &  3.4220 & 3.2113 & 3.07637 & 2.9828 & 2.9130 \\ \hline 
 \text{Ptwise Error Bound Fails at} &  &  &  &  &  
 \end{array}
 \]
 
+
 We can obtain the following results with the error bound 'minErrBd'
 \[
 \begin{array}{rcccccc} 
 n_0 &  5 &  6 &  7 & 8 & 9 \\ \hline
-a & 1.8217\text{E}{-}3 &  2.1170  \text{E}{-}3 &  2.68026\text{E}{-}3 & 2.6555\text{E}{-}3 &  2.5049 \text{E}{-}3 \\ \hline 
-b & -4.9401\text{E}{-}5 & -1.4875\text{E}{-}4 & -3.2031\text{E}{-}4 &  -4.2018\text{E}{-}4 & -3.9624\text{E}{-}4 \\ \hline 
-\text{ Error Bound Fails at} & 5 & 6 &  &  &  \\ \hline 
-\text{Ptwise Error Bound Fails at} & 5 & 6 & 7 & 8 &  
+a & 1.0333\text{E}{-}3 & 1.1449\text{E}{-}3 &  1.8616\text{E}{-}3 &  2.4689\text{E}{-}3 &   2.5392\text{E}{-}3 \\ \hline 
+b & 2.1875\text{E}{-}4 & 5.1660\text{E}{-}4 & 7.9810\text{E}{-}1 &  1.1235 &  1.2639 \\ \hline 
+\text{ Error Bound Fails at} & 29-31 & 6 &  &  &  \\ \hline 
+\text{Ptwise Error Bound Fails at} & 16-31 & 24-32 & 37-38 & &  
 \end{array}
 \]
+\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_RightPeakFun_SpatialMatern_8_EmpBayesAx.eps} \qquad
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_RightPeakFun_SpatialMatern_8_minErrBd.eps} \qquad		
+	\end{figure}
 
 \end{document}
