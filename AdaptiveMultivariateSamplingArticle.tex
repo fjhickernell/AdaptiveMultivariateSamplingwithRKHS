@@ -463,7 +463,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances with
 	$n_0 = 1$.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = 1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.  the bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
-	\input{ProgramsImages/Alg1_OutSimpleFun_Matern_adapt_th.txt}
+	\input{ProgramsImages/Alg1_Out_SimpleFun_Matern_adapt_th.txt}
 	
 	
 	\begin{figure}[H]
@@ -545,7 +545,7 @@ Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \r
 Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an initial data site of $x_1=1/3$.
 Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
-		\input{ProgramsImages/Alg2_OutSimpleFun_Matern_adapt_th.txt}
+		\input{ProgramsImages/Alg2_Out_SimpleFun_Matern_adapt_th.txt}
 	
 	
 	\begin{figure}[H]
@@ -702,7 +702,7 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	\label{ex:adpdatachooseth}
 	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Mat'ern kernel \eqref{eq:MaternTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
 		
-	\input{ProgramsImages/Alg3_OutSimpleFun_Matern_adapt_th.txt}
+	\input{ProgramsImages/Alg3_Out_SimpleFun_Matern_adapt_th.txt}
 	
 	
 	\begin{figure}[H]
@@ -763,7 +763,7 @@ To illustrate it is still a space-filling design,  we consider the following uni
 
 
 		
-	\input{ProgramsImages/Alg3_OutLeftPeakFun_Matern_adapt_th.txt}
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_Matern_adapt_th.txt}
 
 \end{example}
 
@@ -798,7 +798,7 @@ Now the kernel is strongly dependent on $\by$
 	\end{figure}
 
 		
-	\input{ProgramsImages/Alg3_OutLeftPeakFun_SpatialMatern_adapt_th.txt}
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_SpatialMatern_adapt_th.txt}
 
 
 \end{example}

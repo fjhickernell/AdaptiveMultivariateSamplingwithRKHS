@@ -17,12 +17,12 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    disp(whEBPointfails+prm.n0-1)
    fprintf(1,'\n')
 
-   fid = fopen([algname '_Out' prm.fname '_' prm.kername '_' prm.whDes '.txt'],'w+');
+   fid = fopen([algname '_Out_' prm.fname '_' prm.kername '_' prm.whDes '.txt'],'w+');
    fprintf(fid,'\\[ \n \\begin{array}{rccccccc} \n');
    fprintf(fid,['\\multicolumn{7}{l}{A_\\infty = ' cleanStringFJH(sprintf('%2.2f',prm.Ainf))]); 
    fprintf(fid,['\\qquad B_0 = ' cleanStringFJH(sprintf('%2.2g',prm.B0))]);
    fprintf(fid,['\\qquad \\mT = (' cleanStringFJH(sprintf('%2.2g, %2.2g,',xeval(1:2)))]);
-   fprintf(fid,['\\ldots, ' cleanStringFJH(sprintf('%2.2g)',xeval(end))) ')']);
+   fprintf(fid,['\\ldots, ' cleanStringFJH(sprintf('%2.2g)',xeval(end)))]);
    if any(strcmp(algname,{'Alg2','Alg3'}))
       fprintf(fid,['\\qquad n_0 = ' cleanStringFJH(sprintf('%2.0f',prm.n0))]);
    end
