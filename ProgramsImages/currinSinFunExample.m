@@ -7,13 +7,9 @@ warning('off')
 [~,~,xeval,neval,Ainf,B0] = StdParam;
 abstolVec = [0.05 0.02 0.01 0.005]';
 ntol = size(abstolVec,1);
-theta = 1;
 
 f = @(x) sin(2*pi*(x-0.1));
 prm.fname = 'CurrinSineFun';
-kernel = @(t,x) MaternKernel(t,x,theta);
-prm.kername = 'Matern';
-feval = f(xeval);
 prm.colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
 prm.legendPos = 'south';
 prm.isDiagnose = true;
@@ -21,15 +17,24 @@ prm.Ainf = Ainf;
 prm.B0 = B0;
 prm.n0 = 1;
 prm.nmax = 500;
-prm.whDes = 'uniform';
+prm.theta = 1;
+%prm.whDes = 'unif_grid';
+prm.whDes = 'adapt_th';
 prm.whobj = 'EmpBayesAx';
 prm.plotSites = false;
+prm.xLim = [0;1];
+prm.yLim = [-2;2];
+kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
+kernel = @(t,x) MaternKernel(t,x,prm.theta);
+prm.kername = 'Matern';
+feval = f(xeval);
 
 
 figure %simple function
 plot(xeval,feval);
 xlabel('\(x\)')
 ylabel('\(f(x)\)');
+axis([prm.xLim', prm.yLim'])
 print('-depsc',[prm.fname 'Plot.eps'])
 
 %% Algorithm 1 Sample size is adaptive
@@ -48,8 +53,7 @@ fprintf(1,'\n\n')
 
 %% Algorithm 3 Sample location and kernel are adaptive
 disp('Algorithm 3')
-kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
-prm.n0 = 3;
+prm.n0 = 5;
 prm.thetaRange = (-5:0.5:5)';
 prm.whobj = 'EmpBayesAx';
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...

@@ -1,5 +1,5 @@
 %% Algorithm 3 Sample location is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, abstolVec, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
@@ -87,6 +87,7 @@ fprintf('\n')
 ErrBdVec = ErrBdVec(1:n);
 trueErr = trueErr(1:n);
 InErrBars = InErrBars(1:n);
+prm.final_theta = thOptim;
 
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...

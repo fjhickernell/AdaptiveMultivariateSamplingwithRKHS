@@ -20,7 +20,10 @@ prm.nmax = 500;
 prm.theta = 1;
 %prm.whDes = 'unif_grid';
 prm.whDes = 'adapt_th';
+prm.whobj = 'EmpBayesAx';
 prm.plotSites = false;
+prm.xLim = [0;1];
+prm.yLim = [-1;1];
 kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
 kernel = @(t,x) MaternKernel(t,x,prm.theta);
 prm.kername = 'Matern';
@@ -29,6 +32,7 @@ feval = f(xeval);
 
 figure %simple function
 plot(xeval,feval);
+axis([prm.xLim', prm.yLim'])
 xlabel('\(x\)')
 ylabel('\(f(x)\)');
 print('-depsc',[prm.fname 'Plot.eps'])
@@ -49,7 +53,7 @@ fprintf(1,'\n\n')
 
 %% Algorithm 3 Sample location and kernel are adaptive
 disp('Algorithm 3')
-prm.n0 = 3;
+prm.n0 = 5;
 prm.thetaRange = (-5:0.5:5)';
 prm.whobj = 'EmpBayesAx';
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
