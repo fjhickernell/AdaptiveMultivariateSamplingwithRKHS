@@ -5,7 +5,7 @@ format short e
 warning('off')
 
 [~,~,xeval,neval,Ainf,B0] = StdParam;
-abstolVec = [0.05 0.02 0.01 0.005]';
+abstolVec = [0.05 0.02 0.01 0.005 0.002 0.001]';
 ntol = size(abstolVec,1);
 
 f = @(x) sin(2*pi*(x-0.1));
@@ -55,8 +55,25 @@ fprintf(1,'\n\n')
 disp('Algorithm 3')
 prm.n0 = 5;
 prm.thetaRange = (-5:0.5:5)';
-prm.whobj = 'EmpBayesAx';
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
    AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
 fprintf(1,'\n\n')
+
+%% Algorithm 3 Sample location and kernel are adaptive
+scale = 0.1;
+f = @(x) sin(2*pi*scale*(x-0.1));
+prm.fname = 'FlatCurrinSineFun';
+feval = f(xeval); %redo the function values
+disp(['Algorithm 3' prn.fname])
+[Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
+   AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
+fprintf(1,'\n\n')
+
+%% Algorithm 2 Sample location is adaptive
+disp('Algorithm 2')
+[Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
+   AdaptAlgo2(f, kernel, xeval, feval, abstolVec, prm);
+disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
+fprintf(1,'\n\n')
+
    

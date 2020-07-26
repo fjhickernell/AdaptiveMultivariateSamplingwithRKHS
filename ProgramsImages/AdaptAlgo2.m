@@ -82,7 +82,7 @@ fprintf('\n')
 ErrBdVec = ErrBdVec(1:n);
 trueErr = trueErr(1:n);
 InErrBars = InErrBars(1:n);
-NeccFlag = NeccFlag(2:n+1);
+NeccFlag = NeccFlag(2:min(prm.nmax,n+1));
 
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
