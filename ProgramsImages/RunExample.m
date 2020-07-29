@@ -1,4 +1,4 @@
-function RunExample(f,param,abstolVec,kernelth,AlgName)
+function RunExample(f,param,abstolVec,kernelth)
 
 
 %% Example for a function
@@ -52,7 +52,7 @@ for kk = 1:size(param,2)
       [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
          AdaptAlgo2(f, kernel, xeval, feval, abstolVec, prm);
    elseif strcmp(prm.AlgName,'Algo3')
-      [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
+      [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
          AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
    end
    disp(['Necessary condition flag = ' int2str(NeccFlag(end))])

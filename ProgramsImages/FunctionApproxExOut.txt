@@ -126,3 +126,35 @@ Pointwise error bound fails 0 times
 Necessary condition flag = 0
 
 
+LeftPeakFun Matern adapt_th EmpBayesAx Algo2
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+LeftPeakFun Matern adapt_th EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+LeftPeakFun SpatialMatern adapt_th EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+Elapsed time is 418.018644 seconds.
