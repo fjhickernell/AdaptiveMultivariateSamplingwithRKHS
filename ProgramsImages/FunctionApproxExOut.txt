@@ -1,0 +1,128 @@
+SimpleFun Matern adapt_th EmpBayesAx Algo1
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100 ... 200 ... 300
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+SimpleFun Matern adapt_th EmpBayesAx Algo2
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+SimpleFun Matern adapt_th EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+SimpleFun Matern unif_grid EmpBayesAx Algo1
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100 ... 200 ... 300
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+SimpleFun Matern unif_grid EmpBayesAx Algo2
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+SimpleFun Matern unif_grid EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern unif_grid EmpBayesAx Algo1
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100 ... 200 ... 300
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern unif_grid EmpBayesAx Algo2
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern unif_grid EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100 ... 200
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern adapt_th EmpBayesAx Algo1
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100 ... 200 ... 300
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern adapt_th EmpBayesAx Algo2
+
+n = 1 ... 2 ... 3 ... 4 ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+
+CurrinSineFun Matern adapt_th EmpBayesAx Algo3
+ ... 5 ... 6 ... 7 ... 8 ... 9 ... 10 ... 20 ... 30 ... 40 ... 50 ... 60 ... 70 ... 80 ... 90 ... 100
+Error bound fails 0 times
+    for n = 
+Pointwise error bound fails 0 times
+    for n = 
+
+Necessary condition flag = 0
+
+

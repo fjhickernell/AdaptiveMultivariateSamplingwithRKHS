@@ -10,6 +10,7 @@ warning('off')
 [~,~,xeval,~,Ainf,B0] = StdParam;
 p = inputParser;
 p.KeepUnmatched = true;
+addParameter(p,'AlgName','Algo1')
 addParameter(p,'colorScheme',[MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon])
 addParameter(p,'isDiagnose',true)
 addParameter(p,'Ainf',Ainf)
@@ -21,7 +22,7 @@ addParameter(p,'fname','')
 addParameter(p,'kername','')
 addParameter(p,'legendPos','south')
 addParameter(p,'whDes','adapt_th')
-addParameter(p,'whobj','EmpBayesAx')
+addParameter(p,'whObj','EmpBayesAx')
 addParameter(p,'plotSites',false)
 addParameter(p,'xLim',[0;1])
 addParameter(p,'yLim',[-1;1])
@@ -40,23 +41,20 @@ xlabel('\(x\)')
 ylabel('\(f(x)\)');
 print('-depsc',[prm.fname 'Plot.eps'])
 
-for kk = 1:length(AlgName)
+for kk = 1:size(param,2)
    parse(p,param(kk));
    prm = p.Results;
-   if strcmp(AlgName{kk},'Algo1')
-      disp([prm.fname ' ' prm.kername ' Algorithm 1'])
+   disp([prm.fname ' ' prm.kername ' ' prm.whDes ' ' prm.whObj ' ' prm.AlgName])
+   if strcmp(prm.AlgName,'Algo1')
       [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
          AdaptAlgo1(f, kernel, xeval, feval, abstolVec, prm);
-   elseif strcmp(AlgName{kk},'Algo2')
-      disp([prm.fname ' ' prm.kername ' Algorithm 2'])
+   elseif strcmp(prm.AlgName,'Algo2')
       [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
          AdaptAlgo2(f, kernel, xeval, feval, abstolVec, prm);
-   elseif strcmp(AlgName{kk},'Algo3')
-      disp([prm.fname ' ' prm.kername ' Algorithm 3'])
+   elseif strcmp(prm.AlgName,'Algo3')
       [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
          AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
    end
-   fprintf(1,'\n\n')
    disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
    fprintf(1,'\n\n')
 end

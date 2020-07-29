@@ -17,7 +17,7 @@ kernel = @(t,x) kernelth(t,x,theta);
 [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata, xeval, kernel);
 [~, errKX] = powerfun(Kmat, Kdateval, Kdiageval);
 AXtheta = ABfun(errKX,errKNull,prm.Ainf,prm.B0);
-switch prm.whobj
+switch prm.whObj
    case 'EmpBayes'
       obj = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata));
    case 'minErrBd'
