@@ -1,59 +1,14 @@
-%% Adaptive Multivariate Sampling Example 4
-gail.InitializeWorkspaceDisplay
-format short e
-warning('off')
-
-[~,~,xeval,neval,Ainf,B0,errFudge] = StdParam;
-abstolVec = [0.05 0.02 0.01]';
-ntol = size(abstolVec,1);
-theta = 1;
-
+%% Left Peak Function Example
 f = @(x) exp(-6*x).*sin(8*x+0.1) - 0.1;
-prm.fname = 'LeftPeakFun';
-prm.colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
-prm.legendPos = 'northeast';
-prm.isDiagnose = true;
-prm.Ainf = Ainf;
-prm.B0 = B0;
-prm.n0 = 1;
-prm.nmax = 500;
-prm.theta = 1;
-prm.whDes = 'unif_grid';
-%prm.whDes = 'adapt_th';
-prm.plotSites = false;
-kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
-kernel = @(t,x) MaternKernel(t,x,prm.theta);
-prm.kername = 'Matern';
-feval = f(xeval);
-
-
-figure %Univariate function
-plot(xeval,feval);
-xlabel('\(x\)')
-ylabel('\(f(x)\)');
-print('-depsc',[prm.fname 'Plot.eps'])
-
-
-%% Algorithm 3 Sample location and kernel are adaptive
-disp('Algorithm 3')
-prm.n0 = 3;
-prm.thetaRange = (-5:0.5:5)';
-prm.whobj = 'EmpBayesAx';
-prm.plotSites = true;
-[Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
-   AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
-fprintf(1,'\n\n')
-
-
-%% Algorithm 3 Sample location and kernel spatial dependence are adaptive
-disp('Algorithm 3')
-prm.kername = 'SpatialMatern';
-prm.n0 = 10;
-prm.theta = [1 0];
-[thaa,thbb] = meshgrid(-5:0.5:5,-5:0.5:5);
-prm.thetaRange  = [thaa(:) thbb(:)];
-[Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
-   AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
-fprintf(1,'\n\n')
-
-
+[prm.fname] = subsref(repmat({'LeftPeakFun'},1,nAlg),S);
+[prm.AlgName] = subsref({'Algo2','Algo3','Algo3'},S);
+[prm.kername] = subsref({'Matern','Matern','SpatialMatern'},S);
+[prm.n0] = subsref({1,5,5},S);
+[prm.theta] = subsref({1,1,[1 0]},S);
+xRange = (-5:0.5:5)';
+[thaa,thbb] = meshgrid(xRange,xRange);
+[prm.thetaRange] = subsref({xRange,xRange,[thaa(:) thbb(:)]},S);
+[prm.yLim] = subsref(repmat({[-0.2;0.5]},1,nAlg),S);
+[prm.legendPos] = subsref(repmat({'northeast'},1,nAlg),S);
+[prm.plotSites] = subsref({false,true,true},S);
+RunExample(f,prm,abstolVec,kernelth)
