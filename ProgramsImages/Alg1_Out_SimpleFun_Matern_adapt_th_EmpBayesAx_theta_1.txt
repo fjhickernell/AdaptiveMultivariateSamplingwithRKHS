@@ -1,6 +1,6 @@
 \[ 
  \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1)} \\ \hline 
+\multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1)\qquad n_0 =  1} \\ \hline 
 n &  46 &  54 &  86 &  87 & 214 & 342 \\ \hline 
 \varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
 \errBd & 4.0\text{E}{-}2 & 1.2\text{E}{-}2 & 5.0\text{E}{-}3 & 5.0\text{E}{-}3 & 1.4\text{E}{-}3 & 5.9\text{E}{-}4 \\ \hline 

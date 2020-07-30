@@ -460,8 +460,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	\begin{equation}
 	f: x \mapsto  \sin(2\pi(x-0.1)), \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances with
-	$n_0 = 1$.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty = 1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$.  This table summarizes our results.  the bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne} and the parameters in the summary table below.  The bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
 	\input{ProgramsImages/Alg1_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
 	
@@ -472,7 +471,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 		\caption{A plot of our example $f$ (left) and a plot of our RKHS minimum norm interpolant approximations for various $\varepsilon$ and  $n$ using Algorithm \ref{alg:basicadapt}.  Approximation improves as $n$ increases. \label{fig:ex1}}
 	\end{figure}
 	
-Not suprisingly, the function approximation for $n=1$ is poor, but it improves as the sample size increases.  The true  maximum absolute error of the adaptive approximation does not exceed the data-driven error bound $\errBd(\mX,\by)$ for every tolerance selected here, and by design this error bound does not exceed the tolerance.  Moreover, the true pointwise error of the adaptive approximation does not exceed the pointwise error bound $\errBd(\mX,\by,\cdot)$ at any point $\mT$ for every tolerance selected here.  Moreover, for every $n$ up to $TBD$, the pointwise error bound holds for all points in  $\mT$.
+Not suprisingly, the function approximation for $n=1$ is poor, but it improves as the sample size increases.  The true  maximum absolute error of the adaptive approximation does not exceed the data-driven error bound $\errBd(\mX,\by)$ for every tolerance, and by design this error bound is always slightly less than the tolerance.  Moreover, the true pointwise error of the adaptive approximation does not exceed the pointwise error bound $\errBd(\mX,\by,\cdot)$ at any point $\mT$ for every tolerance.  Moreover, for every $n$ up to $TBD$, the pointwise error bound holds for all points in  $\mT$.
 	
 \end{example} 
 
@@ -544,7 +543,7 @@ Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \r
 Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an initial data site of $x_1=1/3$.
 Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
-		\input{ProgramsImages/Alg2_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+\input{ProgramsImages/Alg2_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
 	
 	
 	\begin{figure}[H]
@@ -554,9 +553,6 @@ Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:ba
 	\end{figure}
 	
 \end{example}
-
-However, unlike Example  \ref{ex:adpsamplesize}, the  pointwise error bounds do not hold for small values of $n$.
-
 
 
 Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It does not choose data sites more densely where the function  fluctuates more.  In the next section we improve our algorithm to make the acquisition function strongly dependent on $\by$.

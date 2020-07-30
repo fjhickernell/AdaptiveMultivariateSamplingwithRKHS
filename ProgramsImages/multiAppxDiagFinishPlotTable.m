@@ -25,9 +25,7 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(fid,['\\qquad B_0 = ' cleanStringFJH(sprintf('%2.2g',prm.B0))]);
    fprintf(fid,['\\qquad \\mT = (' cleanStringFJH(sprintf('%2.2g, %2.2g,',xeval(1:2)))]);
    fprintf(fid,['\\ldots, ' cleanStringFJH(sprintf('%2.2g)',xeval(end)))]);
-   if any(strcmp(algname,{'Alg2','Alg3'}))
-      fprintf(fid,['\\qquad n_0 = ' cleanStringFJH(sprintf('%2.0f',prm.n0))]);
-   end
+   fprintf(fid,['\\qquad n_0 = ' cleanStringFJH(sprintf('%2.0f',prm.n0))]);
    fprintf(fid,'} \\\\ \\hline \n');
    if any(strcmp(algname,'Alg3'))
       fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{\\text{Final } \\theta = ']);
