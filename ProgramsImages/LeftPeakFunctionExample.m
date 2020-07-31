@@ -1,4 +1,5 @@
 %% Left Peak Function Example
+prm=[];
 [prm(1:3).AlgName] = subsref({'Algo2','Algo3','Algo3'},S);
 [prm,kernelth] = parseFunAppxParam(prm);
 nAlg = size(prm,2);
@@ -15,4 +16,4 @@ xRange = (-5:0.5:5)';
 [prm.plotSites] = subsref({false,true,true},S);
 
 %%
-RunExample(f,prm,abstolVec,kernelth)
+RunExample(f,prm,kernelth)

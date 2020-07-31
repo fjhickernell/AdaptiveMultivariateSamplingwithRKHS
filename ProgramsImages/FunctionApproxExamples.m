@@ -9,9 +9,6 @@ StartTime = tic; %start time
 
 %% Defaults
 S = struct('type','{}','subs',{{':'}});
-[prm(1:3).AlgName] = subsref({'Algo1', 'Algo2', 'Algo3'},S);
-[prm,kernelth] = parseFunAppxParam(prm);
-prm(3).n0 = 5;
 
 %% Simple function
 SimpleFunExample
