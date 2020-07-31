@@ -7,6 +7,14 @@ fopen(Outfile,'w+');
 diary(Outfile)
 StartTime = tic; %start time
 
+%% Testing
+S = struct('type','{}','subs',{{':'}});
+AlgName = {'Algo1', 'Algo2', 'Algo3'};
+nAlg = length(AlgName);
+[param(1:nAlg).AlgName] = subsref(AlgName,S);
+prm = parseFunAppxParam(param);
+return
+
 %% Defaults
 S = struct('type','{}','subs',{{':'}});
 abstolVec = [0.05 0.02 0.01 0.005 0.002 0.001]';
