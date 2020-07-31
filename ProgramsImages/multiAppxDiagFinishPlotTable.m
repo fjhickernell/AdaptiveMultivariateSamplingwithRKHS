@@ -1,5 +1,5 @@
 function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
-   (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
+   (h,legendLabel,ErrBdVec,trueErr,InErrBars, ...
    coli,n,ntol,nNeed,prm,xeval,algname)
 
    AlgSummaryData = [(1:n)' ErrBdVec trueErr InErrBars];
@@ -45,8 +45,8 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));
    fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntol));
    fprintf(fid,'\\varepsilon & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',abstolVec(1:ntol-1))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', abstolVec(ntol))) ' \\\\ \\hline \n']);
+   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',prm.abstolVec(1:ntol-1))));
+   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', prm.abstolVec(ntol))) ' \\\\ \\hline \n']);
    fprintf(fid,'\\errBd & ');
    fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',ErrBdVec(nNeed(1:ntol-1)))));
    fprintf(fid,[cleanStringFJH(sprintf('%3.1E', ErrBdVec(nNeed(ntol)))) ' \\\\ \\hline \n']);

@@ -1,10 +1,10 @@
 %% Algorithm 3 Sample location is adaptive
 function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
-   AdaptAlgo3(f,kernelth, xeval, feval, abstolVec, prm)
+   AdaptAlgo3(f,kernelth, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
 fdata(prm.nmax,d) = 0;
-ntol = size(abstolVec,1);
+ntol = size(prm.abstolVec,1);
 plotn = [0 prm.n0 prm.nmax];
 if prm.isDiagnose
    [h,ploti,legendLabel] =  ...
@@ -12,7 +12,7 @@ if prm.isDiagnose
    coli = ploti;
 end
 itol = 1;
-abstol = abstolVec(itol);
+abstol = prm.abstolVec(itol);
 nNeed(ntol,1) = 0;
 ErrBdVec(prm.nmax,1) = 0;
 trueErr(prm.nmax,1) = 0;
@@ -81,7 +81,7 @@ for n = prm.n0:prm.nmax
       nNeed(itol) = n;
       itol = itol + 1;
       if itol > ntol, break, end
-      abstol = abstolVec(itol);
+      abstol = prm.abstolVec(itol);
    end
 end
 fprintf('\n')
@@ -92,6 +92,6 @@ prm.final_theta = thOptim;
 
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
-      (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
+      (h,legendLabel,ErrBdVec,trueErr,InErrBars, ...
       coli,n,ntol,nNeed,prm,xeval,'Alg3');
 end

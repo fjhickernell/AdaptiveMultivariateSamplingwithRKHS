@@ -1,9 +1,9 @@
 %% Algorithm 2 Sample location is adaptive
 function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-   AdaptAlgo2(f, kernel, xeval, feval, abstolVec, prm)
+   AdaptAlgo2(f, kernel, xeval, feval, prm)
 xdata(prm.nmax,1) = 0;
 fdata(prm.nmax,1) = 0;
-ntol = size(abstolVec,1);
+ntol = size(prm.abstolVec,1);
 neval = size(xeval,1);
 plotn = [0 1 3 prm.nmax];
 if prm.isDiagnose
@@ -12,7 +12,7 @@ if prm.isDiagnose
    coli = ploti;
 end
 itol = 1;
-abstol = abstolVec(itol);
+abstol = prm.abstolVec(itol);
 nNeed(ntol,1) = 0;
 ErrBdVec(prm.nmax,1) = 0;
 trueErr(prm.nmax,1) = 0;
@@ -75,7 +75,7 @@ for n = prm.n0:prm.nmax
       nNeed(itol) = n;
       itol = itol + 1;
       if itol > ntol, break, end
-      abstol = abstolVec(itol);
+      abstol = prm.abstolVec(itol);
    end
 end
 fprintf('\n')
@@ -86,6 +86,6 @@ NeccFlag = NeccFlag(2:min(prm.nmax,n+1));
 
 if prm.isDiagnose
    multiAppxDiagFinishPlotTable ...
-      (h,legendLabel,abstolVec,ErrBdVec,trueErr,InErrBars, ...
+      (h,legendLabel,ErrBdVec,trueErr,InErrBars, ...
       coli,n,ntol,nNeed,prm,xeval,'Alg2');
 end
