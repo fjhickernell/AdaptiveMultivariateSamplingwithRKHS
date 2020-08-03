@@ -1,14 +1,14 @@
 %% Function approximation examples
 
-%% Open File
+%% Start
 clearvars
+warning('off')
+
+%% Open Diary File
 Outfile = 'FunctionApproxExOut.txt'; %open a diary file to capture command window print out
 fopen(Outfile,'w+');
 diary(Outfile)
 StartTime = tic; %start time
-
-%% Defaults
-S = struct('type','{}','subs',{{':'}});
 
 %% Simple function
 SimpleFunExample

@@ -2,10 +2,10 @@
  \begin{array}{rccccccc} 
 \multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1)\qquad n_0 = 10} \\ \hline 
 \multicolumn{7}{l}{\text{Final } \theta = 1.5\text{E}{-}1} \\ \hline 
-n &  25 &  28 &  49 &  69 &  99 & 193 \\ \hline 
+n &  19 &  20 &  37 &  38 &  73 & 145 \\ \hline 
 \varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 2.2\text{E}{-}2 & 2.0\text{E}{-}2 & 5.9\text{E}{-}3 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 7.1\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 2.8\text{E}{-}3 & 2.7\text{E}{-}3 & 5.0\text{E}{-}4 & 4.7\text{E}{-}4 & 9.3\text{E}{-}5 & 1.8\text{E}{-}5 \\ \hline 
+\errBd & 1.8\text{E}{-}2 & 1.7\text{E}{-}2 & 4.8\text{E}{-}3 & 4.8\text{E}{-}3 & 1.6\text{E}{-}3 & 5.5\text{E}{-}4 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 4.3\text{E}{-}4 & 3.7\text{E}{-}4 & 1.7\text{E}{-}5 & 2.0\text{E}{-}5 & 1.5\text{E}{-}5 & 4.4\text{E}{-}6 \\ \hline 
 \text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]

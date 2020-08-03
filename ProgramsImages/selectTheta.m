@@ -3,12 +3,16 @@ function [realTheta,thetaOptim] = ...
 % Here theta might be some transformation of theta
 %objectKy = @(K,y) mean(log(max(eig(K),100*eps))) + log(y'*(K\y));
 nth = size(thetaTest,1);
-objectThTest(nth,1) = 0;
-for i = 1:nth
-   objectThTest(i) = objectTh(thetaTest(i,:),kernelth,xdata,ydata,xeval,prm);
+if prm.canvasTheta
+   objectThTest(nth,1) = 0;
+   for i = 1:nth
+      objectThTest(i) = objectTh(thetaTest(i,:),kernelth,xdata,ydata,xeval,prm);
+   end
+   [~,wh] = min(objectThTest);
+   theta0 = thetaTest(wh,:);
+else
+   theta0 = prm.currentTheta;
 end
-[~,wh] = min(objectThTest);
-theta0 = thetaTest(wh,:);
 thetaOptim = fminsearch(@(th) objectTh(th,kernelth,xdata,ydata,xeval,prm),theta0);
 [~,~,~,realTheta] = kernelth(0,0,thetaOptim);
 

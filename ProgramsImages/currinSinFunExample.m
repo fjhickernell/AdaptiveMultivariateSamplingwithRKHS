@@ -1,8 +1,8 @@
 %% Currin sinusoidal
-prm = [];
+S = struct('type','{}','subs',{{':'}}); prm = [];
 [prm(1:3).AlgName] = subsref({'Algo1', 'Algo2', 'Algo3'},S);
 [prm,kernelth] = parseFunAppxParam(prm);
-prm(3).n0 = 5;
+prm(3).n0 = 10;
 nAlg = size(prm,2);
 f = @(x) sin(2*pi*(x-0.1));
 [prm.fname] = subsref(repmat({'CurrinSineFun'},1,nAlg),S);

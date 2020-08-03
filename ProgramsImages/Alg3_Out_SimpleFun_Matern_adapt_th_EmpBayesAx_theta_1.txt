@@ -1,11 +1,11 @@
 \[ 
  \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1)\qquad n_0 =  5} \\ \hline 
+\multicolumn{7}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0, 0.0002,\ldots,  1)\qquad n_0 = 10} \\ \hline 
 \multicolumn{7}{l}{\text{Final } \theta = 2.0\text{E}{-}1} \\ \hline 
 n &  14 &  25 &  26 &  49 &  96 & 101 \\ \hline 
 \varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 4.5\text{E}{-}2 & 9.9\text{E}{-}3 & 9.7\text{E}{-}3 & 3.0\text{E}{-}3 & 2.0\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 1.6\text{E}{-}3 & 8.9\text{E}{-}5 & 7.1\text{E}{-}5 & 2.3\text{E}{-}5 & 9.6\text{E}{-}6 & 9.8\text{E}{-}6 \\ \hline 
+\errBd & 4.5\text{E}{-}2 & 9.9\text{E}{-}3 & 9.7\text{E}{-}3 & 3.0\text{E}{-}3 & 1.9\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 1.6\text{E}{-}3 & 8.9\text{E}{-}5 & 7.1\text{E}{-}5 & 2.3\text{E}{-}5 & 3.5\text{E}{-}5 & 9.8\text{E}{-}6 \\ \hline 
 \text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]

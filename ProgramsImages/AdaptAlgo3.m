@@ -26,7 +26,7 @@ dth = size(prm.thetaRange,2);
 thOptimVec(prm.nmax,dth) = 0;
 for n = prm.n0:prm.nmax
    gail.print_iterations(n,'n',true)
-   if n == prm.n0
+   if n == prm.n0 %initial design
       if strcmp(prm.whDes,'unif_grid') && n > 1 && d == 1
          xdata = (0:prm.n0-1)'/(prm.n0-1);
       elseif strcmp(prm.whDes,'adapt_th') && n > 1
@@ -45,7 +45,7 @@ for n = prm.n0:prm.nmax
       xdata(n) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
-   thOptim = selectTheta(prm.thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
+   [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
       xeval,prm);
    thOptimVec(n,:) = thOptim;
    kernel = @(t,x) kernelth(t,x,thOptim);

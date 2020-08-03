@@ -24,6 +24,8 @@ addParameter(p,'xLim',[0;1])
 addParameter(p,'yLim',[-1;1])
 addParameter(p,'thetaRange',(-5:0.5:5)')
 addParameter(p,'abstolVec',[0.05 0.02 0.01 0.005 0.002 0.001]')
+addParameter(p,'canvasTheta',false)
+addParameter(p,'currentTheta',0)
 
 dimParam = size(param,2);
 parse(p,param(dimParam));
