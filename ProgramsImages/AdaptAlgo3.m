@@ -1,5 +1,5 @@
 %% Algorithm 3 Sample location is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
