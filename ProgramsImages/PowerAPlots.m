@@ -12,8 +12,10 @@ cOrder = 1:6;
 
 n = 4;
 
-myFun = @(x) 2 * (exp(-60.*(x-1/2).^2) - 0.6);
-xdata = seqFixedDes(1:n);
+%myFun = @(x) 2 * (exp(-60.*(x-1/2).^2) - 0.6);
+myFun = @(x) sin(2*pi*(x-0.1));
+%xdata = seqFixedDes(1:n);
+xdata = (0:n-1)'/(n-1);
 ydata = myFun(xdata);
 yplot = myFun(xplot);
 
@@ -33,24 +35,24 @@ for ii = 1:nth
    kernel = @(t,x) MaternKernel(t,x,theta);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel);
    [errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-   AX = ABfun(errKX,max(Kdiageval),Ainf,B0);
+   [AX, BX] = ABfun(errKX,max(Kdiageval),Ainf,B0);
    [~,~,errBdx] = Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
    figure(figerrK)
    plot(xplot,errKXx,'color',colorScheme(cOrder(ii),:))
    figure(figerrBd);
-   plot(xplot,errKXx,'color',colorScheme(cOrder(ii),:));
+   plot(xplot,errBdx,'color',colorScheme(cOrder(ii),:));
    legendLabel{ii} = ['\(\theta = ' num2str(theta) ' \quad \)'];
 end
 figure(figerrK)
 plot(xdata,zeros(n,1),'.k')
 xlabel('\(x\)')
-ylabel('ERRK\((\mathsf{X},x)\)')
+ylabel('ERRK\({}_{\theta}(\mathsf{X},x)\)')
 legend(legendLabel,'box','off','Orientation','horizontal','location','north')
 print('-depsc','errKplotth.eps')
 figure(figerrBd);
 plot(xdata,zeros(n,1),'.k')
 xlabel('\(x\)')
-ylabel('\(A(\mathsf{X})\)ERRK\((\mathsf{X},x) \sqrt{\textit{\textbf{y}}^T\mathsf{K}^{-1}\textit{\textbf{y}}}\)')
+ylabel('\(A{}_{\theta}(\mathsf{X})\)ERRK\({}_{\theta}(\mathsf{X},x) \sqrt{\textit{\textbf{y}}^T\mathsf{K}^{-1}\textit{\textbf{y}}}\)')
 legend(legendLabel,'box','off','Orientation','horizontal','location','north')
 print('-depsc','errBdplotth.eps')
 
@@ -75,14 +77,18 @@ end
 figure(figerrBdLots);
 plot(lotsthvec,errBd,'.');
 xlabel('\(\theta\)')
-ylabel('\(A(\mathsf{X})\)ERRK\((\mathsf{X}) \sqrt{\textit{\textbf{y}}^T\mathsf{K}^{-1}\textit{\textbf{y}}}\)')
+ylabel('\(A{}_{\theta}(\mathsf{X})\)ERRK\({}_{\theta}(\mathsf{X}) \sqrt{\textit{\textbf{y}}^T\mathsf{K}^{-1}\textit{\textbf{y}}}\)')
 print('-depsc','errBdplotthlots.eps')
 
 %% Plot function, approximation and error bars for theta with minimun error bound
+prm.Ainf = Ainf;
+prm.B0 = B0;
+prm.whObj = 'minErrBd';
+prm.canvasTheta = false;
+prm.currentTheta = 0;
 kernelth = @(t,x,lnth) MaternKernel(t,x,exp(lnth));
 thetaRange = (-5:0.5:5)';
-lnthOptim = selectTheta(thetaRange,kernelth,xdata,ydata, ...
-   xplot,Ainf,B0,'minErrBd');
+lnthOptim = selectTheta(thetaRange,kernelth,xdata,ydata,xplot,prm);
 theta = exp(lnthOptim)
 kernel = @(t,x) MaternKernel(t,x,theta);
 [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel);
@@ -103,15 +109,19 @@ ErrBd
 print('-depsc','minErrBdThAppx.eps')
 
 %% Plot function, approximation and error bars for theta with our selection criterion
+prm.Ainf = Ainf;
+prm.B0 = B0;
+prm.whObj = 'EmpBayesAx';
+prm.canvasTheta = false;
+prm.currentTheta = 0;
 kernelth = @(t,x,lnth) MaternKernel(t,x,exp(lnth));
 thetaRange = (-5:0.5:5)';
-lnthOptim = selectTheta(thetaRange,kernelth,xdata,ydata, ...
-   xplot,Ainf,B0,'EmpBayesAx');
+lnthOptim = selectTheta(thetaRange,kernelth,xdata,ydata,xplot,prm);
 theta = exp(lnthOptim)
 kernel = @(t,x) MaternKernel(t,x,theta);
 [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel);
 [errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-AX = ABfun(errKX,max(Kdiageval),Ainf,B0);
+[AX, BX] = ABfun(errKX,max(Kdiageval),Ainf,B0);
 [Appx, fluctNorm, ErrBdx, ErrBd] = ...
    Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
 figure

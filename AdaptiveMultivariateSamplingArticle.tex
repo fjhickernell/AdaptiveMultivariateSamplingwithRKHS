@@ -555,7 +555,7 @@ Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:ba
 \end{example}
 
 
-Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  In that sense, this algorithm chooses data sites to fill gaps between data sites.  It does not choose data sites more densely where the function  fluctuates more.  In the next section we improve our algorithm to make the acquisition function strongly dependent on $\by$.
+Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does not yet depend on the function data, $\by$, but only on the data sites, $\mX$.  This algorithm chooses data sites to fill gaps between existing data sites rather than choosing data sites more densely where the function fluctuates more.  In the next section we improve our algorithm to make the acquisition function strongly dependent on $\by$.
 
 
 
@@ -575,7 +575,7 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-So far, we have assumed that the function to be approximation belongs to a fixed RKHS.  However, unless there is strong a priori knowledge, there is no way to know whether our $f$ is typical for  the RKHS chosen.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
+So far, we have assumed that the function to be approximation belongs to a fixed RKHS.  However, without  a priori knowledge, we do not know whether our $f$ is typical for  the RKHS chosen.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
 
 Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
 \begin{equation} \label{eq:MaternTheta}
@@ -593,14 +593,20 @@ Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$
 \end{figure}
 
 These differences in kernel shape translate into assumptions about the functions in the RKHS.  Every reproducing kernel describes how large function values may be and how far apart two function values at different locations may be:
-\begin{equation} \label{eq:diff_f}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx\bx) - 2 K_{\btheta}(\bt,\bx).
-\end{equation}
+\begin{subequations} \label{eq:diff_f}
+\begin{gather}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \\   
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx\bx) - 2 K_{\btheta}(\bt,\bx).
+\end{gather}
+\end{subequations}
 These upper bounds are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
-\begin{equation} \label{eq:diff_f_Matern}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
+\begin{subequations} \label{eq:diff_f_Matern}
+	\begin{gather}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \\ 
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 - (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})].
-\end{equation}
+\end{gather}
+\end{subequations}
+
 For small $\theta$ function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location. For large $\theta$ function values in the RKHS may vary quite a bit over short distances.
 
 These variations in kernel shape affect our function approximation and error bound. quantities in our function approximation algorithm.
