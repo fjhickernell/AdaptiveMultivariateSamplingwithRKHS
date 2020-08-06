@@ -18,3 +18,7 @@ xRange = (-5:0.5:5)';
 
 %%
 RunExample(f,prm,kernelth)
+
+%% With uniform grid 
+[prm.whDes] = subsref(repmat({'unif_grid'},1,nAlg),S);
+RunExample(f,prm,kernelth)
