@@ -1,5 +1,7 @@
-function squeezeWhite
-squeeze = 0.1;
+function squeezeWhite(squeeze)
+if nargin < 1
+   squeeze = 0.1;
+end
 ax = gca;
 outerpos = ax.OuterPosition;
 ti = ax.TightInset; 
