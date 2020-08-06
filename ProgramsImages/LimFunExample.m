@@ -5,8 +5,8 @@ warning('off')
 
 [~,~,~,neval,Ainf,B0,errFudge] = StdParam;
 %abstolVec = [0.05 0.02 0.01]';
-abstolVec = 0.05;
-ntol = size(abstolVec,1);
+prm.abstolVec = [0.05 0.02];
+ntol = size(prm.abstolVec,1);
 theta = 1;
 
 f = @(x) 1/6*((30+5*x(:,1).*sin(5*x(:,1))).*...
@@ -26,7 +26,7 @@ prm.plotSites = false;
 kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
 kernel = @(t,x) MaternKernel(t,x,prm.theta);
 prm.kername = 'Matern';
-prm.isDiagnose = false;
+prm.isDiagnose = true;
 x = 0:0.002:1;
 [xx, yy]= meshgrid(x,x);
 xeval  = [xx(:),yy(:)];
@@ -51,7 +51,7 @@ prm.whObj = 'EmpBayesAx';
 [thaa,thbb] = meshgrid(-5:0.5:5,-5:0.5:5);
 prm.thetaRange  = [thaa(:) thaa(:) thbb(:) thbb(:)];
 [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm] = ...
-   AdaptAlgo3(f, kernelth, xeval, feval, abstolVec, prm);
+   AdaptAlgo3(f, kernelth, xeval, feval, prm);
 fprintf(1,'\n\n')
 
 
