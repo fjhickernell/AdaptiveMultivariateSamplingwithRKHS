@@ -22,6 +22,9 @@ LeftPeakFunctionExample
 %% Right peak function
 RightPeakFunExample
 
+%%% Lim function
+LimFunExample
+
 %% Finish up
 toc(StartTime)
 diary off

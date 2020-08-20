@@ -3,9 +3,14 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    coli,n,ntol,nNeed,prm,xeval,algname)
 
    AlgSummaryData = [(1:n)' ErrBdVec trueErr InErrBars];
-   xlabel('\(x\)')
-   ylabel('\(f(x), \ f(x_i), \ \)APP\((\mathsf{X},\textbf{\textit{y}})\)')
-   legend(h(1:coli-1),legendLabel{1:coli-1},'location',prm.legendPos,'orientation','vertical','box','off')
+    if size(xeval,2) < 2
+       xlabel('\(x\)')
+       ylabel('\(f(x), \ f(x_i), \ \)APP\((\mathsf{X},\textbf{\textit{y}})\)')
+       legend(h(1:coli-1),legendLabel{1:coli-1},'location',prm.legendPos,'orientation','vertical','box','off')
+   else
+       xlabel('\(x_1\)')
+       ylabel('\(x_2\)')
+   end
    print('-depsc',[algname '_' prm.fname '_' prm.kername '_' prm.whDes '_' ...
       prm.whObj '_theta_' num2str(prm.theta(1)) '.eps'])
    whEBfails = find(AlgSummaryData(prm.n0:n,2) < AlgSummaryData(prm.n0:n,3));

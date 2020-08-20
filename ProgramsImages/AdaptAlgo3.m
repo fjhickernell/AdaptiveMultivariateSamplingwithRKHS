@@ -3,7 +3,7 @@ function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
-fdata(prm.nmax,d) = 0;
+fdata(prm.nmax,1) = 0;
 ntol = size(prm.abstolVec,1);
 plotn = [0 prm.n0 prm.nmax];
 if prm.isDiagnose
@@ -35,17 +35,17 @@ for n = prm.n0:prm.nmax
          for ii = 2:prm.n0
             [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
             [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
-            xdata(ii) = xeval(whKX);
+            xdata(ii) = xeval(whKX,:);
          end
       else %sequential, the default
          xdata(1:prm.n0) = seqFixedDes(1:prm.n0);
       end
-      fdata(1:prm.n0) = f(xdata(1:prm.n0));
+      fdata(1:prm.n0) = f(xdata(1:prm.n0,:));
    else
-      xdata(n) = xeval(whKX);
-      fdata(n) = f(xdata(n));
+      xdata(n,:) = xeval(whKX);
+      fdata(n) = f(xdata(n,:));
    end
-   [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n),fdata(1:n), ...
+   [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n,:),fdata(1:n), ...
       xeval,prm);
    thOptimVec(n,:) = thOptim;
    kernel = @(t,x) kernelth(t,x,thOptim);
