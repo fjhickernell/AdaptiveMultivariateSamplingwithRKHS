@@ -1,5 +1,5 @@
 %% Algorithm 3 Sample location is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
@@ -18,7 +18,7 @@ ErrBdVec(prm.nmax,1) = 0;
 trueErr(prm.nmax,1) = 0;
 InErrBars(prm.nmax,1) = 0;
 AppxNorm(prm.nmax,1) = 0;
-NeccFlag(prm.nmax,1) = 0;
+NeccFlag = NaN;
 nstart = 0;
 AXvec(prm.nmax,1) = 0;
 BXvec(prm.nmax,1) = 0;
@@ -35,14 +35,14 @@ for n = prm.n0:prm.nmax
          for ii = 2:prm.n0
             [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
             [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
-            xdata(ii) = xeval(whKX,:);
+            xdata(ii,:) = xeval(whKX,:);
          end
       else %sequential, the default
          xdata(1:prm.n0) = seqFixedDes(1:prm.n0);
       end
       fdata(1:prm.n0) = f(xdata(1:prm.n0,:));
    else
-      xdata(n,:) = xeval(whKX);
+      xdata(n,:) = xeval(whKX,:);
       fdata(n) = f(xdata(n,:));
    end
    [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n,:),fdata(1:n), ...

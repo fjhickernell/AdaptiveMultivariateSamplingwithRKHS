@@ -1,5 +1,5 @@
 %% Algorithm 1 Sample size is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
    AdaptAlgo1(f, kernel, xeval, feval, prm)
 xdata(prm.nmax,1) = 0;
 fdata(prm.nmax,1) = 0;

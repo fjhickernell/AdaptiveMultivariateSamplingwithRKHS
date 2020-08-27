@@ -23,8 +23,9 @@ if nargin < 4
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
                 AdaptAlgo2(f, kernel, xeval, feval, prm);
         elseif strcmp(prm.AlgName,'Algo3')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
+            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
                 AdaptAlgo3(f, kernelth, xeval, feval, prm);
+             NeccFlag = NaN;
         end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
@@ -57,7 +58,7 @@ elseif dim == 2
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
                 AdaptAlgo2(f, kernel, xeval, feval, prm);
         elseif strcmp(prm.AlgName,'Algo3')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
+            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, prm] = ...
                 AdaptAlgo3(f, kernelth, xeval, feval, prm);
         end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
