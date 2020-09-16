@@ -836,9 +836,34 @@ To illustrate it is still a space-filling design,  we consider the following mul
 
 
 		
-	%\input{ProgramsImages/Alg3_Out_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/Alg3_Out_Lim2DFun_SpatialMatern_adapt_th_EmpBayes_theta_1.txt}
 
 \end{example}
+
+\begin{example}
+\label{ex:limfun}
+To illustrate it is still a space-filling design,  we consider the following multivariate function
+	\begin{equation}
+	f: (x_1,x_2) \mapsto 
+ 1/6\left[(30+5x_1\sin(5x_1))
+    (4+\exp(-5x_1)-100\right] 
+	\end{equation}
+	where $x_i \in [0,1], \  i=1,2$ ,which is plotted in Figure \ref{fig:ChengDuFun}. 
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4.5cm]{ProgramsImages/ChengDuFunPlot.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_ChengDuFun_SpatialMatern_adapt_th_EmpBayes_theta_1.eps} \qquad		
+		\caption{ \label{fig:ChengDuFun}}
+	\end{figure}
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne}.
+
+
+		
+	\input{ProgramsImages/Alg3_Out_ChengDuFun_SpatialMatern_adapt_th_EmpBayes_theta_1.txt}
+
+\end{example}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
