@@ -4,8 +4,8 @@ function [h,ploti,legendLabel] =  ...
    ploti = 2;
    h(ntol+length(plotn)+1,1) = 0; 
    legendLabel = cell(ntol+length(plotn)+1,1);
-   figure
    if d == 1
+      figure
       h(1) = plot(xeval,feval,'color',prm.colorScheme(1,:));
       legendLabel{1} = '\(f(x)\)';
       axis([prm.xLim', prm.yLim'])
