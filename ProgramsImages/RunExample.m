@@ -23,9 +23,8 @@ if nargin < 4
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
                 AdaptAlgo2(f, kernel, xeval, feval, prm);
         elseif strcmp(prm.AlgName,'Algo3')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
+            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
                 AdaptAlgo3(f, kernelth, xeval, feval, prm);
-             NeccFlag = NaN;
         end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
@@ -49,20 +48,21 @@ elseif dim == 2
     
     for kk = 1:size(param,2)
         prm = param(kk);
-        kernel = @(t,x) kernelth(t,x,param(kk).theta);
+        %kernel = @(t,x) kernelth(t,x,param(kk).theta);
         disp([prm.fname ' ' prm.kername ' ' prm.whDes ' ' prm.whObj ' ' prm.AlgName])
-        if strcmp(prm.AlgName,'Algo1')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-                AdaptAlgo1(f, kernel, xeval, feval, prm);
-        elseif strcmp(prm.AlgName,'Algo2')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-                AdaptAlgo2(f, kernel, xeval, feval, prm);
-        elseif strcmp(prm.AlgName,'Algo3')
-            [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
+        [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag,err,xdata,fdata,prm] = ...
                 AdaptAlgo3(f, kernelth, xeval, feval, prm);
-        end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
+        delta = 0.001;
+        fplot = reshape(err,size(xx));
+        gail.RemovePlotAxes
+        surf(xx,yy,fplot + delta,'FaceColor','Interp','EdgeColor','None')
+        colorbar
+        hold on
+        plot3(xdata(:,1),xdata(:,2),fdata + 2*delta,'.','color','magenta');
+        %title('\(f(\textbf{\textit{y}}) = \cos(x_1 + x_2) \exp(x_1 * x_2)\)')
+        print('-depsc',[prm.fname 'ErrorPlot.eps'])
     end
 end
    

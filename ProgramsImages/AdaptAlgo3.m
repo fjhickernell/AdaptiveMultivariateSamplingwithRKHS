@@ -1,5 +1,5 @@
 %% Algorithm 3 Sample location is adaptive
-function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag, prm] = ...
+function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag,err,xdata,fdata,prm] = ...
    AdaptAlgo3(f,kernelth, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
@@ -26,19 +26,19 @@ dth = size(prm.thetaRange,2);
 thOptimVec(prm.nmax,dth) = 0;
 for n = prm.n0:prm.nmax
    gail.print_iterations(n,'n',true)
-   if n == prm.n0 %initial design
+   if n == prm.n0
       if strcmp(prm.whDes,'unif_grid') && n > 1 && d == 1
          xdata = (0:prm.n0-1)'/(prm.n0-1);
       elseif strcmp(prm.whDes,'adapt_th') && n > 1
          kernel = @(t,x) kernelth(t,x,prm.theta);
-         xdata(1,:) = seqFixedDes(1);
-         for ii = 2:prm.n0
+         xdata(1,:) = seqFixedDes(1,d);
+          for ii = 2:prm.n0
             [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
             [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
             xdata(ii,:) = xeval(whKX,:);
          end
       else %sequential, the default
-         xdata(1:prm.n0) = seqFixedDes(1:prm.n0);
+         xdata(1:prm.n0,:) = seqFixedDes(1:prm.n0,d);
       end
       fdata(1:prm.n0) = f(xdata(1:prm.n0,:));
    else
@@ -56,7 +56,8 @@ for n = prm.n0:prm.nmax
    BXvec(n) = BX;
    [Appx, AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    ErrBdVec(n) = ErrBd;
-   trueErr(n) = max(abs(feval - Appx));
+   err = abs(feval-Appx);
+   trueErr(n) = max(err);
    errFudge = eps*cond(Kmat);
    InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
    if prm.isDiagnose
@@ -88,6 +89,8 @@ fprintf('\n')
 ErrBdVec = ErrBdVec(1:n);
 trueErr = trueErr(1:n);
 InErrBars = InErrBars(1:n);
+xdata = xdata(1:n,:);
+fdata = fdata(1:n);
 prm.final_theta = thOptim;
 
 if prm.isDiagnose

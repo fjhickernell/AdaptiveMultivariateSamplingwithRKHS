@@ -7,8 +7,7 @@ function [h,legendLabel,coli,nstart] = multiAppxDiagAddData ...
            legendLabel{coli} = ['\(n = ' int2str(n) ',\ \varepsilon = ' num2str(abstol) '\)'];
        else
            legendLabel{coli} = ['\(n = ' int2str(n) '\)'];
-       end
-       
+       end 
        nrange = nstart+1:n;
        plot(xdata(nrange),fdata(nrange),'.','color',prm.colorScheme(mod(coli-1,6)+1,:))
        coli = coli+1;
@@ -18,7 +17,7 @@ function [h,legendLabel,coli,nstart] = multiAppxDiagAddData ...
        nrange = nstart+1:n;
        h(coli) = plot3(xdata(nrange,1),xdata(nrange,2),fdata(nrange) + delta,'.','color',prm.colorScheme(mod(coli-1,6)+1,:));
        if isfinite(abstol)
-           legendLabel{coli} = ['\(n = ' int2str(n) ',\ \varepsilon = ' num2str(abstol) '\)'];
+           legendLabel{coli} = ['\(n = ' int2str(n) ',\ \varepsilon = ' num2str(abstol) '\)'];     
        else
            legendLabel{coli} = ['\(n = ' int2str(n) '\)'];
        end

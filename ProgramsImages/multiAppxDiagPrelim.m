@@ -3,7 +3,7 @@ function [h,ploti,legendLabel] =  ...
    d = size(xeval,2);
    ploti = 2;
    h(ntol+length(plotn)+1,1) = 0; 
-   legendLabel = cell(ntol+length(plotn)+1,1);
+   legendLabel = cell(ntol+length(plotn)+1,1); 
    if d == 1
       figure
       h(1) = plot(xeval,feval,'color',prm.colorScheme(1,:));
@@ -13,9 +13,10 @@ function [h,ploti,legendLabel] =  ...
       tmp = sqrt(size(xeval,1));
       xx = reshape(xeval(:,1),tmp,tmp);
       yy = reshape(xeval(:,2),tmp,tmp);
-      zz = reshape(feval,tmp,tmp);
+      zz = reshape(feval ,tmp,tmp);
       gail.RemovePlotAxes
       h(1) = surf(xx,yy,zz,'FaceColor','Interp','EdgeColor','None');
+      legendLabel{1} = '\(f(x)\)';
       colorbar
    end
     hold on

@@ -15,9 +15,10 @@ xRange = (-5:0.5:5)';
 [prm.thetaRange] = subsref({...
     [thaa(:) thaa(:) thbb(:) thbb(:)]},S);
 [prm.yLim] = subsref(repmat({[-0.2;0.5]},1,nAlg),S);
-[prm.legendPos] = subsref(repmat({'northeast'},1,nAlg),S);
+[prm.legendPos] = subsref(repmat({'southwest'},1,nAlg),S);
 [prm.plotSites] = subsref({false},S);
-[prm.abstolVec] = subsref({[0.1 0.05 0.02 0.01]'},S);
+[prm.abstolVec] = subsref({[0.1 0.05 0.02 ]'},S);
+%[prm.abstolVec] = subsref({[0.1]'},S);
 [prm.nmax] = subsref({500},S);
 [prm.canvasTheta]= subsref({false},S);
 [prm.currentTheta]= subsref({[0 0 0 0]},S);
@@ -25,4 +26,6 @@ xRange = (-5:0.5:5)';
 [prm.whObj] = subsref({'EmpBayes'},S);
 highdimflag = 2;
 %%
+tic
 RunExample(f,prm,kernelth,highdimflag)
+toc
