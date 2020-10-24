@@ -6,7 +6,8 @@ function [h,ploti,legendLabel] =  ...
    legendLabel = cell(length(plotn)+1,1); 
    if d == 1
       figure
-      axis([prm.xLim', -0.1 0.1])
+      axis([prm.xLim' prm.yLim'])
+      set(gca,'YScale','log')
    else
       gail.RemovePlotAxes
    end

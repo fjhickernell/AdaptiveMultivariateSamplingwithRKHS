@@ -2,7 +2,7 @@
 function [xdata, prm] = OptimalDesignXonly(kernel, xeval, prm)
 d = size(xeval,2);
 xdata(prm.nmax,d) = 0;
-plotn = [1 5 9 prm.nmax];
+plotn = [prm.plotn prm.nmax];
 nstart = 0;
 if prm.isDiagnose
    [h,ploti,legendLabel] =  ...
@@ -14,6 +14,8 @@ for n = 1:prm.nmax
    gail.print_iterations(n,'n',true)
    if n == 1
       xdata(1,:) = 0.5;
+      errKXx = [];
+      errKX = [];
    else
       [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:n-1,:), xeval, kernel);
       [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
