@@ -15,9 +15,10 @@ xRange = (-5:0.5:5)';
 [prm.thetaRange] = subsref({...
     [thaa(:) thaa(:) thbb(:) thbb(:)]},S);
 [prm.yLim] = subsref(repmat({[-0.2;0.5]},1,nAlg),S);
-[prm.legendPos] = subsref(repmat({'northeast'},1,nAlg),S);
+[prm.legendPos] = subsref(repmat({'eastoutside'},1,nAlg),S);
 [prm.plotSites] = subsref({false},S);
-[prm.abstolVec] = subsref({[0.05 0.02 0.01]'},S);
+%[prm.abstolVec] = subsref({[0.5 0.2 0.1]'},S);
+[prm.abstolVec] = subsref({[5]'},S);
 [prm.nmax] = subsref({2000},S);
 [prm.canvasTheta]= subsref({false},S);
 [prm.currentTheta]= subsref({[0 0 0 0]},S);
