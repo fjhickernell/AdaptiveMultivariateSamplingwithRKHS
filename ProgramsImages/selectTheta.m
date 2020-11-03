@@ -14,7 +14,8 @@ else
    theta0 = prm.currentTheta;
 end
 thetaOptim = fminsearch(@(th) objectTh(th,kernelth,xdata,ydata,xeval,prm),theta0);
-[~,~,~,realTheta] = kernelth(0,0,thetaOptim);
+d = size(xdata,2);
+[~,~,~,realTheta] = kernelth(zeros(1,d),zeros(1,d),thetaOptim);
 
 function obj = objectTh(theta,kernelth,xdata,ydata,xeval,prm)
 kernel = @(t,x) kernelth(t,x,theta);

@@ -62,7 +62,7 @@ elseif dim == 2
         hold on
         plot3(xdata(:,1),xdata(:,2),fdata + 10*delta,'.','color','magenta');
         %title('\(f(\textbf{\textit{y}}) = \cos(x_1 + x_2) \exp(x_1 * x_2)\)')
-        print('-',[prm.fname 'ErrorPlot.eps'])
+        print('-depsc',[prm.fname 'ErrorPlot.eps'])
     end
 else
     n = 2000;

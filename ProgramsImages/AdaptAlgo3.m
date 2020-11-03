@@ -48,7 +48,7 @@ for n = prm.n0:prm.nmax
    [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n,:),fdata(1:n), ...
       xeval,prm);
    thOptimVec(n,:) = thOptim;
-   kernel = @(t,x) kernelth(t,x,thOptim);
+   kernel = @(t,x) kernelth(t,x,prm.currentTheta);
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,prm.Ainf,prm.B0);
