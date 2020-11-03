@@ -864,6 +864,30 @@ To illustrate it is still a space-filling design,  we consider the following mul
 \end{example}
 
 
+\begin{example}
+\label{ex:limfun}
+To illustrate it is still a space-filling design,  we consider the following multivariate function
+	\begin{equation}
+	f: (x_1,x_2) \mapsto 
+ \cos(\alpha_1 x_1+\alpha_2 x_2)
+	\end{equation}
+	where $x_i \in [0,1], \  i=1,2$ and
+	$\alpha_1 = 2 \pi$ and $\alpha_2 = 0.00001$,which is plotted in Figure \ref{fig:ChengDuFun}. 
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFunPlot.eps} \qquad
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} \qquad
+	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFunErrorPlot.eps}
+		\caption{ \label{fig:ChengDuFun}}
+	\end{figure}
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne}.
+
+
+		
+	\input{ProgramsImages/Alg3_Out_CustChengDuFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.txt}
+
+\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
