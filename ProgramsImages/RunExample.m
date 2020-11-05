@@ -14,7 +14,7 @@ if nargin < 4
     
     for kk = 1:size(param,2)
         prm = param(kk);
-        kernel = @(t,x) kernelth(t,x,param(kk).theta);
+        kernel = @(t,x) prm.kernelth(t,x,prm.theta);
         disp([prm.fname ' ' prm.kername ' ' prm.whDes ' ' prm.whObj ' ' prm.AlgName])
         if strcmp(prm.AlgName,'Algo1')
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...

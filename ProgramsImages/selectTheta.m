@@ -15,7 +15,7 @@ else
 end
 thetaOptim = fminsearch(@(th) objectTh(th,kernelth,xdata,ydata,xeval,prm),theta0);
 d = size(xdata,2);
-[~,~,~,realTheta] = kernelth(zeros(1,d),zeros(1,d),thetaOptim);
+[~,~,~,realTheta] = kernelth(xdata(1,:),xdata(1,:),thetaOptim);
 
 function obj = objectTh(theta,kernelth,xdata,ydata,xeval,prm)
 kernel = @(t,x) kernelth(t,x,theta);

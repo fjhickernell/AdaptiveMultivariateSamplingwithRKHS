@@ -1,6 +1,4 @@
-function [prm,kernelth] = parseFunAppxParam(param)
-
-kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
+function prm = parseFunAppxParam(param)
 
 gail.InitializeDisplay
 [~,~,~,~,Ainf,B0] = StdParam;
@@ -34,4 +32,19 @@ for kk = 1:dimParam-1
    parse(p,param(kk));
    prm(kk) = p.Results;
 end
+for kk = 1:dimParam
+   switch prm(kk).kername
+      case 'Matern'
+         prm(kk).kernelth = @(t,x,theta) MaternKernel(t,x,theta,true);
+      case 'Gaussian'
+         prm(kk).kernelth = @(t,x,theta) GaussKernel(t,x,theta,true);
+      otherwise
+         disp('No valid kernel')
+         prm(kk).kernelth = [];
+   end
+end
+
+
+  
+
 
