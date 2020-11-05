@@ -1,0 +1,11 @@
+\[ 
+ \begin{array}{rccccccc} 
+\multicolumn{4}{l}{A_\infty = 0.50\qquad B_0 = 0.05\qquad \mT = ( 0,  0,\ldots,  1)\qquad n_0 = 10} \\ \hline 
+\multicolumn{4}{l}{\text{Final } \theta = (7.0\text{E}{-}4, 1.6\text{E}0)} \\ \hline 
+n &  16 &  21 &  34 \\ \hline 
+\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 \\ \hline 
+\errBd & 8.5\text{E}{-}2 & 4.8\text{E}{-}2 & 1.9\text{E}{-}2 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 1.9\text{E}{-}2 & 1.0\text{E}{-}2 & 1.0\text{E}{-}2 \\ \hline 
+\text{Ptwise Error Bound} &  96\% &  93\% &  86\% 
+\end{array} 
+ \]

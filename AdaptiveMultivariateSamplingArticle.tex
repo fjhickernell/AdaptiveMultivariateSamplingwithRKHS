@@ -841,7 +841,7 @@ This is too slow
 \end{example}
 
 \begin{example}
-\label{ex:limfun}
+\label{ex:ChengDufun}
 To illustrate it is still a space-filling design,  we consider the following multivariate function
 	\begin{equation}
 	f: (x_1,x_2) \mapsto 
@@ -865,27 +865,85 @@ To illustrate it is still a space-filling design,  we consider the following mul
 
 
 \begin{example}
-\label{ex:limfun}
+\label{ex:CustChengDufun}
 To illustrate it is still a space-filling design,  we consider the following multivariate function
 	\begin{equation}
 	f: (x_1,x_2) \mapsto 
  \cos(\alpha_1 x_1+\alpha_2 x_2)
 	\end{equation}
 	where $x_i \in [0,1], \  i=1,2$ and
-	$\alpha_1 = 2 \pi$ and $\alpha_2 = 0.00001$,which is plotted in Figure \ref{fig:ChengDuFun}. 
+	$\alpha_1 = 2 \pi$ and $\alpha_2 = 0.01$,which is plotted in Figure \ref{fig:ChengDuFun}. 
+	
+		\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun1Plot.eps}
+		\caption{ \label{fig:ChengDuFun}}
+	\end{figure}
+
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the the Mat\'ern kernel in \eqref{eq:MaternTheta}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun1_Matern_adapt_th_EmpBayesAx_theta_01.eps} \qquad
+	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun1_MaternErrorPlot.eps}
+		\caption{ \label{fig:ChengDuFunSpatialMatern}}
+	\end{figure}
+
+
+		
+	\input{ProgramsImages/Alg3_Out_CustChengDuFun1_Matern_adapt_th_EmpBayesAx_theta_0.1.txt}
+
+		
+		We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternAB}.
 		
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFunPlot.eps} \qquad
-		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} \qquad
-	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFunErrorPlot.eps}
-		\caption{ \label{fig:ChengDuFun}}
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun1_SpatialMatern_adapt_th_EmpBayesAx_theta_01.eps} \qquad
+	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun1_SpatialMaternErrorPlot.eps}
+		\caption{ \label{fig:ChengDuFunSpatialMatern}}
 	\end{figure}
-	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne}.
+
 
 
 		
-	\input{ProgramsImages/Alg3_Out_CustChengDuFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/Alg3_Out_CustChengDuFun1_SpatialMatern_adapt_th_EmpBayesAx_theta_0.1.txt}
+	
+We also can choose 
+	$\alpha_1 = 0.01$ and $\alpha_2 = 2\pi$,which is plotted in Figure \ref{fig:ChengDuFun}. 
+	
+		\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun2Plot.eps}
+		\caption{ \label{fig:ChengDuFun}}
+	\end{figure}
+
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the the Mat\'ern kernel in \eqref{eq:MaternTheta}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun2_Matern_adapt_th_EmpBayesAx_theta_01.eps} \qquad
+	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun2_MaternErrorPlot.eps}
+		\caption{ \label{fig:ChengDuFun2SpatialMatern}}
+	\end{figure}
+
+
+		
+	\input{ProgramsImages/Alg3_Out_CustChengDuFun2_Matern_adapt_th_EmpBayesAx_theta_0.1.txt}
+
+		
+		We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternAB}.
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4cm]{ProgramsImages/Alg3_CustChengDuFun2_SpatialMatern_adapt_th_EmpBayesAx_theta_01.eps} \qquad
+	\includegraphics[height = 4cm]{ProgramsImages/CustChengDuFun2_SpatialMaternErrorPlot.eps}
+		\caption{ \label{fig:ChengDuFun2SpatialMatern}}
+	\end{figure}
+
+
+
+		
+	\input{ProgramsImages/Alg3_Out_CustChengDuFun2_SpatialMatern_adapt_th_EmpBayesAx_theta_0.1.txt}
 
 \end{example}
 
