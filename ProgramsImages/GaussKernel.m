@@ -1,4 +1,4 @@
-function [kerval,kdiageval,errKNull,kername] = ...
+function [kerval,kdiageval,errKNull,theta,kername] = ...
    GaussKernel(t,x,theta,transYes)
    [nt,d] = size(t);
    [nx,dx] = size(x);
@@ -22,8 +22,8 @@ function [kerval,kdiageval,errKNull,kername] = ...
          errKNull = max(kdiageval);
       end
    end
-   if nargout > 3
-      kername = 'GaussianKernel';
+   if nargout > 4
+      kername = 'Gaussian';
    end
 end
 

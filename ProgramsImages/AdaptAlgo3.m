@@ -1,6 +1,6 @@
-%% Algorithm 3 Sample location is adaptive
+%% Algorithm 3 Sample location is adaptive and theta is adaptive
 function [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag,err,xdata,fdata,prm] = ...
-   AdaptAlgo3(f,kernelth, xeval, feval, prm)
+   AdaptAlgo3(f, xeval, feval, prm)
 [neval,d] = size(xeval);
 xdata(prm.nmax,d) = 0;
 fdata(prm.nmax,1) = 0;
@@ -28,9 +28,14 @@ for n = prm.n0:prm.nmax
    gail.print_iterations(n,'n',true)
    if n == prm.n0
       if strcmp(prm.whDes,'unif_grid') && n > 1 && d == 1
-         xdata = (0:prm.n0-1)'/(prm.n0-1);
+         xdata(1:n,:) = (0:n-1)'/(n-1);
+      elseif strcmp(prm.whDes,'unifChebyshev') && n > 1 %Chebyshev
+         xdata(1:n,:) = (0:n-1)'/(n-1);
+         xdata(1:n,:) = (1+sin(pi*(-1/2 + xdata(1:n,:))))/2;
+      elseif strcmp(prm.whDes,'seqChebyshev') %sequential Chebyshev
+         xdata(1:n,:) = seqFixedDes(1:n,d,1/3,'Chebyshev');
       elseif strcmp(prm.whDes,'adapt_th') && n > 1
-         kernel = @(t,x) kernelth(t,x,prm.theta);
+         kernel = @(t,x) prm.kernelth(t,x,prm.theta);
          xdata(1,:) = seqFixedDes(1,d);
           for ii = 2:prm.n0
             [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
@@ -38,17 +43,17 @@ for n = prm.n0:prm.nmax
             xdata(ii,:) = xeval(whKX,:);
          end
       else %sequential, the default
-         xdata(1:prm.n0,:) = seqFixedDes(1:prm.n0,d);
+         xdata(1:n,:) = seqFixedDes(1:n,d);
       end
-      fdata(1:prm.n0) = f(xdata(1:prm.n0,:));
+      fdata(1:n) = f(xdata(1:n,:));
    else
       xdata(n,:) = xeval(whKX,:);
       fdata(n) = f(xdata(n,:));
    end
-   [thOptim,prm.currentTheta] = selectTheta(prm.thetaRange,kernelth,xdata(1:n,:),fdata(1:n), ...
-      xeval,prm);
+   [thOptim,prm] = selectTheta(prm,xdata(1:n,:),fdata(1:n), ...
+      xeval);
    thOptimVec(n,:) = thOptim;
-   kernel = @(t,x) kernelth(t,x,prm.currentTheta);
+   kernel = @(t,x) prm.kernelth(t,x,prm.currentTheta);
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,prm.Ainf,prm.B0);

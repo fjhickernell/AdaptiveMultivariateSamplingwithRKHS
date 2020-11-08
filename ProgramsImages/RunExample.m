@@ -1,9 +1,9 @@
-function RunExample(f,param,kernelth, dim)
+function RunExample(param)
 
 if nargin < 4
     [~,~,xeval] = StdParam;
     
-    feval = f(xeval);
+    feval = parf(xeval);
     prm = param(1);
     figure %plot function
     plot(xeval,feval);
@@ -24,7 +24,7 @@ if nargin < 4
                 AdaptAlgo2(f, kernel, xeval, feval, prm);
         elseif strcmp(prm.AlgName,'Algo3')
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-                AdaptAlgo3(f, kernelth, xeval, feval, prm);
+                AdaptAlgo3(f, xeval, feval, prm);
         end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
