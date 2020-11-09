@@ -9,6 +9,8 @@ classdef FunAppxOut
       InErrBars
       AppxNorm
       NeccFlag
+      xdata
+      fdata
    end
    
    methods

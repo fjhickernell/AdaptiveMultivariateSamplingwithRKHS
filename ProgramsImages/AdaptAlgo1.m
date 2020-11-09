@@ -1,11 +1,6 @@
 %% Algorithm 1 
 % Sample size is adaptive, but sample location and theta are not
-function [OutObj,AlgoName] = AdaptAlgo1(f, kernel, xeval, feval, obj)
-if nargout > 1
-   OutObj = [];
-   AlgoName = 'AdaptAlgo1';
-   return
-end
+function OutObj = AdaptAlgo1(f, kernel, xeval, feval, obj)
 OutObj = FunAppxOut(obj);
 d = obj.dim;
 xdata(obj.nmax,1) = 0;
@@ -86,6 +81,8 @@ OutObj.trueErr = OutObj.trueErr(1:n);
 OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.AppxNorm = OutObj.AppxNorm(1:n);
 OutObj.NeccFlag = OutObj.NeccFlag(2:n+1);
+OutObj.xdata = xdata(1:n,:);
+OutObj.fdata = fdata(1:n);
 
 
 if obj.isDiagnose

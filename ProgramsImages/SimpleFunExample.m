@@ -1,18 +1,17 @@
 %% Example of easy function
 tic
-S = struct('type','{}','subs',{{':'}}); 
+clearvars
 simpleFunEx = FunctionApproxProblem({@simpleFun,@simpleFun});
-class_d = length(simpleFunEx);
 simpleFunEx(2).Algo = @AdaptAlgo2;
-[simpleFunEx.whDes] = subsref(repmat({'unifChebyshev'},1,2),S);
-[simpleFunEx.n0] = subsref(repmat({5},1,2),S);
+simpleFunEx = set_prop(simpleFunEx,'whDes',{'unifChebyshev'});
+simpleFunEx = set_prop(simpleFunEx,'n0',{5});
 
 %%
-simpleFunOutUnifCheby = RunFunAppxExample(simpleFunEx)
+simpleFunOutUnifCheby = RunFunAppxExample(simpleFunEx);
 
 %% With uniform grid 
-[simpleFunEx.whDes] = subsref(repmat({'unif_grid'},1,class_d),S);
-simpleFunOutUnifGrid = RunFunAppxExample(simpleFunEx)
+simpleFunEx = set_prop(simpleFunEx,'whDes',{'unif_grid'});
+simpleFunOutUnifGrid = RunFunAppxExample(simpleFunEx);
 
 toc
 

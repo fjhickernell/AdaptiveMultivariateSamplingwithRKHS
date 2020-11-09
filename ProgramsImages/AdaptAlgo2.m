@@ -1,16 +1,11 @@
 %% Algorithm 2 Sample location is adaptive, but theta is not
-function [OutObj,AlgoName] = AdaptAlgo2(f, kernel, xeval, feval, obj)
-if nargout > 1
-   OutObj = [];
-   AlgoName = 'AdaptAlgo2';
-   return
-end
+function OutObj = AdaptAlgo2(f, kernel, xeval, feval, obj)
 OutObj = FunAppxOut(obj);
 d = obj.dim;
+neval = size(xeval,1);
 xdata(obj.nmax,1) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
-neval = size(xeval,1);
 plotn = [obj.n0-1:5 obj.nmax];
 if obj.isDiagnose
    [h,ploti,legendLabel] =  ...
@@ -96,6 +91,8 @@ OutObj.ErrBdVec = OutObj.ErrBdVec(1:n);
 OutObj.trueErr = OutObj.trueErr(1:n);
 OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.NeccFlag = OutObj.NeccFlag(2:min(obj.nmax,n+1));
+OutObj.xdata = xdata(1:n,:);
+OutObj.fdata = fdata(1:n);
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...

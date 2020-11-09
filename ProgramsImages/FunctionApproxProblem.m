@@ -11,6 +11,7 @@ classdef FunctionApproxProblem
       B0 =  0.2
       n0 = 1
       nmax = 500
+      neval = 20000
       theta = 1
       legendPos = 'south'
       whDes = 'adapt_th'
@@ -22,6 +23,7 @@ classdef FunctionApproxProblem
       abstolVec = [0.05 0.02 0.01 0.005 0.002 0.001]'
       canvasTheta = false
       currentTheta = 0
+      final_theta
       colorScheme
    end
    
@@ -51,12 +53,22 @@ classdef FunctionApproxProblem
          end
       end
       
+      function obj = set_prop(obj,propname,val,idx)
+         S = struct('type','{}','subs',{{':'}});
+         if nargin < 4
+            idx = 1:length(obj);
+         end
+         nval = length(val);
+         nidx = length(idx);
+         [obj(idx).(propname)] = subsref(repmat(val,1,nidx/nval),S);
+      end
+      
       function val = get.dim(obj)
          val = size(obj.xLim,2);
       end
       
       function val = get.fname(obj)
-         [~,val] = obj.f(obj.xLim(1,:)); %get the name of the function
+         val = functions(obj.f).function; %get the name of the function
       end
       
       function val = get.kernelth(obj)
@@ -64,23 +76,28 @@ classdef FunctionApproxProblem
       end
       
       function val = get.kername(obj)
-         [~,~,~,~,val] = ...
-            obj.kernelth(obj.xLim(1,:),obj.xLim(1,:),obj.theta);  %and its name
+         val = functions(obj.kernelOrig).function;  %and its name
       end
       
       function val = get.algoname(obj)
-         [~,val] = obj.Algo();  %and its name
+         val = functions(obj.Algo).function;  %and the algorithm name
       end
-     function val = get.xeval(obj)
+      
+      function val = get.xeval(obj)
          switch obj.dim  %set the places where we will we look for the next data
             case 1
-               val = (0:0.0002:1)';
+               val = obj.xLim(1) + (obj.xLim(2) - obj.xLim(1))* ...
+                  (0:obj.neval-1)'/(obj.neval-1);
             case 2
-               x = 0:0.005:1;
-               [xx, yy]= meshgrid(x);
+               ngrid = floor(sqrt(obj.neval));
+               nngrid = (0:ngrid-1)'/(ngrid-1);
+               x = obj.xLim(1,1) + (obj.xLim(2,1) - obj.xLim(1,1))*nngrid;
+               y = obj.xLim(1,2) + (obj.xLim(2,2) - obj.xLim(1,2))*nngrid;
+               [xx, yy]= meshgrid(x,y);
                val = [xx(:),yy(:)];
             otherwise
-               val = seqFixedDes([1 2^13], obj.dim);
+               meval = floor(log2(obj.neval));
+               val = seqFixedDes([1 2^meval], obj.dim);
          end
       end
 

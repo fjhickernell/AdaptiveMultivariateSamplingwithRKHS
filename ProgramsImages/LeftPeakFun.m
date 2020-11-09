@@ -1,5 +1,3 @@
-function [y,fun_name] = LeftPeakFun(x)
-y = 2 * (exp(-6.*(x-1/2).^2) - 0.6);
-if nargout > 1
-   fun_name = 'LeftPeakFunction';
-end
+function y = LeftPeakFun(x)
+y = exp(-6*x) .* sin(8*x + 0.1) - 0.1;
+

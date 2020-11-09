@@ -1,5 +1,6 @@
 function OutObject = RunFunAppxExample(object)
 
+warning('off','all')
 nObj = length(object);
 OutObject = FunAppxOut(object);
 for kk = 1:nObj
