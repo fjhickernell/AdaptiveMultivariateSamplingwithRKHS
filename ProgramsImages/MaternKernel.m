@@ -19,7 +19,7 @@ function [kerval,kdiageval,errKNull,theta] = ...
       normtmx = reshape(sqrt(sum(tmx.^2,3)),[nt,nx]);
       kerval = (1 + normtmx) .*  exp(-normtmx);
       if nargout > 1
-         kdiageval = ones(size(x,1),1);
+         kdiageval = ones(nx,1);
          errKNull = max(kdiageval);
       end
    else

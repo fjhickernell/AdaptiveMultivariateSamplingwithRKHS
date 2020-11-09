@@ -1,5 +1,5 @@
 function [thetavec,nth,xplot,nxplot,Ainf,B0,errFudge] = ...
-   StdParam
+   StdParam(d)
 %STDPARAM sets the standard parameters for our examples
 thetavec = [1 4 16]';
 nth = size(thetavec,1);

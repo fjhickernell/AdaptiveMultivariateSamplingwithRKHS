@@ -1,9 +1,9 @@
-function RunExample(f,param,kernelth, dim)
+function RunExample(param)
 
 if nargin < 4
     [~,~,xeval] = StdParam;
     
-    feval = f(xeval);
+    feval = parf(xeval);
     prm = param(1);
     figure %plot function
     plot(xeval,feval);
@@ -14,7 +14,7 @@ if nargin < 4
     
     for kk = 1:size(param,2)
         prm = param(kk);
-        kernel = @(t,x) kernelth(t,x,param(kk).theta);
+        kernel = @(t,x) prm.kernelth(t,x,prm.theta);
         disp([prm.fname ' ' prm.kername ' ' prm.whDes ' ' prm.whObj ' ' prm.AlgName])
         if strcmp(prm.AlgName,'Algo1')
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
@@ -24,7 +24,7 @@ if nargin < 4
                 AdaptAlgo2(f, kernel, xeval, feval, prm);
         elseif strcmp(prm.AlgName,'Algo3')
             [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag] = ...
-                AdaptAlgo3(f, kernelth, xeval, feval, prm);
+                AdaptAlgo3(f, xeval, feval, prm);
         end
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
@@ -54,15 +54,28 @@ elseif dim == 2
                 AdaptAlgo3(f, kernelth, xeval, feval, prm);
         disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
         fprintf(1,'\n\n')
-        delta = 0.001;
+        delta = 0.1;
         fplot = reshape(err,size(xx));
         gail.RemovePlotAxes
-        surf(xx,yy,fplot + delta,'FaceColor','Interp','EdgeColor','None')
+        surf(xx,yy,fplot,'FaceColor','Interp','EdgeColor','None')
         colorbar
         hold on
-        plot3(xdata(:,1),xdata(:,2),fdata + 2*delta,'.','color','magenta');
+        plot3(xdata(:,1),xdata(:,2),fdata + 10*delta,'.','color','magenta');
         %title('\(f(\textbf{\textit{y}}) = \cos(x_1 + x_2) \exp(x_1 * x_2)\)')
         print('-depsc',[prm.fname 'ErrorPlot.eps'])
+    end
+else
+    n = 2000;
+    xeval = rand(n,dim);
+    feval = f(xeval);
+    for kk = 1:size(param,2)
+        prm = param(kk);
+        %kernel = @(t,x) kernelth(t,x,param(kk).theta);
+        disp([prm.fname ' ' prm.kername ' ' prm.whDes ' ' prm.whObj ' ' prm.AlgName])
+        [Appx, ErrBdx, ErrBdVec, trueErr, InErrBars, AppxNorm, NeccFlag,err,xdata,fdata,prm] = ...
+                AdaptAlgo3(f, kernelth, xeval, feval, prm);
+        %disp(['Necessary condition flag = ' int2str(NeccFlag(end))])
+        fprintf(1,'\n\n')
     end
 end
    
