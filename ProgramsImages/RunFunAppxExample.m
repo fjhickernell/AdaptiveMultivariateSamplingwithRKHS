@@ -17,6 +17,7 @@ for kk = 1:nObj
       ylabel('\(f(x)\)');
       print('-depsc',[obj.fname 'Plot.eps'])
    elseif d == 2
+      figure
       neval = size(feval,1);
       xx = reshape(xeval(:,1), sqrt([neval,neval]));
       yy = reshape(xeval(:,2), sqrt([neval,neval]));
