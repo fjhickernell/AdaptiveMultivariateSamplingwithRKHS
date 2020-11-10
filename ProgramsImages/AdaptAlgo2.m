@@ -3,7 +3,7 @@ function OutObj = AdaptAlgo2(f, kernel, xeval, feval, obj)
 OutObj = FunAppxOut(obj);
 d = obj.dim;
 neval = size(xeval,1);
-xdata(obj.nmax,1) = 0;
+xdata(obj.nmax,d) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
 plotn = [obj.n0-1:5 obj.nmax];
@@ -28,19 +28,10 @@ OutObj.NeccFlag(obj.nmax,1) = 0;
 for n = obj.n0:obj.nmax
    print_iterations(n,'n',true)
    if n == obj.n0
-      if strcmp(obj.whDes,'uniform') && n > 1
-         xdata(1:n,:) = (0:n-1)'/(n-1);
-      elseif strcmp(obj.whDes,'unifChebyshev') && n > 1 %Chebyshev
-         xdata(1:n,:) = (0:n-1)'/(n-1);
-         xdata(1:n,:) = (1+sin(pi*(-1/2 + xdata(1:n,:))))/2;
-      elseif strcmp(obj.whDes,'seqChebyshev') %sequential Chebyshev
-         xdata(1:n,:) = seqFixedDes(1:n,d,1/3,'Chebyshev');
-      else %sequential
-         xdata(1:n,:) = seqFixedDes(1:n);
-      end
-      fdata(1:n) = f(xdata(1:obj.n0,:));
+      xdata = fixedDesign(1:n,obj);
+      fdata(1:n) = f(xdata(1:n,:));
    else
-      xdata(n) = xeval(whKX);
+      xdata(n,:) = xeval(whKX);
       fdata(n) = f(xdata(n));
    end
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);

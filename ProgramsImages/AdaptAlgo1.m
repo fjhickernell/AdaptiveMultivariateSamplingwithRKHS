@@ -3,7 +3,7 @@
 function OutObj = AdaptAlgo1(f, kernel, xeval, feval, obj)
 OutObj = FunAppxOut(obj);
 d = obj.dim;
-xdata(obj.nmax,1) = 0;
+xdata(obj.nmax,d) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
 neval = size(xeval,1);
@@ -24,13 +24,15 @@ nstart = 0;
 AXvec(obj.nmax,1) = 0;
 minNormf(obj.nmax,1) = 0;
 maxNormf = inf(obj.nmax,1);
-OutObj.NeccFlag(obj.nmax,1) = 0;
-for n = 1:obj.nmax
+OutObj.NeccFlag(obj.nmax+1,1) = 0;
+for n = obj.n0:obj.nmax
    print_iterations(n,'n',true)
-   if strcmp(obj.whDes,'seqChebyshev')
-      xdata(n) = seqFixedDes(n, d, 1/3, 'Chebyshev');
+   if n == obj.n0
+      xdata = fixedDesign(1:n,obj);
+      fdata(1:n) = f(xdata(1:n,:));
    else
-      xdata(n) = seqFixedDes(n);
+      xdata(n,:) = fixedDesign(n,obj);
+      fdata(n) = f(xdata(n,:));
    end
    fdata(n) = f(xdata(n));
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
@@ -64,7 +66,7 @@ for n = 1:obj.nmax
                multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
                xdata,fdata,xeval,Appx,obj,abstol);
             if obj.plotSites
-               plot(xdata(1:n),zeros(n,1),'k.')
+               plot(xdata(1:n,:),zeros(n,1),'k.')
             end
          end
       end

@@ -23,33 +23,16 @@ OutObj.NeccFlag = NaN;
 nstart = 0;
 AXvec(obj.nmax,1) = 0;
 BXvec(obj.nmax,1) = 0;
-dth = size(obj.thetaRange,2);
+dth = size(obj.theta,2);
 thOptimVec(obj.nmax,dth) = 0;
 for n = obj.n0:obj.nmax
-   gail.print_iterations(n,'n',true)
+   print_iterations(n,'n',true)
    if n == obj.n0
-      if strcmp(obj.whDes,'unif_grid') && n > 1 && d == 1
-         xdata(1:n,:) = (0:n-1)'/(n-1);
-      elseif strcmp(obj.whDes,'unifChebyshev') && n > 1 %Chebyshev
-         xdata(1:n,:) = (0:n-1)'/(n-1);
-         xdata(1:n,:) = (1+sin(pi*(-1/2 + xdata(1:n,:))))/2;
-      elseif strcmp(obj.whDes,'seqChebyshev') %sequential Chebyshev
-         xdata(1:n,:) = seqFixedDes(1:n,d,1/3,'Chebyshev');
-      elseif strcmp(obj.whDes,'adapt_th') && n > 1
-         kernel = @(t,x) obj.kernelth(t,x,obj.theta);
-         xdata(1,:) = seqFixedDes(1,d);
-          for ii = 2:obj.n0
-            [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:ii,:), xeval, kernel);
-            [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
-            xdata(ii,:) = xeval(whKX,:);
-         end
-      else %sequential, the default
-         xdata(1:n,:) = seqFixedDes(1:n,d);
-      end
+      xdata = fixedDesign(1:n,obj);
       fdata(1:n) = f(xdata(1:n,:));
    else
-      xdata(n,:) = xeval(whKX,:);
-      fdata(n) = f(xdata(n,:));
+      xdata(n,:) = xeval(whKX);
+      fdata(n) = f(xdata(n));
    end
    [thOptim,obj] = selectTheta(obj,xdata(1:n,:),fdata(1:n), ...
       xeval);
@@ -66,14 +49,6 @@ for n = obj.n0:obj.nmax
    OutObj.trueErr(n) = max(err);
    errFudge = eps*cond(Kmat);
    OutObj.InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
-   if obj.isDiagnose
-      if n == plotn(ploti)
-         [h,legendLabel,coli,nstart] =  ...
-            multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-            xdata,fdata,xeval,Appx,obj,NaN);
-         ploti = ploti+1;
-      end
-   end
    if ErrBd < abstol
       if abstol >= 0.01
          if obj.isDiagnose
@@ -90,6 +65,14 @@ for n = obj.n0:obj.nmax
       if itol > ntol, break, end
       abstol = obj.abstolVec(itol);
    end
+   if obj.isDiagnose && n > nstart
+      if n == plotn(ploti)
+         [h,legendLabel,coli,nstart] =  ...
+            multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
+            xdata,fdata,xeval,Appx,obj,NaN);
+         ploti = ploti+1;
+      end
+   end
 end
 fprintf('\n')
 OutObj.ErrBdVec = OutObj.ErrBdVec(1:n);
@@ -98,6 +81,7 @@ OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
 obj.final_theta = thOptim;
+OutObj.thetaOptimalVec = thOptimVec(1:n,:);
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...

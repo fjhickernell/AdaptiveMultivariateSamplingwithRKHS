@@ -11,6 +11,7 @@ classdef FunAppxOut
       NeccFlag
       xdata
       fdata
+      thetaOptimalVec
    end
    
    methods

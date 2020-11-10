@@ -1,34 +1,35 @@
-function [realTheta,prm] = selectTheta(prm,xdata,ydata,xeval)
+function [realTheta,obj] = selectTheta(obj,xdata,ydata,xeval)
 % Here theta might be some transformation of theta
 %objectKy = @(K,y) mean(log(max(eig(K),100*eps))) + log(y'*(K\y));
-thetaTest = prm.thetaRange;
+thetaTest = obj.thetaRange;
 nth = size(thetaTest,1);
-if prm.canvasTheta
+if obj.canvasTheta
    objectThTest(nth,1) = 0;
    for i = 1:nth
-      objectThTest(i) = objectTh(thetaTest(i,:),xdata,ydata,xeval,prm);
+      objectThTest(i) = objectTh(thetaTest(i,:),xdata,ydata,xeval,obj);
    end
    [~,wh] = min(objectThTest);
    theta0 = thetaTest(wh,:);
 else
-   theta0 = prm.currentTheta;
+   theta0 = obj.currentTheta;
 end
-thetaOptim = fminsearch(@(th) objectTh(th,xdata,ydata,xeval,prm),theta0);
-prm.currentTheta = thetaOptim;
-[~,~,~,realTheta] = prm.kernelth(xdata(1,:),xdata(1,:),thetaOptim);
+thetaOptim = fminsearch(@(th) objectTh(th,xdata,ydata,xeval,obj),theta0, ...
+   optimset('MaxIter',10));
+obj.currentTheta = thetaOptim;
+[~,~,~,realTheta] = obj.kernelth(xdata(1,:),xdata(1,:),thetaOptim);
 
-function obj = objectTh(theta,xdata,ydata,xeval,prm)
-kernel = @(t,x) prm.kernelth(t,x,theta);
+function object = objectTh(theta,xdata,ydata,xeval,obj)
+kernel = @(t,x) obj.kernelth(t,x,theta);
 [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata, xeval, kernel);
 [~, errKX] = powerfun(Kmat, Kdateval, Kdiageval);
-AXtheta = ABfun(errKX,errKNull,prm.Ainf,prm.B0);
-switch prm.whObj
+AXtheta = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
+switch obj.whObj
    case 'EmpBayes'
-      obj = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata));
+      object = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata));
    case 'minErrBd'
-      obj = 2*(log(AXtheta) + log(errKX)) + log(ydata'*(Kmat\ydata));
+      object = 2*(log(AXtheta) + log(errKX)) + log(ydata'*(Kmat\ydata));
    otherwise %'EmpBayesAx'
-      obj = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata)) ...
+      object = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata)) ...
          + log(1+AXtheta.^2);
 end
       
