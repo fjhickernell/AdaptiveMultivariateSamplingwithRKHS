@@ -1,4 +1,4 @@
-function [realTheta,obj] = selectTheta(obj,xdata,ydata,xeval)
+function [realTheta,currentTheta] = selectTheta(obj,xdata,ydata,xeval,currentTheta)
 % Here theta might be some transformation of theta
 %objectKy = @(K,y) mean(log(max(eig(K),100*eps))) + log(y'*(K\y));
 thetaTest = obj.thetaRange;
@@ -11,11 +11,11 @@ if obj.canvasTheta
    [~,wh] = min(objectThTest);
    theta0 = thetaTest(wh,:);
 else
-   theta0 = obj.currentTheta;
+   theta0 = currentTheta;
 end
 thetaOptim = fminsearch(@(th) objectTh(th,xdata,ydata,xeval,obj),theta0, ...
-   optimset('MaxIter',10));
-obj.currentTheta = thetaOptim;
+   optimset('MaxIter',20,'TolFun',1e-3,'TolX',1e-3,'Display','none'));
+currentTheta = thetaOptim;
 [~,~,~,realTheta] = obj.kernelth(xdata(1,:),xdata(1,:),thetaOptim);
 
 function object = objectTh(theta,xdata,ydata,xeval,obj)

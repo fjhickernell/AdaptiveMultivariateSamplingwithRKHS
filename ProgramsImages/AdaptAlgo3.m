@@ -24,6 +24,7 @@ nstart = 0;
 AXvec(obj.nmax,1) = 0;
 BXvec(obj.nmax,1) = 0;
 dth = size(obj.theta,2);
+OutObj.currentTheta = obj.theta;
 thOptimVec(obj.nmax,dth) = 0;
 for n = obj.n0:obj.nmax
    print_iterations(n,'n',true)
@@ -31,13 +32,13 @@ for n = obj.n0:obj.nmax
       xdata = fixedDesign(1:n,obj);
       fdata(1:n) = f(xdata(1:n,:));
    else
-      xdata(n,:) = xeval(whKX);
-      fdata(n) = f(xdata(n));
+      xdata(n,:) = xeval(whKX,:);
+      fdata(n) = f(xdata(n,:));
    end
-   [thOptim,obj] = selectTheta(obj,xdata(1:n,:),fdata(1:n), ...
-      xeval);
-   thOptimVec(n,:) = thOptim;
-   kernel = @(t,x) obj.kernelth(t,x,obj.currentTheta);
+%    if n ==14, keyboard, end
+   [thOptimVec(n,:),OutObj.currentTheta] = selectTheta(obj,xdata(1:n,:),fdata(1:n), ...
+      xeval,OutObj.currentTheta);
+   kernel = @(t,x) obj.kernelth(t,x,OutObj.currentTheta);
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
@@ -45,10 +46,10 @@ for n = obj.n0:obj.nmax
    BXvec(n) = BX;
    [Appx, OutObj.AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    OutObj.ErrBdVec(n) = ErrBd;
-   err = abs(feval-Appx);
-   OutObj.trueErr(n) = max(err);
+   trueErrX = abs(feval-Appx);
+   OutObj.trueErr(n) = max(trueErrX);
    errFudge = eps*cond(Kmat);
-   OutObj.InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
+   OutObj.InErrBars(n) = sum(trueErrX <= ErrBdx + errFudge)/neval;
    if ErrBd < abstol
       if abstol >= 0.01
          if obj.isDiagnose
@@ -80,10 +81,9 @@ OutObj.trueErr = OutObj.trueErr(1:n);
 OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
-obj.final_theta = thOptim;
 OutObj.thetaOptimalVec = thOptimVec(1:n,:);
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...
-      (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval);
+      (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval,xdata,trueErrX,ErrBdx);
 end

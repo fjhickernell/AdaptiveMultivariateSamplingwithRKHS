@@ -3,7 +3,8 @@ classdef FunctionApproxProblem
    %to be solved using our methods
    
    properties
-      f = @simpleFun
+      forig = @simpleFun
+      fparam
       kernelOrig = @GaussKernel
       Algo = @AdaptAlgo1
       isDiagnose = true
@@ -28,6 +29,7 @@ classdef FunctionApproxProblem
    end
    
    properties (Dependent)
+      f
       dim
       fname
       xeval
@@ -48,7 +50,7 @@ classdef FunctionApproxProblem
             d_obj = length(inputFun);
             obj(1,d_obj) = obj;
             for kk = 1:d_obj
-               obj(kk).f = inputFun{kk}; %our nice color scheme
+               obj(kk).forig = inputFun{kk}; %our nice color scheme
             end
          end
       end
@@ -67,8 +69,16 @@ classdef FunctionApproxProblem
          val = size(obj.xLim,2);
       end
       
+      function val = get.f(obj)
+         if isempty(obj.fparam)
+            val = obj.forig;
+         else
+            val = @(x) obj.forig(x,obj.fparam);
+         end
+      end
+      
       function val = get.fname(obj)
-         val = functions(obj.f).function; %get the name of the function
+         val = functions(obj.forig).function; %get the name of the function
       end
       
       function val = get.kernelth(obj)

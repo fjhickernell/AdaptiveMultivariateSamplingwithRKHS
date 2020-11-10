@@ -12,6 +12,7 @@ classdef FunAppxOut
       xdata
       fdata
       thetaOptimalVec
+      currentTheta
    end
    
    methods

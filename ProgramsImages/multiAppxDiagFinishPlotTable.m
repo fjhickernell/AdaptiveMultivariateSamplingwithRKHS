@@ -1,18 +1,43 @@
 function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
-   (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval)
+   (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval,xdata,trueErrX,ErrBdx)
 
    AlgSummaryData = [(1:n)' OutObj.ErrBdVec OutObj.trueErr OutObj.InErrBars];
-   if size(xeval,2) < 2
+   if obj.dim <=2
+   if obj.dim == 1
        xlabel('\(x\)')
        ylabel('\(f(x), \ f(x_i), \ \)APP\((\mathsf{X},\textbf{\textit{y}})\)')
        legend(h(1:coli-1),legendLabel{1:coli-1},'location',obj.legendPos,'orientation','vertical','box','off')
-   else
+   elseif obj.dim == 2
        xlabel('\(x_1\)')
        ylabel('\(x_2\)')
        legend(h(1:coli-1),legendLabel{1:coli-1},'location',obj.legendPos,'orientation','vertical','box','off')
+ 
+       tmp = sqrt(size(xeval,1));
+       xx = reshape(xeval(:,1),tmp,tmp);
+       yy = reshape(xeval(:,2),tmp,tmp);
+       zz = reshape(trueErrX,tmp,tmp);
+       RemovePlotAxes
+       surf(xx,yy,zz,'FaceColor','Interp','EdgeColor','None');
+       delta = 0.1;
+       plot3(xdata(1:n,1),xdata(1:n,2),trueErrX(1:n) + delta,'.','color',obj.colorScheme(1,:));
+       xlabel('\(x_1\)')
+       ylabel('\(x_2\)')
+       colorbar
+       legend('True Error','location',obj.legendPos,'orientation','vertical','box','off')
+       
+       RemovePlotAxes
+       zz = reshape(ErrBdx,tmp,tmp);
+       surf(xx,yy,zz,'FaceColor','Interp','EdgeColor','None');
+       delta = 0.1;
+       plot3(xdata(1:n,1),xdata(1:n,2),ErrBdx(1:n) + delta,'.','color',obj.colorScheme(1,:));
+       xlabel('\(x_1\)')
+       ylabel('\(x_2\)')
+       colorbar
+       legend('Error Bound','location',obj.legendPos,'orientation','vertical','box','off')
    end
    print('-depsc',[obj.algoname '_' obj.fname '_' obj.kername '_' obj.whDes '_' ...
       obj.whObj '_theta_' num2str(obj.theta(1)) '.eps'])
+   end
    whEBfails = find(AlgSummaryData(obj.n0:n,2) < AlgSummaryData(obj.n0:n,3));
    disp(['Error bound fails ' int2str(length(whEBfails)) ' times'])
    disp('    for n = ')

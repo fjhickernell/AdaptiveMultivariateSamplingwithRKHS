@@ -7,7 +7,7 @@ xdata(obj.nmax,d) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
 neval = size(xeval,1);
-plotn = [0 1 3 obj.nmax];
+plotn = [obj.n0 + (0:5) obj.nmax];
 if obj.isDiagnose
    [h,ploti,legendLabel] =  ...
       multiAppxDiagPrelim(plotn,ntol,xeval,feval,obj);
@@ -34,7 +34,6 @@ for n = obj.n0:obj.nmax
       xdata(n,:) = fixedDesign(n,obj);
       fdata(n) = f(xdata(n,:));
    end
-   fdata(n) = f(xdata(n));
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
    [errKXx, errKX] = powerfun(Kmat, Kdateval, Kdiageval);
    AX = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
@@ -48,23 +47,16 @@ for n = obj.n0:obj.nmax
       maxNormf(n+1) = sqrt(1+AX.^2)*OutObj.AppxNorm(n);
    end
    OutObj.ErrBdVec(n) = ErrBd;
-   OutObj.trueErr(n) = max(abs(feval - Appx));
+   trueErrX = feval - Appx;
+   OutObj.trueErr(n) = max(abs(trueErrX));
    errFudge = eps*cond(Kmat);
-   OutObj.InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
-   if obj.isDiagnose
-      if n == plotn(ploti)
-         [h,legendLabel,coli,nstart] =  ...
-            multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-            xdata,fdata,xeval,Appx,obj,NaN);
-         ploti = ploti+1;
-      end
-   end
+   OutObj.InErrBars(n) = sum(abs(trueErrX) <= ErrBdx + errFudge)/neval;
    if ErrBd < abstol
       if abstol >= 0.01
          if obj.isDiagnose
             [h,legendLabel,coli,nstart] =  ...
                multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
-               xdata,fdata,xeval,Appx,obj,abstol);
+               xdata,fdata,xeval,Appx,obj,abstol,trueErrX);
             if obj.plotSites
                plot(xdata(1:n,:),zeros(n,1),'k.')
             end
@@ -74,6 +66,14 @@ for n = obj.n0:obj.nmax
       itol = itol + 1;
       if itol > ntol, break, end
       abstol = obj.abstolVec(itol);
+   end
+   if obj.isDiagnose && nstart < n
+      if n == plotn(ploti)
+         [h,legendLabel,coli,nstart] =  ...
+            multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
+            xdata,fdata,xeval,Appx,obj,NaN,trueErrX);
+         ploti = ploti+1;
+      end
    end
 end
 fprintf('\n')
@@ -89,5 +89,5 @@ OutObj.fdata = fdata(1:n);
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...
-      (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval);
+      (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval,xdata,trueErrX,ErrBdx);
 end
