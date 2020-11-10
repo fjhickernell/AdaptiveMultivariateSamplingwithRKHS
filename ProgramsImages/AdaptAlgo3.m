@@ -29,7 +29,17 @@ thOptimVec(obj.nmax,dth) = 0;
 for n = obj.n0:obj.nmax
    print_iterations(n,'n',true)
    if n == obj.n0
-      xdata = fixedDesign(1:n,obj);
+      if strcmp(obj.whDes,'adapt_th')
+         xdata(1,:) = (obj.xLim(1,:) + obj.xLim(2,:))/2;
+         kernel = @(t,x) obj.kernelth(t,x,OutObj.currentTheta);
+         for nn = 2:n
+            [Kmat, Kdateval, Kdiageval] = KMP(xdata(1:nn-1,:), xeval, kernel);
+            [~, ~, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
+            xdata(nn,:) = xeval(whKX,:);
+         end
+      else
+         xdata = fixedDesign(1:n,obj);     
+      end
       fdata(1:n) = f(xdata(1:n,:));
    else
       xdata(n,:) = xeval(whKX,:);

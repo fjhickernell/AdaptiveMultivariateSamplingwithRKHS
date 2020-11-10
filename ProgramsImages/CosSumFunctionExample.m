@@ -14,4 +14,4 @@ cosSumFunEx = set_prop(cosSumFunEx,'legendPos',{'eastoutside'});
 [OutCosSumGauss,cosSumFunEx] = RunFunAppxExample(cosSumFunEx);
 
 cosSumFunEx = set_prop(cosSumFunEx,'kernelOrig',{@MaternKernel});
-[OutCosSumGaussMatern,cosSumFunEx] = RunFunAppxExample(cosSumFunEx);
+%[OutCosSumGaussMatern,cosSumFunEx] = RunFunAppxExample(cosSumFunEx);
