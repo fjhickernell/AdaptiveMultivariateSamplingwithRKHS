@@ -1,9 +1,9 @@
 %% Cosine of Sum Example
 tic
 clearvars
-cosSumFunEx = FunctionApproxProblem(repmat({@CosSumFun},1,2));
+cosSumFunEx = FunctionApproxProblem(repmat({@CosSumFun},1,3));
 cosSumFunEx = set_prop(cosSumFunEx,'fparam',{[1 0.1]});
-cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'apdapt_th','unifChebyshev'});
+cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'apdapt_th','unifChebyshev','seqChebyshev'});
 cosSumFunEx = set_prop(cosSumFunEx,'nmax',{200});
 cosSumFunEx = set_prop(cosSumFunEx,'theta',{[-1 -1]});
 cosSumFunEx = set_prop(cosSumFunEx,'xLim',{[0 0; 1 1]});
