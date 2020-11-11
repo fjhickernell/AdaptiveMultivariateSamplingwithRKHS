@@ -19,8 +19,10 @@ classdef FunAppxOut
       function obj = FunAppxOut(FunAppxInpObj)
          %FUNAPPXOUT Construct an instance of this class
          %   Detailed explanation goes here
-         d_obj = length(FunAppxInpObj);
-         obj(1,d_obj) = obj;
+         if nargin > 0
+            d_obj = length(FunAppxInpObj);
+            obj(1,d_obj) = obj;
+         end
       end
       
    end
