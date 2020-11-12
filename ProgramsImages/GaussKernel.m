@@ -21,6 +21,23 @@ function [kerval,kdiageval,errKNull,theta] = ...
          kdiageval = ones(nx,1);
          errKNull = max(kdiageval);
       end
+   else
+      dd = dth/2;
+      if transYes
+         theta = [exp(theta(1:dd)) theta(dd+1:dth)];
+      end
+      thetaa = theta(1:dd);
+      thetab = theta(dd+1:dth);
+      tmx = (reshape(t,[nt,1,d]) - reshape(x,[1,nx,d])) ...
+         .* reshape(thetaa,[1 1 dd]);
+      normtmx2 = reshape(sum(tmx.^2,3),[nt,nx]);
+      tmpl = reshape(sum((reshape(t,[nt,1,d]) + reshape(x,[1,nx,d]))...
+         .* reshape(thetab,[1 1 dd]),3),[nt,nx]);
+      kerval = exp(tmpl) .*  exp(-normtmx2); 
+      if nargout > 1
+         kdiageval = exp(sum(x.*(2*thetab),2));
+         errKNull = max(kdiageval);
+      end
    end
 end
 

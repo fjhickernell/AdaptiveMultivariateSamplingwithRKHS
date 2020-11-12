@@ -77,7 +77,7 @@ for n = obj.n0:obj.nmax
       abstol = obj.abstolVec(itol);
    end
    if obj.isDiagnose && n > nstart
-      if n == plotn(ploti)
+      if n >= plotn(ploti)
          [h,legendLabel,coli,nstart] =  ...
             multiAppxDiagAddData(h,legendLabel,coli,n,nstart, ...
             xdata,fdata,xeval,Appx,obj,NaN);

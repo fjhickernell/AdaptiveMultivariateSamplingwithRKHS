@@ -2,9 +2,10 @@
 tic
 clearvars
 cosSumFunEx = FunctionApproxProblem(repmat({@CosSumFun},1,3));
-d = 6;
-fpar = [1 0.1 0.1 zeros(1,d-3)];
-cosSumFunEx = set_prop(cosSumFunEx,'fparam',{fpar(1,randperm(d))});
+d = 12;
+fpar = 2.^(-1:-1:-d);
+fpar = fpar(1,randperm(d));
+cosSumFunEx = set_prop(cosSumFunEx,'fparam',{fpar});
 cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'apdapt_th','unifChebyshev','seqChebyshev'});
 cosSumFunEx = set_prop(cosSumFunEx,'nmax',{200});
 cosSumFunEx = set_prop(cosSumFunEx,'theta',{-ones(1,d)});

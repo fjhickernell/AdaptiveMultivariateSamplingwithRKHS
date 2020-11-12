@@ -8,7 +8,7 @@ classdef FunctionApproxProblem
       kernelOrig = @GaussKernel
       Algo = @AdaptAlgo1
       isDiagnose = true
-      Ainf = 0.5
+      Ainf = 1
       B0 =  0.2
       n0 = 1
       nmax = 500
