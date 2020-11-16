@@ -45,11 +45,14 @@ for n = obj.n0:obj.nmax
       xdata(n,:) = xeval(whKX,:);
       fdata(n) = f(xdata(n,:));
    end
-%    if n ==14, keyboard, end
    [thOptimVec(n,:),OutObj.currentTheta] = selectTheta(obj,xdata(1:n,:),fdata(1:n), ...
       xeval,OutObj.currentTheta);
    kernel = @(t,x) obj.kernelth(t,x,OutObj.currentTheta);
    [Kmat, Kdateval, Kdiageval, errKNull] = KMP(xdata(1:n,:), xeval, kernel);
+   condK = 1/rcond(Kmat);
+   if condK > 1e10
+      disp(['Condition of K = ' num2str(condK)])
+   end
    [errKXx, errKX, whKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
    AXvec(n) = AX;
