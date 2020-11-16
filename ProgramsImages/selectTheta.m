@@ -29,7 +29,8 @@ switch obj.whObj
    case 'minErrBd'
       object = 2*(log(AXtheta) + log(errKX)) + log(ydata'*(Kmat\ydata));
    otherwise %'EmpBayesAx'
-      object = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata)) ...
+      %object = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*(Kmat\ydata)) ...
+      object = mean(log(max(eig(Kmat),100*eps))) + log(ydata'*KinvY(Kmat,ydata)) ...
          + log(1+AXtheta.^2);
 end
       
