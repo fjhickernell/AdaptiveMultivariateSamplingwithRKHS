@@ -71,6 +71,7 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
       end
       fprintf(fid,'} \\\\ \\hline \n');
    end   
+   nfinal = max(obj.nmax,nNeed(1:ntol-1));
    fprintf(fid,'n & ');
    fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));
    fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntol));

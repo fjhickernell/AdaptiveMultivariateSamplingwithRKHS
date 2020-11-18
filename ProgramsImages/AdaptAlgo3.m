@@ -6,7 +6,7 @@ neval = size(xeval,1);
 xdata(obj.nmax,d) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
-plotn = [0 obj.n0 obj.nmax];
+plotn = [0 obj.n0+(0:10) obj.nmax];
 if obj.isDiagnose
    [h,ploti,legendLabel] =  ...
       multiAppxDiagPrelim(plotn,ntol,xeval,feval,obj);
@@ -96,6 +96,7 @@ OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
 OutObj.thetaOptimalVec = thOptimVec(1:n,:);
 
+ntol = min(ntol,itol-1);
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...
       (h,legendLabel,OutObj,coli,n,ntol,nNeed,obj,xeval,xdata,trueErrX,ErrBdx);

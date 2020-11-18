@@ -23,7 +23,6 @@ classdef FunctionApproxProblem
       thetaRange = (-5:0.5:5)'
       abstolVec = [0.05 0.02 0.01 0.005 0.002 0.001]'
       canvasTheta = false
-      currentTheta = 0
       final_theta
       colorScheme
    end

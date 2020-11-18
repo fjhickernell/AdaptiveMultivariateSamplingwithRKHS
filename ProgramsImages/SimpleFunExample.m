@@ -1,13 +1,14 @@
 %% Example of easy function
 tic
 clearvars
-simpleFunEx = FunctionApproxProblem({@simpleFun,@simpleFun});
-simpleFunEx(2).Algo = @AdaptAlgo2;
-simpleFunEx = set_prop(simpleFunEx,'whDes',{'unifChebyshev'});
+simpleFunEx = FunctionApproxProblem({@simpleFun});
+simpleFunEx = set_prop(simpleFunEx,'kernelOrig',{@MaternKernelGeneral});
+simpleFunEx = set_prop(simpleFunEx,'Algo',{@AdaptAlgo3});
+simpleFunEx = set_prop(simpleFunEx,'theta',{[0.4,-1]});
 simpleFunEx = set_prop(simpleFunEx,'n0',{5});
 
 %%
-simpleFunOutUnifCheby = RunFunAppxExample(simpleFunEx);
+simpleFunOutUnif = RunFunAppxExample(simpleFunEx);
 
 %% With uniform grid 
 simpleFunEx = set_prop(simpleFunEx,'whDes',{'unif_grid'});
