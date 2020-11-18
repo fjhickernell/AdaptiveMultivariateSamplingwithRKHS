@@ -55,7 +55,7 @@ function [kerval,kdiageval,errKNull,theta] = ...
       tmpl = reshape(sum((reshape(t,[nt,1,d]) + reshape(x,[1,nx,d]))...
          .* reshape(thetab,[1 1 dd]),3),[nt,nx]);
       if nu < 40
-         kerval = (2^(1-nu)/gamma(nu)) .* besselk(nu,normtmx);
+         kerval = (2^(1-nu)/gamma(nu)) .* (normtmx.^nu) .* besselk(nu,normtmx);
          kerval(normtmx==0) = 1;
       else
          kerval = exp(-normtmx.^2/2);
