@@ -1,13 +1,13 @@
 %% Cosine of Sum Example
 tic
 clearvars
-cosSumFunEx = FunctionApproxProblem(repmat({@CosSumFun},1,3));
+cosSumFunEx = FunctionApproxProblem(repmat({@CosSumFun},1,1));
 d = 12;
 fpar = 2.^(-1:-1:-d);
 fpar = fpar(1,randperm(d));
 cosSumFunEx = set_prop(cosSumFunEx,'fparam',{fpar});
-cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'apdapt_th','unifChebyshev','seqChebyshev'});
-cosSumFunEx = set_prop(cosSumFunEx,'nmax',{200});
+cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'seqChebyshev'});
+cosSumFunEx = set_prop(cosSumFunEx,'nmax',{300});
 cosSumFunEx = set_prop(cosSumFunEx,'theta',{-ones(1,d)});
 cosSumFunEx = set_prop(cosSumFunEx,'xLim',{[zeros(1,d); ones(1,d)]});
 cosSumFunEx = set_prop(cosSumFunEx,'Algo',{@AdaptAlgo3});

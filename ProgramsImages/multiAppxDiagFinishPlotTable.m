@@ -71,21 +71,21 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
       end
       fprintf(fid,'} \\\\ \\hline \n');
    end   
-   nfinal = max(obj.nmax,nNeed(1:ntol-1));
+   [~,ntolReach] = find(nNeed <= obj.nmax,1,'last');
    fprintf(fid,'n & ');
-   fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));
-   fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntol));
+   fprintf(fid,'%3.0f & ',nNeed(1:ntolReach-1));
+   fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntolReach));
    fprintf(fid,'\\varepsilon & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',obj.abstolVec(1:ntol-1))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', obj.abstolVec(ntol))) ' \\\\ \\hline \n']);
+   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',obj.abstolVec(1:ntolReach-1))));
+   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', obj.abstolVec(ntolReach))) ' \\\\ \\hline \n']);
    fprintf(fid,'\\errBd & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.ErrBdVec(nNeed(1:ntol-1)))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', OutObj.ErrBdVec(nNeed(ntol)))) ' \\\\ \\hline \n']);
+   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.ErrBdVec(nNeed(1:ntolReach-1)))));
+   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', OutObj.ErrBdVec(nNeed(ntolReach)))) ' \\\\ \\hline \n']);
    fprintf(fid,'\\norm[\\infty]{f - \\APP(\\mX,\\by)} & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.trueErr(nNeed(1:ntol-1)))));
+   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.trueErr(nNeed(1:ntolReach-1)))));
    fprintf(fid,[cleanStringFJH(sprintf('%3.1E',OutObj.trueErr(nNeed(ntol)) )) ' \\\\ \\hline \n']);
    fprintf(fid,'\\text{Ptwise Error Bound} & ');
-   fprintf(fid,'%3.0f\\%% & ',100*OutObj.InErrBars(nNeed(1:ntol-1)));
-   fprintf(fid,'%3.0f\\%% \n', 100*OutObj.InErrBars(nNeed(ntol)));
+   fprintf(fid,'%3.0f\\%% & ',100*OutObj.InErrBars(nNeed(1:ntolReach-1)));
+   fprintf(fid,'%3.0f\\%% \n', 100*OutObj.InErrBars(nNeed(ntolReach)));
    fprintf(fid,'\\end{array} \n \\]');
 end
