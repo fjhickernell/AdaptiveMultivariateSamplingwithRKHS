@@ -57,7 +57,7 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(fid,['\\ldots, ' cleanStringFJH(sprintf('%2.2g)',xeval(end)))]);
    fprintf(fid,['\\qquad n_0 = ' cleanStringFJH(sprintf('%2.0f',obj.n0))]);
    fprintf(fid,'} \\\\ \\hline \n');
-     if any(strcmp(obj.algoname,'AdaptAlgo3'))
+   if any(strcmp(obj.algoname,'AdaptAlgo3'))
        fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{ \\alpha = ']);
       dth = length(obj.fparam);
 %       if dth == 1
@@ -95,9 +95,9 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
       else
          fprintf(fid,'(');
          for jj = 1:dth-1
-            fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',obj.final_theta(jj))));
+            fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',OutObj.finalTheta(jj))));
          end
-         fprintf(fid,cleanStringFJH(sprintf('%0.2g)',obj.final_theta(dth))));
+         fprintf(fid,cleanStringFJH(sprintf('%0.2g)',OutObj.finalTheta(dth))));
       end
       fprintf(fid,'} \\\\ \\hline \n');
    end

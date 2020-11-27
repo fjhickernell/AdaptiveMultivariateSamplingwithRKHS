@@ -1,5 +1,4 @@
-function [kerval,kdiageval,errKNull,theta] = ...
-   GaussKernel(t,x,theta,transYes)
+function [kerval,kdiageval,errKNull,theta] = GaussKernel(t,x,theta,transYes)
    [nt,d] = size(t);
    [nx,dx] = size(x);
       dth = length(theta);

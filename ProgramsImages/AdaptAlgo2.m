@@ -15,13 +15,15 @@ end
 itol = 1;
 abstol = obj.abstolVec(itol);
 nNeed(ntol,1) = 0;
+nstart = 0;
 OutObj.ErrBdVec(obj.nmax,1) = 0;
 OutObj.trueErr(obj.nmax,1) = 0;
 OutObj.InErrBars(obj.nmax,1) = 0;
 OutObj.AppxNorm(obj.nmax,1) = 0;
-nstart = 0;
+OutObj.whereBad(obj.nmax,d) = 0;
 AXvec(obj.nmax,1) = 0;
 BXvec(obj.nmax,1) = 0;
+errKXvec(obj.nmax,1) = 0;
 minNormf(obj.nmax,1) = 0;
 maxNormf = inf(obj.nmax,1);
 OutObj.NeccFlag(obj.nmax,1) = 0;
@@ -43,6 +45,7 @@ for n = obj.n0:obj.nmax
    [AX, BX] = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
    AXvec(n) = AX;
    BXvec(n) = BX;
+   errKXvec(n) = errKX;
    [Appx, OutObj.AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    minNormf(n+1) = max(minNormf(n),OutObj.AppxNorm(n));
    maxNormf(n+1) = min(maxNormf(n),sqrt(1+AX.^2)*OutObj.AppxNorm(n));
@@ -52,7 +55,8 @@ for n = obj.n0:obj.nmax
       maxNormf(n+1) = sqrt(1+AX.^2)*OutObj.AppxNorm(n);
    end
    OutObj.ErrBdVec(n) = ErrBd;
-   OutObj.trueErr(n) = max(abs(feval - Appx));
+   [OutObj.trueErr(n),where] = max(abs(feval - Appx));
+   OutObj.whereBad(n,:) = xeval(where,:);
    errFudge = eps*cond(Kmat);
    OutObj.InErrBars(n) = sum(abs(feval - Appx) <= ErrBdx + errFudge)/neval;
    if obj.isDiagnose
@@ -81,13 +85,18 @@ for n = obj.n0:obj.nmax
    end
 end
 fprintf('\n')
-OutObj.Appx = Appx;
+OutObj.Appx = Appx(1:n);
+OutObj.AppxNorm = OutObj.AppxNorm(1:n);
+OutObj.AXvec = AXvec(1:n);
+OutObj.errKXvec = errKXvec(1:n);
 OutObj.ErrBdVec = OutObj.ErrBdVec(1:n);
 OutObj.trueErr = OutObj.trueErr(1:n);
 OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.NeccFlag = OutObj.NeccFlag(2:min(obj.nmax,n+1));
 OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
+OutObj.whereBad = OutObj.whereBad(1:n,:);
+[~,~,~,OutObj.finalTheta] = kernel(xeval(1,:),xeval(1,:));
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...

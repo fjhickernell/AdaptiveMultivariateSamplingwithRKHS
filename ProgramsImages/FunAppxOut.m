@@ -3,6 +3,8 @@ classdef FunAppxOut
    
    properties
       Appx
+      AXvec
+      errKXvec
       ErrBdx
       ErrBdVec
       trueErr
@@ -13,6 +15,8 @@ classdef FunAppxOut
       fdata
       thetaOptimalVec
       currentTheta
+      finalTheta
+      whereBad
    end
    
    methods

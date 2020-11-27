@@ -15,17 +15,19 @@ end
 itol = 1;
 abstol = obj.abstolVec(itol);
 nNeed(ntol,1) = 0;
+nstart = 0;
 OutObj.ErrBdVec(obj.nmax,1) = 0;
 OutObj.trueErr(obj.nmax,1) = 0;
 OutObj.InErrBars(obj.nmax,1) = 0;
 OutObj.AppxNorm(obj.nmax,1) = 0;
-OutObj.NeccFlag = NaN;
-nstart = 0;
+OutObj.whereBad(obj.nmax,d) = 0;
 AXvec(obj.nmax,1) = 0;
 BXvec(obj.nmax,1) = 0;
+errKXvec(obj.nmax,1) = 0;
 dth = size(obj.theta,2);
 OutObj.currentTheta = obj.theta;
 thOptimVec(obj.nmax,dth) = 0;
+OutObj.NeccFlag = NaN;
 trueErrX = [];
 ErrBdx = [];
 for n = obj.n0:obj.nmax
@@ -59,10 +61,12 @@ for n = obj.n0:obj.nmax
    [AX, BX] = ABfun(errKX,errKNull,obj.Ainf,obj.B0);
    AXvec(n) = AX;
    BXvec(n) = BX;
+   errKXvec(n) = errKX;
    [Appx, OutObj.AppxNorm(n), ErrBdx, ErrBd] = Approx(fdata(1:n), Kmat, Kdateval, errKXx, errKX, AX );
    OutObj.ErrBdVec(n) = ErrBd;
-   trueErrX = abs(feval-Appx);
-   OutObj.trueErr(n) = max(trueErrX);
+   trueErrX = abs(feval - Appx);
+   [OutObj.trueErr(n),where] = max(trueErrX);
+   OutObj.whereBad(n,:) = xeval(where,:);
    errFudge = eps*cond(Kmat);
    OutObj.InErrBars(n) = sum(trueErrX <= ErrBdx + errFudge)/neval;
    if ErrBd < abstol
@@ -91,12 +95,18 @@ for n = obj.n0:obj.nmax
    end
 end
 fprintf('\n')
+OutObj.Appx = Appx(1:n);
+OutObj.AppxNorm = OutObj.AppxNorm(1:n);
+OutObj.AXvec = AXvec(1:n);
+OutObj.errKXvec = errKXvec(1:n);
 OutObj.ErrBdVec = OutObj.ErrBdVec(1:n);
 OutObj.trueErr = OutObj.trueErr(1:n);
 OutObj.InErrBars = OutObj.InErrBars(1:n);
 OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
+OutObj.whereBad = OutObj.whereBad(1:n,:);
 OutObj.thetaOptimalVec = thOptimVec(1:n,:);
+OutObj.finalTheta = thOptimVec(n,:);
 
 ntol = min(ntol,itol-1);
 if obj.isDiagnose
