@@ -26,6 +26,8 @@ BXvec(obj.nmax,1) = 0;
 dth = size(obj.theta,2);
 OutObj.currentTheta = obj.theta;
 thOptimVec(obj.nmax,dth) = 0;
+trueErrX = [];
+ErrBdx = [];
 for n = obj.n0:obj.nmax
    print_iterations(n,'n',true)
    if n == obj.n0
