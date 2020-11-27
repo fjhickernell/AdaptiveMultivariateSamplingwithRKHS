@@ -57,35 +57,73 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
    fprintf(fid,['\\ldots, ' cleanStringFJH(sprintf('%2.2g)',xeval(end)))]);
    fprintf(fid,['\\qquad n_0 = ' cleanStringFJH(sprintf('%2.0f',obj.n0))]);
    fprintf(fid,'} \\\\ \\hline \n');
-   if any(strcmp(obj.algoname,'Alg3'))
-      fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{\\text{Final } \\theta = ']);
-      dth = length(obj.final_theta);
-      if dth == 1
-         fprintf(fid,cleanStringFJH(sprintf('%4.1E',obj.final_theta)));
+     if any(strcmp(obj.algoname,'AdaptAlgo3'))
+       fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{ \\alpha = ']);
+      dth = length(obj.fparam);
+%       if dth == 1
+%          fprintf(fid,cleanStringFJH(sprintf('%4.1E',obj.fparam)));
+%       else
+%          fprintf(fid,'(');
+%          for jj = 1:dth-1
+%             fprintf(fid,cleanStringFJH(sprintf('%4.1E, ',obj.fparam(jj))));
+%          end
+%          fprintf(fid,cleanStringFJH(sprintf('%4.1E)',obj.fparam(dth))));
+%       end
+       if dth == 1
+         fprintf(fid,cleanStringFJH(sprintf('%0.2g',obj.fparam)));
       else
          fprintf(fid,'(');
          for jj = 1:dth-1
-            fprintf(fid,cleanStringFJH(sprintf('%4.1E, ',obj.final_theta(jj))));
+            fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',obj.fparam(jj))));
          end
-         fprintf(fid,cleanStringFJH(sprintf('%4.1E)',obj.final_theta(dth))));
+         fprintf(fid,cleanStringFJH(sprintf('%0.2g)',obj.fparam(dth))));
       end
       fprintf(fid,'} \\\\ \\hline \n');
-   end   
-   [~,ntolReach] = find(nNeed <= obj.nmax,1,'last');
-   fprintf(fid,'n & ');
-   fprintf(fid,'%3.0f & ',nNeed(1:ntolReach-1));
-   fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntolReach));
-   fprintf(fid,'\\varepsilon & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',obj.abstolVec(1:ntolReach-1))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', obj.abstolVec(ntolReach))) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\errBd & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.ErrBdVec(nNeed(1:ntolReach-1)))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E', OutObj.ErrBdVec(nNeed(ntolReach)))) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\norm[\\infty]{f - \\APP(\\mX,\\by)} & ');
-   fprintf(fid,cleanStringFJH(sprintf('%3.1E & ',OutObj.trueErr(nNeed(1:ntolReach-1)))));
-   fprintf(fid,[cleanStringFJH(sprintf('%3.1E',OutObj.trueErr(nNeed(ntol)) )) ' \\\\ \\hline \n']);
-   fprintf(fid,'\\text{Ptwise Error Bound} & ');
-   fprintf(fid,'%3.0f\\%% & ',100*OutObj.InErrBars(nNeed(1:ntolReach-1)));
-   fprintf(fid,'%3.0f\\%% \n', 100*OutObj.InErrBars(nNeed(ntolReach)));
-   fprintf(fid,'\\end{array} \n \\]');
+      fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{\\text{Final } \\theta = ']);
+      dth = length(OutObj.thetaOptimalVec(end,:));
+%       if dth == 1
+%          fprintf(fid,cleanStringFJH(sprintf('%4.1E',obj.final_theta)));
+%       else
+%          fprintf(fid,'(');
+%          for jj = 1:dth-1
+%             fprintf(fid,cleanStringFJH(sprintf('%4.1E, ',obj.final_theta(jj))));
+%          end
+%          fprintf(fid,cleanStringFJH(sprintf('%4.1E)',obj.final_theta(dth))));
+%       end
+       if dth == 1
+         fprintf(fid,cleanStringFJH(sprintf('%0.2g',obj.final_theta)));
+      else
+         fprintf(fid,'(');
+         for jj = 1:dth-1
+            fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',obj.final_theta(jj))));
+         end
+         fprintf(fid,cleanStringFJH(sprintf('%0.2g)',obj.final_theta(dth))));
+      end
+      fprintf(fid,'} \\\\ \\hline \n');
+   end
+    
+   if find(nNeed==0,1,'first') == 1
+     disp(['Exceed the budget when error tolerance is ' num2str(obj.abstolVec(find(nNeed ==0,1,'first'))) ])
+   else
+       if find(nNeed==0,1,'first') > 1 
+            ntol = find(nNeed ==0,1,'first') -1;
+            disp(['Exceed the budget when error tolerance is ' num2str(obj.abstolVec(find(nNeed ==0,1,'first'))) ])
+       end
+       fprintf(fid,'n & ');
+       fprintf(fid,'%3.0f & ',nNeed(1:ntol-1));
+       fprintf(fid,'%3.0f \\\\ \\hline \n', nNeed(ntol));
+       fprintf(fid,'\\varepsilon & ');
+       fprintf(fid,cleanStringFJH(sprintf('%0.2g & ',obj.abstolVec(1:ntol-1))));
+       fprintf(fid,[cleanStringFJH(sprintf('%0.2g', obj.abstolVec(ntol))) ' \\\\ \\hline \n']);
+       fprintf(fid,'\\errBd & ');
+       fprintf(fid,cleanStringFJH(sprintf('%0.2g & ',OutObj.ErrBdVec(nNeed(1:ntol-1)))));
+       fprintf(fid,[cleanStringFJH(sprintf('%0.2g', OutObj.ErrBdVec(nNeed(ntol)))) ' \\\\ \\hline \n']);
+       fprintf(fid,'\\norm[\\infty]{f - \\APP(\\mX,\\by)} & ');
+       fprintf(fid,cleanStringFJH(sprintf('%0.2g & ',OutObj.trueErr(nNeed(1:ntol-1)))));
+       fprintf(fid,[cleanStringFJH(sprintf('%0.2g',OutObj.trueErr(nNeed(ntol)) )) ' \\\\ \\hline \n']);
+       fprintf(fid,'\\text{Ptwise Error Bound} & ');
+       fprintf(fid,'%3.0f\\%% & ',100*OutObj.InErrBars(nNeed(1:ntol-1)));
+       fprintf(fid,'%3.0f\\%% \n', 100*OutObj.InErrBars(nNeed(ntol)));
+       fprintf(fid,'\\end{array} \n \\]');
+   end
 end
