@@ -32,7 +32,8 @@ ellipsevol=zeros(ntheta,1);
 legendLabel = cell(length(thetavec));
 for i = 1:ntheta
    theta = thetavec(i);
-   Kmat = MaternKernel(xdata,xdata,theta);
+   %Kmat = MaternKernel(xdata,xdata,theta);
+   Kmat = GaussKernel(xdata,xdata,theta);
    L = chol(Kmat,'lower');
    ellipsevec = sqrt(ydata'*(Kmat\ydata))*spherevec*L';
    ellipsevol(i) = sqrt((ydata'*(Kmat\ydata)).^ndata * det(Kmat) );
@@ -50,13 +51,13 @@ xlabel('\(z_1\)')
 ylabel('\(z_2\)')
 legend(h(thOrder),legendLabel{thOrder},  ...
    'location','northwest','box','off');
-print -depsc ellipsesPlot.eps
+print -depsc ellipsesGaussPlot.eps
 
 figure(kfigh);
 xlabel('\(x\)')
 ylabel('\(K_{\theta}(x,0.5)\)')
 legend(hK(thOrder),legendLabel{thOrder},  ...
    'location','south','box','off');
-print -depsc KthetaPlot.eps
+print -depsc GaussKthetaPlot.eps
 
 [thetavec(thOrder) ellipsevol(thOrder)]

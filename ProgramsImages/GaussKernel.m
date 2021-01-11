@@ -1,4 +1,5 @@
 function [kerval,kdiageval,errKNull,theta] = GaussKernel(t,x,theta,transYes)
+   if nargin < 4, transYes = false; end
    [nt,d] = size(t);
    [nx,dx] = size(x);
       dth = length(theta);

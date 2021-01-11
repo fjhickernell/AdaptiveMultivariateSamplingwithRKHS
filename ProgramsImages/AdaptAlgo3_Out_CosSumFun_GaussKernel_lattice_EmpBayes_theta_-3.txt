@@ -1,0 +1,16 @@
+\[ 
+ \begin{array}{rccccccc} 
+\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.87)\qquad n_0 = 16} \\ \hline 
+\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \hline 
+\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \hline 
+\theta_\ell & 0.23  & 0.12  & 0.072  & 0.034  & 0.016  & 0.0087  & 0.0041  \\ \hline 
+\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \hline 
+\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \hline 
+\theta_\ell & 0.0023  & 0.0012  & 0.00067  & 0.00028  & 8.3e{-}5  \\ \hline 
+n &  23 &  27 &  33 &  41 &  52 &  74 &  98 \\ \hline 
+\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \hline 
+\errBd & 0.078 & 0.046 & 0.02 & 0.0096 & 0.0047 & 0.0019 & 0.00099 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.02 & 0.0081 & 0.0048 & 0.0018 & 0.0014 & 0.0005 & 0.0003 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]
