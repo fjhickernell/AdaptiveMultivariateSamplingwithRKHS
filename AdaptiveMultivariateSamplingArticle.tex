@@ -806,8 +806,8 @@ Now the kernel is strongly dependent on $\by$
 \label{ex:compfun2}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} 
-		\qquad	\includegraphics[height = 5.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} 
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} 
+		\qquad	\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} 
 		%\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern2.eps} 
 		\caption{ \label{fig:ex5}}
 	\end{figure}
@@ -820,32 +820,8 @@ Now the kernel is strongly dependent on $\by$
 	
 \end{example}
 
-\YuhanNote{Insert 2D Example}
-\begin{example}
-\label{ex:limfun}
-To illustrate it is still a space-filling design,  we consider the following multivariate function
-	\begin{equation}
-	f: (x_1,x_2) \mapsto 
- 1/6\left[(30+5x_1\sin(5x_1))
-    (4+\exp(-5x_2)-100\right] 
-	\end{equation}
-	where $x_i \in [0,1], \  i=1,2$ ,which is plotted in Figure \ref{fig:LimFun}. 
-		
-	\begin{figure}[H]
-		\centering
-		\includegraphics[height = 4.5cm]{ProgramsImages/LimFunPlot.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LimFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} \qquad		
-		\caption{ \label{fig:LimFun}}
-	\end{figure}
-	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=10$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne}.
-	
+\YuhanNote{Insert High Dimensional Example}
 
-
-		
-	\input{ProgramsImages/Alg3_Out_Lim2DFun_SpatialMatern_adapt_th_EmpBayes_theta_1.txt}
-This is too slow
-
-\end{example}
 
 \begin{example}
 \label{ex:ChengDufun}
@@ -857,206 +833,26 @@ To illustrate it is still a space-filling design,  we consider the following mul
 	\end{equation}
 	where $x_i \in [0,1]^d, i=1,\ldots,d$ and $\alpha_i =2^{-i}$ are the weights with random permutation. We have the following results.
 \begin{itemize}
-\item $d=12$
+\item $d=12,neval = 2^{16}$
 \begin{itemize}
 \item Lattice Points
- \[ 
+\[ 
  \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 10} \\ \hline 
-\text{coordinate} & 9 & 3 & 2 & 8 & 11 & 12 \\
-\alpha & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta & 3.9\text{E}{-}1 & 1.7\text{E}{-}1 & 1.1\text{E}{-}1  & 6.5\text{E}{-}2 &3.8\text{E}{-}2&  2.1\text{E}{-}2 \\
-\hline
-\text{coordinate} & 4 & 10 & 7 & 1 & 6 & 5 \\
-\alpha & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta & 1.2\text{E}{-}2 & 8.3\text{E}{-}3 &  5.7\text{E}{-}3 &  2.9\text{E}{-}3 & 2.0\text{E}{-}3&  1.7\text{E}{-}3\\
-\hline
-n & 105 & 111 & 120 & 126 & 132 & 140 & 146 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 9.5\text{E}{-}2 & 4.8\text{E}{-}2 & 1.9\text{E}{-}2 & 9.5\text{E}{-}3 & 4.8\text{E}{-}3 & 1.8\text{E}{-}3 & 9.6\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 2.1\text{E}{-}2 & 9.6\text{E}{-}3 & 3.7\text{E}{-}3 & 1.9\text{E}{-}3 & 8.0\text{E}{-}4 & 3.7\text{E}{-}4 & 1.8\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \YuhanNote{new table} $neval = 20000$
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 10} \\ \hline 
-\text{Coordinate}, \ell & 10 & 1  & 7 & 5 & 9 & 8 \\
-\alpha_\ell & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta_\ell & 2.2\text{E}{-}1  & 1.2\text{E}{-}1 & 6.3\text{E}{-}2 & 3.1\text{E}{-}2 & 1.4\text{E}{-}2& 9.2\text{E}{-}3, \\
-\hline
-\text{Coordinate},\ell & 12 & 4 & 6 & 3 & 2 & 11 \\
-\alpha_\ell & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta_\ell & 4.5\text{E}{-}3 & 2.1\text{E}{-}3&  1.2\text{E}{-}3 & 8.9\text{E}{-}4& 5.4\text{E}{-}8& 7.1\text{E}{-}5\\
-\hline
-n &  18 &  22 &  29 &  36 &  48 &  65 &  87 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\ERR(n,\mX,\by) & 8.2\text{E}{-}2 & 4.3\text{E}{-}2 & 2.0\text{E}{-}2 & 9.4\text{E}{-}3 & 4.7\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
- \bignorm[\infty]{f - \APP(n,\mX,\by)}  & 2.5\text{E}{-}2 & 1.0\text{E}{-}2 & 6.8\text{E}{-}3 & 4.4\text{E}{-}3 & 1.1\text{E}{-}3 & 1.8\text{E}{-}3 & 4.5\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- $\text{neval} = 2^{16}$
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.87)\qquad n_0 = 10} \\ \hline 
-\text{Coordinate}, \ell & 10 & 1  & 7 & 5 & 9 & 8 \\
-\alpha_\ell & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta_\ell & 2.3\text{E}{-}1  & 1.2\text{E}{-}1 & 8.1\text{E}{-}2 & 3.4\text{E}{-}2 & 2.0\text{E}{-}2 & 9.7\text{E}{-}3 \\
-\hline
-\text{Coordinate},\ell & 12 & 4 & 6 & 3 & 2 & 11 \\
-\alpha_\ell & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta_\ell & 5.3\text{E}{-}3 & 3.0\text{E}{-}3&  1.4\text{E}{-}3 &  1.2\text{E}{-}3& 1.3\text{E}{-}4& 2.7\text{E}{-}8\\
-\hline
-n &  19 &  23 &  29 &  38 &  47 &  72 & 101 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\ERR(n,\mX,\by) & 8.7\text{E}{-}2 & 4.0\text{E}{-}2 & 2.0\text{E}{-}2 & 9.6\text{E}{-}3 & 4.9\text{E}{-}3 & 1.9\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\bignorm[\infty]{f - \APP(n,\mX,\by)} & 2.8\text{E}{-}2 & 1.1\text{E}{-}2 & 6.4\text{E}{-}3 & 3.7\text{E}{-}3 & 1.3\text{E}{-}3 & 5.4\text{E}{-}4 & 4.8\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.87)\qquad n_0 = 32} \\ \hline 
-\text{Coordinate}, \ell & 10 & 1  & 7 & 5 & 9 & 8 \\
-\alpha_\ell & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta_\ell & 2.3\text{E}{-}1  & 1.1\text{E}{-}1 & 5.9\text{E}{-}2 & 3.0\text{E}{-}2 & 1.8\text{E}{-}2 & 9.1\text{E}{-}3 \\
-\hline
-\text{Coordinate},\ell & 12 & 4 & 6 & 3 & 2 & 11 \\
-\alpha_\ell & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta_\ell &  4.5\text{E}{-}3 & 2.5\text{E}{-}3&  1.1\text{E}{-}3 &  6.1\text{E}{-}4& 9.4\text{E}{-}5& 5.3\text{E}{-}5\\
-\hline
-n &  34 &  36 &  43 &  48 &  55 &  72 &  94 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 9.7\text{E}{-}2 & 4.1\text{E}{-}2 & 2.0\text{E}{-}2 & 9.0\text{E}{-}3 & 4.9\text{E}{-}3 & 1.9\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 2.8\text{E}{-}2 & 1.7\text{E}{-}2 & 2.6\text{E}{-}3 & 1.2\text{E}{-}3 & 1.3\text{E}{-}3 & 8.1\text{E}{-}4 & 5.7\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \YuhanNote{New table with decimal numbers}
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.87)\qquad n_0 = 32} \\ \hline 
-\text{Coordinate}, \ell & 1 & 4  & 7 & 10 & 11 & 3 \\
-\alpha_\ell & 0.5&  0.25 & 0.125 &   0.0625 & 0.03125 &0.015625\\
-\theta_\ell & 0.21393& 0.11465 & 0.063733 & 0.034701 &  0.020308 & 0.011344 \\
-\hline
-\text{Coordinate},\ell & 12 & 9 & 6 & 8 & 2 & 5 \\
-\alpha_\ell & 0.0078125 & 0.0039063 & 0.0019531 &  0.00097656 & 0.00048828 & 0.00024414\\
-\theta_\ell &  0.004067 &  0.0032943 & 0.0014796 & 0.00053964 &0.00043355& 8.6312e{-}9\\
-n &  35 &  37 &  43 &  48 &  56 &  76 & 100 \\ \hline 
+\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 16} \\ \hline 
+\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \hline 
+\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \hline 
+\theta_\ell & 0.23  & 0.11  & 0.067  & 0.034  & 0.018  & 0.0084  & 0.0047  \\ \hline 
+\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \hline 
+\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \hline 
+\theta_\ell & 0.0025  & 0.0012  & 0.00056  & 0.00034  & 7.4e{-}5  \\ \hline 
+n &  22 &  27 &  32 &  39 &  49 &  71 &  94 \\ \hline 
 \varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \hline 
-\errBd & 0.0873 & 0.0489 & 0.0195 & 0.00987 & 0.00471 & 0.00195 & 0.000998 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.0245 & 0.0107 & 0.0017 & 0.00194 & 0.00111 & 0.000553 & 0.000357 \\ \hline 
+\errBd & 0.086 & 0.041 & 0.019 & 0.0096 & 0.0047 & 0.002 & 0.001 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.022 & 0.007 & 0.0067 & 0.0035 & 0.0018 & 0.00067 & 0.00022 \\ \hline 
 \text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]
  
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.87)\qquad n_0 = 32} \\ \hline 
-\text{Coordinate}, \ell & 1 & 4  & 7 & 10 & 11 & 3 \\
-\alpha_\ell & 0.5&  0.25 &  0.13 &  0.063 & 0.031 & 0.016\\
-\theta_\ell & 0.21& 0.11 &  0.064 &  0.035 &  0.02 & 0.011 \\
-\hline
-\text{Coordinate},\ell & 12 & 9 & 6 & 8 & 2 & 5 \\
-\alpha_\ell & 0.0078 & 0.0039 & 0.002 &  0.00098 &  0.00049 & 0.00024\\
-\theta_\ell & 0.0041 &  0.0033 & 0.0015 & 0.00054 &0.00043& 8.6e{-}9\\
-n &  35 &  37 &  43 &  48 &  56 &  76 & 100 \\ \hline 
-\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \hline 
-\errBd & 0.087 & 0.049 & 0.02 & 0.0099 & 0.0047 & 0.002 & 0.001 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.025 & 0.011 & 0.0017 & 0.0019 & 0.0011 & 0.00055 & 0.00036 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- 
-\item sequential Chebyshev points
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 10} \\ \hline 
-\text{coordinate} & 9 & 3 & 2 & 8 & 11 & 12 \\
-\alpha & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta & 3.5\text{E}{-}1 & 1.7\text{E}{-}1 & 1.1\text{E}{-}1  & 6.0\text{E}{-}2, &3.6\text{E}{-}2& 1.6\text{E}{-}2 \\
-\hline
-\text{coordinate} & 4 & 10 & 7 & 1 & 6 & 5 \\
-\alpha & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta &1.3\text{E}{-}2 & 6.8\text{E}{-}3 &  4.5\text{E}{-}3 & 3.8\text{E}{-}3 & 2.1\text{E}{-}3 &  1.9\text{E}{-}3\\
-\hline
-n & 103 & 109 & 117 & 123 & 128 & 136 & 143 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 8.9\text{E}{-}2 & 4.7\text{E}{-}2 & 1.8\text{E}{-}2 & 8.9\text{E}{-}3 & 4.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.4\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 2.0\text{E}{-}2 & 1.1\text{E}{-}2 & 4.5\text{E}{-}3 & 1.9\text{E}{-}3 & 9.2\text{E}{-}4 & 3.8\text{E}{-}4 & 1.4\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 10} \\ \hline 
-\text{coordinate} & 10 & 1  & 7 & 5 & 9 & 8 \\
-\alpha & 5.0\text{E}{-}1 & 2.5\text{E}{-}1 & 1.3\text{E}{-}1  & 6.3\text{E}{-}2 &3.1\text{E}{-}2& 1.6\text{E}{-}2 \\
-\theta & 2.2\text{E}{-}1  & 1.2\text{E}{-}1 & 6.3\text{E}{-}2 & 3.1\text{E}{-}2 & 1.4\text{E}{-}2& 9.2\text{E}{-}3, \\
-\hline
-\text{coordinate} & 12 & 4 & 6 & 3 & 2 & 11 \\
-\alpha & 7.8\text{E}{-}3 & 3.9\text{E}{-}3 & 2.0\text{E}{-}3 & 9.8\text{E}{-}4 & 4.9\text{E}{-}4 & 2.4\text{E}{-}4\\
-\theta & 4.5\text{E}{-}3 & 2.1\text{E}{-}3&  1.2\text{E}{-}3 & 8.9\text{E}{-}4& 5.4\text{E}{-}8. & 7.1\text{E}{-}5\\
-\hline
-n &  18 &  22 &  29 &  36 &  48 &  65 &  87 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 8.2\text{E}{-}2 & 4.3\text{E}{-}2 & 2.0\text{E}{-}2 & 9.4\text{E}{-}3 & 4.7\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-n &  18 &  22 &  29 &  36 &  48 &  65 &  87 \\ \hline 
-\varepsilon & 1.0\text{E}{-}1 & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 8.2\text{E}{-}2 & 4.3\text{E}{-}2 & 2.0\text{E}{-}2 & 9.4\text{E}{-}3 & 4.7\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 2.5\text{E}{-}2 & 1.0\text{E}{-}2 & 6.8\text{E}{-}3 & 4.4\text{E}{-}3 & 1.1\text{E}{-}3 & 1.8\text{E}{-}3 & 4.5\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \end{itemize}
- \item $d=20$
- \begin{itemize}
-\item Lattice Points
-\[ 
- \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.55)\qquad n_0 = 10} \\ \hline 
-n & 485 & 506 & 521 & 535 & 553 & 565 \\ \hline 
-\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 4.9\text{E}{-}2 & 2.0\text{E}{-}2 & 9.7\text{E}{-}3 & 4.9\text{E}{-}3 & 1.9\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 4.3\text{E}{-}3 & 2.1\text{E}{-}3 & 1.1\text{E}{-}3 & 5.4\text{E}{-}4 & 2.6\text{E}{-}4 & 1.2\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \[ 
- \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.55)\qquad n_0 = 50} \\ \hline 
-n & 491 & 512 & 527 & 540 & 558 & 571 \\ \hline 
-\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 4.9\text{E}{-}2 & 1.9\text{E}{-}2 & 9.6\text{E}{-}3 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 4.2\text{E}{-}3 & 1.9\text{E}{-}3 & 1.0\text{E}{-}3 & 5.5\text{E}{-}4 & 2.4\text{E}{-}4 & 1.2\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
-\item Chebyshev points
-\[ 
- \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.55)\qquad n_0 = 10} \\ \hline 
-n & 485 & 506 & 521 & 535 & 553 & 565 \\ \hline 
-\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 4.9\text{E}{-}2 & 2.0\text{E}{-}2 & 9.7\text{E}{-}3 & 4.9\text{E}{-}3 & 1.9\text{E}{-}3 & 9.9\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 4.3\text{E}{-}3 & 2.1\text{E}{-}3 & 1.1\text{E}{-}3 & 5.4\text{E}{-}4 & 2.6\text{E}{-}4 & 1.2\text{E}{-}4 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
- \item Chebyshev points
-\[ 
- \begin{array}{rccccccc} 
-\multicolumn{7}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 10} \\ \hline 
-n & 111 & 120 & 125 & 131 & 139 & 146 \\ \hline 
-\varepsilon & 5.0\text{E}{-}2 & 2.0\text{E}{-}2 & 1.0\text{E}{-}2 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 1.0\text{E}{-}3 \\ \hline 
-\errBd & 4.9\text{E}{-}2 & 1.9\text{E}{-}2 & 9.8\text{E}{-}3 & 5.0\text{E}{-}3 & 2.0\text{E}{-}3 & 9.4\text{E}{-}4 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 8.9\text{E}{-}3 & 3.1\text{E}{-}3 & 2.1\text{E}{-}3 & 6.9\text{E}{-}4 & 2.9\text{E}{-}4 & 8.7\text{E}{-}5 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
  \end{itemize}
 \end{itemize}
 
