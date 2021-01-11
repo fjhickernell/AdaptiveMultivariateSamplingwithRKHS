@@ -1,0 +1,10 @@
+\[ 
+ \begin{array}{rccccccc} 
+\multicolumn{7}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5e{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
+\varepsilon & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \hline 
+n &   7 &   9 &  10 &  11 &  12 &  13 \\ \hline 
+\errBd & 0.043 & 0.0055 & 0.002 & 0.00067 & 0.00016 & 0.00012 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.012 & 0.00072 & 0.00042 & 7.5e{-}5 & 4.1e{-}5 & 2.7e{-}5 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]

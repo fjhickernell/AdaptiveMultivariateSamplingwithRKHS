@@ -10,7 +10,7 @@ cosSumFunEx = set_prop(cosSumFunEx,'fparam',{fpar});
 cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'lattice'});
 cosSumFunEx = set_prop(cosSumFunEx,'whObj',{'EmpBayes'});
 %cosSumFunEx = set_prop(cosSumFunEx,'whDes',{'apdapt_th'});
-cosSumFunEx = set_prop(cosSumFunEx,'nmax',{50});
+cosSumFunEx = set_prop(cosSumFunEx,'nmax',{100});
 cosSumFunEx = set_prop(cosSumFunEx,'theta',{-3*ones(1,d)});
 cosSumFunEx = set_prop(cosSumFunEx,'xLim',{[zeros(1,d); ones(1,d)]});
 cosSumFunEx = set_prop(cosSumFunEx,'Algo',{@AdaptAlgo3});
@@ -19,13 +19,13 @@ cosSumFunEx = set_prop(cosSumFunEx,'yLim',{[-1;1]});
 cosSumFunEx = set_prop(cosSumFunEx,'legendPos',{'eastoutside'});
 cosSumFunEx = set_prop(cosSumFunEx,'abstolVec',{[0.1 0.05 0.02 0.01 0.005 0.002 0.001]'});
 %%
-cosSumFunEx = set_prop(cosSumFunEx,'neval',{2^14});
+cosSumFunEx = set_prop(cosSumFunEx,'neval',{2^16});
 [OutCosSumGaussOptimTheta,cosSumFunEx] = RunFunAppxExample(cosSumFunEx);
 
 cosSumFunEx = set_prop(cosSumFunEx,'Algo',{@AdaptAlgo2});
 cosSumFunEx = set_prop(cosSumFunEx,'theta',{-3*ones(1,d)});
 cosSumFunEx = set_prop(cosSumFunEx,'abstolVec',{[0.1 0.05 0.02 0.01]'});
-cosSumFunEx = set_prop(cosSumFunEx,'nmax',{50});
+cosSumFunEx = set_prop(cosSumFunEx,'nmax',{200});
 [OutCosSumGaussFixTheta,cosSumFunEx] = RunFunAppxExample(cosSumFunEx);
 %  cosSumFunEx = set_prop(cosSumFunEx,'kernelOrig',{@MaternKernelGeneral});
 %  cosSumFunEx = set_prop(cosSumFunEx,'theta',{[0.4 -ones(1,d)]});
