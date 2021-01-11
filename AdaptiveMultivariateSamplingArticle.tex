@@ -338,6 +338,7 @@ The approximation has a known pointwise error bound of \cite{bibid}:
 \end{subequations}
 Here, $\errK(\mX,\bx)$ is the norm of the error functional $f \mapsto f(\bx)-\APP(\mX,f(\mX))(\bx)$.  It is also represents $\max \{\abs{g(\bx)} : g \in \calf_{\mX \perp}, \ \norm[\calf]{g} \le 1\}$.
 
+\YuhanNote{Need to modify the figures and the kernal function}
 \begin{figure}[H]
 	\centering
 	\includegraphics[height =6cm]{ProgramsImages/errKplot.eps}
@@ -345,8 +346,8 @@ Here, $\errK(\mX,\bx)$ is the norm of the error functional $f \mapsto f(\bx)-\AP
 \end{figure}
 
 Figure \ref{fig:errK} displays   $\errK(\mX,\cdot)$  for a reproducing kernel from the Mat\'ern family: 
-	\begin{equation} \label{eq:MaternOne}
-K(\bt,\bx) = (1 +  \norm{\bt-\bx}) \exp(-\norm{\bt-\bx}),
+	\begin{equation} \label{eq:GaussianOne}
+K(\bt,\bx) =  \exp(-\norm[2]{\bt-\bx}^2),
 \end{equation}
 where $\norm{\cdot}$ denotes the Euclidean norm.  The space-filling sequence of data sites is 
 \begin{equation} \label{eq:FixedVDCDes}
@@ -468,14 +469,14 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	\begin{equation}
 	f: x \mapsto  \sin(2\pi(x-0.1)), \qquad x \in [0,1],
 	\end{equation}
-	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Mat\'ern kernel in \eqref{eq:MaternOne} and the parameters in the summary table below.  The bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
+	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Gaussian kernel in \eqref{eq:GaussianOne} and the parameters in the summary table below.  The bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
-	\input{ProgramsImages/Alg1_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 4.5cm]{ProgramsImages/CurrinSineFunPlot.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg1_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.eps}
+		\includegraphics[height = 4cm]{ProgramsImages/sinFunPlot.eps} \qquad
+		\includegraphics[height = 4cm]{ProgramsImages/AdaptAlgo1_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.eps}
 		\caption{A plot of our example $f$ (left) and a plot of our RKHS minimum norm interpolant approximations for various $\varepsilon$ and  $n$ using Algorithm \ref{alg:basicadapt}.  Approximation improves as $n$ increases. \label{fig:ex1}}
 	\end{figure}
 	
@@ -551,12 +552,12 @@ Algorithm \ref{alg:adaptsample} has asymptotically the same cost as Algorithm \r
 Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an initial data site of $x_1=1/3$.
 Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
-\input{ProgramsImages/Alg2_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+\input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
 	
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 5.5cm]{ProgramsImages/Alg2_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.eps}
+		\includegraphics[height = 5.5cm]{ProgramsImages/AdaptAlgo2_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.eps}
 		\caption{ \label{fig:ex2}}
 	\end{figure}
 	
@@ -585,13 +586,13 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 
 So far, we have assumed that the function to be approximation belongs to a fixed RKHS.  However, without  a priori knowledge, we do not know whether our $f$ is typical for  the RKHS chosen.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
 
-Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Mat\'ern kernel  in \eqref{eq:MaternOne}:
+Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Gaussian kernel  in \eqref{eq:GaussianOne}:
 \begin{equation} \label{eq:MaternTheta}
-K_\btheta(\bt,\bx) = (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)}),
+K_\btheta(\bt,\bx) =  \exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2),
 \end{equation}
 where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel and related quantities on $\btheta$.
 
-Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$ for three different values of $\btheta = \theta$.  Under this parameterization, the kernel becomes flatter for small $\theta$ and more peaked for large $\theta$.  
+Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$ for three different values of $\btheta = \theta$.  Under this parameterization, the kernel becomes flatter for small $\theta$ and more peaked for large $\theta$.  \YuhanNote{Need to modify the figure}
 
 \begin{figure}[H]
 	\centering
@@ -604,7 +605,7 @@ These differences in kernel shape translate into assumptions about the functions
 \begin{subequations} \label{eq:diff_f}
 \begin{gather}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \\   
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx\bx) - 2 K_{\btheta}(\bt,\bx).
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx,\bx) - 2 K_{\btheta}(\bt,\bx).
 \end{gather}
 \end{subequations}
 These upper bounds are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
@@ -647,7 +648,7 @@ Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqre
 
 The reproducing kernel describes how large function values may be and how far apart two values of a function at different locations may be:
 \begin{equation} \label{eq:diff_f}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx,\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
 \end{equation}
 For the Mat\'ern kernel in \eqref{eq:MaternTheta} this corresponds to 
 \begin{equation} \label{eq:diff_f_Matern}
@@ -713,12 +714,12 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	\label{ex:adpdatachooseth}
 	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Mat'ern kernel \eqref{eq:MaternTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
 		
-	\input{ProgramsImages/Alg3_Out_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
 	
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_CurrinSineFun_Matern_adapt_th_EmpBayesAx_theta_1.eps}
+		\includegraphics[height = 5.5cm]{ProgramsImages/AdaptAlgo3_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.eps}
 		\caption{ \label{fig:ex3}}
 	\end{figure}
 	
@@ -831,30 +832,26 @@ To illustrate it is still a space-filling design,  we consider the following mul
  \cos(\alpha_1 x_1 + \alpha_2 x_2 +
  \cdots \alpha_d x_d)
 	\end{equation}
-	where $x_i \in [0,1]^d, i=1,\ldots,d$ and $\alpha_i =2^{-i}$ are the weights with random permutation. We have the following results.
-\begin{itemize}
-\item $d=12,neval = 2^{16}$
-\begin{itemize}
-\item Lattice Points
+	where $x_i \in [0,1]^d, i=1,\ldots,d$ and $\alpha_i =2^{-i}$ are the weights with random permutation. We have the following results. 
+\begin{table}
+
 \[ 
  \begin{array}{rccccccc} 
-\multicolumn{8}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = (0.33, 0.83,\ldots, 0.48)\qquad n_0 = 16} \\ \hline 
-\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \hline 
-\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \hline 
-\theta_\ell & 0.23  & 0.11  & 0.067  & 0.034  & 0.018  & 0.0084  & 0.0047  \\ \hline 
-\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \hline 
-\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \hline 
-\theta_\ell & 0.0025  & 0.0012  & 0.00056  & 0.00034  & 7.4e{-}5  \\ \hline 
-n &  22 &  27 &  32 &  39 &  49 &  71 &  94 \\ \hline 
-\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \hline 
-\errBd & 0.086 & 0.041 & 0.019 & 0.0096 & 0.0047 & 0.002 & 0.001 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.022 & 0.007 & 0.0067 & 0.0035 & 0.0018 & 0.00067 & 0.00022 \\ \hline 
+\toprule
+\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \midrule 
+\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \midrule 
+\theta_\ell & 0.23  & 0.12  & 0.072  & 0.034  & 0.016  & 0.0087  & 0.0041  \\ \midrule 
+\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \midrule 
+\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \midrule 
+\theta_\ell & 0.0023  & 0.0012  & 0.00067  & 0.00028  & 0.000083   \\ \toprule 
+\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \midrule 
+n &  23 &  27 &  33 &  41 &  52 &  74 &  98 \\ \midrule 
+\errBd  & 0.078 & 0.046 & 0.02 & 0.0096 & 0.0047 & 0.0019 & 0.00099 \\ \midrule 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.020 & 0.0081 & 0.0048 & 0.0018 & 0.0014 & 0.00050 & 0.00030  \\ \midrule 
 \text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]
- 
- \end{itemize}
-\end{itemize}
+\end{table}
 
 \end{example}
 
