@@ -338,14 +338,14 @@ The approximation has a known pointwise error bound of \cite{bibid}:
 \end{subequations}
 Here, $\errK(\mX,\bx)$ is the norm of the error functional $f \mapsto f(\bx)-\APP(\mX,f(\mX))(\bx)$.  It is also represents $\max \{\abs{g(\bx)} : g \in \calf_{\mX \perp}, \ \norm[\calf]{g} \le 1\}$.
 
-\YuhanNote{Need to modify the figures and the kernal function}
+\YuhanNote{Try to redo the code for the plot }
 \begin{figure}[H]
 	\centering
 	\includegraphics[height =6cm]{ProgramsImages/errKplot.eps}
 	\caption{Plot of $\errK(\mX,\cdot)$ for various sample sizes.  The magnitude decreases in size as $n$ increases; $\errK(\mX,\bx) = 0$, when $\bx$ is a data site. \label{fig:errK}}
 \end{figure}
 
-Figure \ref{fig:errK} displays   $\errK(\mX,\cdot)$  for a reproducing kernel from the Mat\'ern family: 
+Figure \ref{fig:errK} displays   $\errK(\mX,\cdot)$  for a reproducing kernel from the Gaussian family: 
 	\begin{equation} \label{eq:GaussianOne}
 K(\bt,\bx) =  \exp(-\norm[2]{\bt-\bx}^2),
 \end{equation}
@@ -578,8 +578,9 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \subsection{Inferring the Parameters Defining the Reproducing Kernel} \label{sec:adaptTheta}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -748,78 +749,10 @@ The selection criterion proposed above in \eqref{eq:thetEB} is inspired by the e
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Inferring the Location Dependence of the Reproducing Kernel} \label{sec:InferSpace}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Although the function data, $\by$, appears in the selection criterion for $\btheta$, the form of reproducing kernel that we have considered thus far does not allow us to deduce that the function may vary more in one part of the domain than another.  The adaptive design defined by \eqref{eq:nextsample} may still be a space-filling design only slightly influenced by the observed function data.
-
-\FredNote{Insert Example}
-\begin{example}
-\label{ex:compfun}
-To illustrate it is still a space-filling design,  we consider the following univariate function, which has a mean value near zero
-	\begin{equation}
-	f: x \mapsto 
- \exp(-6x)\sin(8x+0.1) - 0.1,  \qquad x \in [0,1],
-	\end{equation}
-	which is plotted in Figure \ref{fig:ex4a}. 
-		
-	\begin{figure}[H]
-		\centering
-		\includegraphics[height = 4.5cm]{ProgramsImages/LeftPeakFunPlot.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} \qquad	
-		\caption{ \label{fig:ex4a}}
-	\end{figure}
-	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty =1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$. 
-	
-
-
-		
-	\input{ProgramsImages/Alg3_Out_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
-		
-	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
-	
-\end{example}
-
- 
-In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f_Matern} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only depends on the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$.  Even for more general kernels, we want to be able to infer their location dependence from the data, not have it baked in.
-
-For any reproducing kernel, $K(\bt ,\bx)$, it follows that $w(\bt)w(\bx)K(\bt ,\bx)$ is also a reproducing kernel regardless of the choice of $w$.  We can generalize the Mat\'ern kernel in \eqref{eq:MaternTheta} further as follows and apply \eqref{eq:diff_f}:
-\begin{align} \label{eq:MaternAB}
-K_\btheta(\bt,\bx) &= \exp(\bb^T(\bt + \bx))(1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)}),  \quad \btheta=(\ba, \bb), \\
-\nonumber
-%\label{eq:diff_f_MaternAB}
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 &= \exp(2\bb^T\bx), \\
-\nonumber
-\MoveEqLeft[4]{\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2} = \\
-\nonumber 
-& \qquad \exp(2\bb^T(\bt + \bx))\{ 1 - 2 (1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)})]^2\}.
-\end{align}
-Now, the size of the function values and the difference between function values at different locations can rise or fall depending on the parameter $\bb$, which can be inferred from the data.
-
-
-\FredNote{Repeat Example with new kernel}
-
-Now the kernel is strongly dependent on $\by$
-
-\begin{example}
-\label{ex:compfun2}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} 
-		\qquad	\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} 
-		%\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern2.eps} 
-		\caption{ \label{fig:ex5}}
-	\end{figure}
-
-		
-	\input{ProgramsImages/Alg3_Out_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.txt}
-
-
-	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
-	
-\end{example}
 
 \YuhanNote{Insert High Dimensional Example}
 
@@ -1168,3 +1101,83 @@ for all cases up to case $n$ requires $\Order(\NT n^2)$ operations.
 
 
 \end{document}
+
+
+
+
+
+
+
+
+\subsection{Inferring the Location Dependence of the Reproducing Kernel} \label{sec:InferSpace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Although the function data, $\by$, appears in the selection criterion for $\btheta$, the form of reproducing kernel that we have considered thus far does not allow us to deduce that the function may vary more in one part of the domain than another.  The adaptive design defined by \eqref{eq:nextsample} may still be a space-filling design only slightly influenced by the observed function data.
+
+\FredNote{Insert Example}
+\begin{example}
+\label{ex:compfun}
+To illustrate it is still a space-filling design,  we consider the following univariate function, which has a mean value near zero
+	\begin{equation}
+	f: x \mapsto 
+ \exp(-6x)\sin(8x+0.1) - 0.1,  \qquad x \in [0,1],
+	\end{equation}
+	which is plotted in Figure \ref{fig:ex4a}. 
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4.5cm]{ProgramsImages/LeftPeakFunPlot.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} \qquad	
+		\caption{ \label{fig:ex4a}}
+	\end{figure}
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty =1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$. 
+	
+
+
+		
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+		
+	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
+	
+\end{example}
+
+ 
+In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f_Matern} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only depends on the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$.  Even for more general kernels, we want to be able to infer their location dependence from the data, not have it baked in.
+
+For any reproducing kernel, $K(\bt ,\bx)$, it follows that $w(\bt)w(\bx)K(\bt ,\bx)$ is also a reproducing kernel regardless of the choice of $w$.  We can generalize the Mat\'ern kernel in \eqref{eq:MaternTheta} further as follows and apply \eqref{eq:diff_f}:
+\begin{align} \label{eq:MaternAB}
+K_\btheta(\bt,\bx) &= \exp(\bb^T(\bt + \bx))(1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)}),  \quad \btheta=(\ba, \bb), \\
+\nonumber
+%\label{eq:diff_f_MaternAB}
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 &= \exp(2\bb^T\bx), \\
+\nonumber
+\MoveEqLeft[4]{\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2} = \\
+\nonumber 
+& \qquad \exp(2\bb^T(\bt + \bx))\{ 1 - 2 (1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)})]^2\}.
+\end{align}
+Now, the size of the function values and the difference between function values at different locations can rise or fall depending on the parameter $\bb$, which can be inferred from the data.
+
+
+\FredNote{Repeat Example with new kernel}
+
+Now the kernel is strongly dependent on $\by$
+
+\begin{example}
+\label{ex:compfun2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} 
+		\qquad	\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} 
+		%\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern2.eps} 
+		\caption{ \label{fig:ex5}}
+	\end{figure}
+
+		
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.txt}
+
+
+	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
+	
+\end{example}
