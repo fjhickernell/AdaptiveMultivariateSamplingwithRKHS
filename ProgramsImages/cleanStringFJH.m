@@ -4,3 +4,4 @@ function outString = cleanStringFJH(inString)
 outString = strrep(inString,'E','\\text{E}');
 outString = strrep(outString,'-0','{-}');
 outString = strrep(outString,'+0','');
+outString = strrep(outString,'e','\\text{E}');
