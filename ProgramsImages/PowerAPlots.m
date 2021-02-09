@@ -21,6 +21,10 @@ yplot = myFun(xplot);
 
 
 %% Plot of errK(X,.) AND error bound for different theta
+figKtheta = figure;
+set(gca)
+axis([0 1 0 1])
+hold on
 figerrK = figure;
 set(gca,'Yscale','log')
 axis([0 1 1e-5 10])
@@ -32,17 +36,25 @@ legendLabel = cell(length(nth));
 
 for ii = 1:nth
    theta = thetavec(ii);
-   kernel = @(t,x) MaternKernel(t,x,theta);
+   kernel = @(t,x) GaussKernel(t,x,theta);
    [Kmat, Kdateval, Kdiageval] = KMP(xdata, xplot, kernel);
    [errKXx,errKX] = powerfun(Kmat, Kdateval, Kdiageval);
    [AX, BX] = ABfun(errKX,max(Kdiageval),Ainf,B0);
    [~,~,errBdx] = Approx(ydata, Kmat, Kdateval, errKXx, errKX, AX);
+   Ktheta = kernel(xplot,0.5);
+   figure(figKtheta)
+   plot(xplot,Ktheta,'color',colorScheme(cOrder(ii),:))
    figure(figerrK)
    plot(xplot,errKXx,'color',colorScheme(cOrder(ii),:))
    figure(figerrBd);
    plot(xplot,errBdx,'color',colorScheme(cOrder(ii),:));
    legendLabel{ii} = ['\(\theta = ' num2str(theta) ' \quad \)'];
 end
+figure(figKtheta)
+xlabel('\(x\)')
+ylabel('K\({}_{\theta}\)')
+legend(legendLabel,'box','off','Orientation','vertical','location','south')
+print('-depsc','Kthetaplot.eps')
 figure(figerrK)
 plot(xdata,zeros(n,1),'.k')
 xlabel('\(x\)')

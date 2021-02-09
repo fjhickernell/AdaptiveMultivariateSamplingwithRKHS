@@ -1,11 +1,11 @@
 %% Plotting the ellipses for different values of theta
 gail.InitializeWorkspaceDisplay
-
 xplot = (0:0.001:1)';
 nxplot = size(xplot,1);
 theta = 1;
 
-kernel = @(t,x) MaternKernel(t,x,theta);
+%kernel = @(t,x) MaternKernel(t,x,theta);
+kernel = @(t,x) GaussKernel(t,x,theta);
 kerneldiag = @(x) ones(size(x,1),1);
 colorScheme = [MATLABBlue; MATLABOrange; MATLABGreen; MATLABPurple; MATLABCyan; MATLABMaroon];
 cOrder = [1:6];
@@ -31,7 +31,8 @@ plot(xdata,zeros(ndata,1),'.k')
 xlabel('\(x\)')
 ylabel('ERRK\((\mathsf{X},x)\)')
 legend(legendLabel,'box','off','Orientation','horizontal')
-print('-depsc','errKplot.eps')
+%print('-depsc','errKplot.eps')
+print('-depsc','errGaussKplot.eps')
    
    
 %% Add a trend
