@@ -588,18 +588,18 @@ Unfortunately, the acquisition function defined in \eqref{eq:nextsample} does no
 So far, we have assumed that the function to be approximation belongs to a fixed RKHS.  However, without  a priori knowledge, we do not know whether our $f$ is typical for  the RKHS chosen.  We do not expect a unique RKHS for which $f$ is typical, but we want to infer a \emph{suitable} RKHS from the data.  
 
 Let $\{\calf_{\btheta} : \btheta \in \Theta\}$ be a family of RKHSs parameterized by $\btheta$.  An example is a generalization of the Gaussian kernel  in \eqref{eq:GaussianOne}:
-\begin{equation} \label{eq:MaternTheta}
+\begin{equation} \label{eq:GaussTheta}
 K_\btheta(\bt,\bx) =  \exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2),
 \end{equation}
 where $\odot$ denotes the Hadamard or term-by-term product.  From this section forward, we highlight the dependence of the reproducing kernel and related quantities on $\btheta$.
 
-Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$ for three different values of $\btheta = \theta$.  Under this parameterization, the kernel becomes flatter for small $\theta$ and more peaked for large $\theta$.  \YuhanNote{Need to modify the figure}
+Figure \ref{fig:GaussThPlot} displays the Gaussian reproducing kernel for $d=1$ for three different values of $\btheta = \theta$.  Under this parameterization, the kernel becomes flatter for small $\theta$ and more peaked for large $\theta$. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height = 4.5cm]{ProgramsImages/KthetaPlot.eps} \quad
 	\includegraphics[height = 4.5cm]{ProgramsImages/errKplotth.eps}
-	\caption{The Gaussian kernel defined in \eqref{eq:MaternTheta} for various values of $\btheta$ (left) and \label{fig:MaternThPlot}}
+	\caption{The Gaussian kernel defined in \eqref{eq:GaussTheta} for various values of $\btheta$ (left) and \label{fig:GaussThPlot}}
 \end{figure}
 
 These differences in kernel shape translate into assumptions about the functions in the RKHS.  Every reproducing kernel describes how large function values may be and how far apart two function values at different locations may be:
@@ -609,17 +609,17 @@ These differences in kernel shape translate into assumptions about the functions
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) +  K_{\btheta}(\bx,\bx) - 2 K_{\btheta}(\bt,\bx).
 \end{gather}
 \end{subequations}
-These upper bounds are with respect to the $\calf_\btheta$-norm of the function.  For the Mat\'ern kernel in \eqref{eq:MaternTheta} these statements correspond to 
-\begin{subequations} \label{eq:diff_f_Matern}
+These upper bounds are with respect to the $\calf_\btheta$-norm of the function.  For the Gaussian kernel in \eqref{eq:GaussTheta} these statements correspond to 
+\begin{subequations} \label{eq:diff_f_Gauss}
 	\begin{gather}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \\ 
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 -  \exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2)].
 \end{gather}
 \end{subequations}
-Function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location 
+Function values in the RKHS characterized by the Gaussian kernel do not vary much with location 
 
 
-For small $\theta$ function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location. For large $\theta$ function values in the RKHS may vary quite a bit over short distances.
+For small $\theta$ function values in the RKHS characterized by the Gaussian kernel do not vary much with location. For large $\theta$ function values in the RKHS may vary quite a bit over short distances.
 
 These variations in kernel shape affect our function approximation and error bound. quantities in our function approximation algorithm.
 
@@ -637,26 +637,26 @@ Let $\vBall$ denote the volume of a unit ball in $n$ dimensions, and let $\vEll(
 
 The volume of the ellipsoidal solid, $\vEll(\btheta,\mX,\by)$, is a measure of how large the observed function data is with respect to the Hilbert space $\calf_{\btheta}$.  This measure is independent of the vertical scale of the reproducing kernel.  It does not change if the reproducing kernel $K_\btheta$ is replaced by $cK_{\btheta}$ for any positive constant $c$.  
 
-Figure \ref{fig:ellipPlot} displays the one-dimensional Mat\'ern kernel in \eqref{eq:MaternTheta} for three different values of $\btheta = \theta$ and the corresponding  ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Here, the ellipsoid corresponding to $\theta = 2$ has the smallest volume (area).
+Figure \ref{fig:ellipPlot} displays the one-dimensional Gaussian kernel in \eqref{eq:GaussTheta} for three different values of $\btheta = \theta$ and the corresponding  ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$  defined for a two-sample design.  Here, the ellipsoid corresponding to $\theta = 2$ has the smallest volume (area).
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[height = 6cm]{ProgramsImages/GaussKthetaPlot.eps} \qquad
 	\includegraphics[height = 6cm]{ProgramsImages/ellipsesGaussPlot.eps}
-	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Mat\'ern kernel defined in \eqref{eq:MaternTheta}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3, 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
+	\caption{The ellipsoidal solids $\{ \bz \in \reals^n : \bz^T \mK_\btheta^{-1} \bz \le \by^T \mK_\btheta^{-1} \by  \bigr \}$ for the Gaussian kernel defined in \eqref{eq:GaussTheta}, various values of $\btheta$, and $\by = f(\mX)$, where $\mX = (0.3, 0.6)^T$ and $f$ is defined in ?? \label{fig:ellipPlot}}
 \end{figure}
 
 The reproducing kernel describes how large function values may be and how far apart two values of a function at different locations may be:
 \begin{equation} \label{eq:diff_f}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx,\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
 \end{equation}
-For the Mat\'ern kernel in \eqref{eq:MaternTheta} this corresponds to 
-\begin{equation} \label{eq:diff_f_Matern}
+For the Gaussian kernel in \eqref{eq:GaussTheta} this corresponds to 
+\begin{equation} \label{eq:diff_f_Gauss}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [\exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2)]^2.
 \end{equation}
-The Mat\'ern kernel with small $\theta$ is relatively flat, which means that function values in this RKHS do not vary much with location.  This explains why the ellipsoidal solid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Mat\'ern kernel is peaked, which explains why the ellipsoidal solid for $\theta = 8$ is more spherical in shape.
+The Gaussian kernel with small $\theta$ is relatively flat, which means that function values in this RKHS do not vary much with location.  This explains why the ellipsoidal solid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Gaussian kernel is peaked, which explains why the ellipsoidal solid for $\theta = 8$ is more spherical in shape.
 
 We argue that the most suitable kernel is the one that minimizes the volume of the ellipsoidal solid, i.e., the RKHS for which the observed function data is small.   Our choice of $\btheta$ is
 \begin{equation} \label{eq:thetEB}
@@ -713,7 +713,7 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 
 \begin{example}
 	\label{ex:adpdatachooseth}
-	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Mat'ern kernel \eqref{eq:MaternTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
+	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Mat'ern kernel \eqref{eq:GaussTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
 		
 	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
 	
@@ -1133,29 +1133,29 @@ To illustrate it is still a space-filling design,  we consider the following uni
 	\begin{figure}[H]
 		\centering
 		\includegraphics[height = 4.5cm]{ProgramsImages/LeftPeakFunPlot.eps} \qquad
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.eps} \qquad
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_Gauss_adapt_th_EmpBayesAx_theta_1.eps} \qquad
 		\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} \qquad	
 		\caption{ \label{fig:ex4a}}
 	\end{figure}
-	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$. We choose the generalization of the Mat\'ern kernel in \eqref{eq:MaternOne},  $A_\infty =1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$. 
+	We apply Algorithm \ref{alg:adapttheta} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} with $n_0=3$. We choose the generalization of the Gaussian kernel in \eqref{eq:GaussOne},  $A_\infty =1, B_0 = 0.05$, and $\mT = (0, 0.001, \ldots, 1)^T$. 
 	
 
 
 		
-	\input{ProgramsImages/Alg3_Out_LeftPeakFun_Matern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_Gauss_adapt_th_EmpBayesAx_theta_1.txt}
 		
 	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_GaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
 	
 \end{example}
 
  
-In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f_Matern} for the Mat\'ern kernel says that the maximum difference between function values at two locations is only depends on the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$.  Even for more general kernels, we want to be able to infer their location dependence from the data, not have it baked in.
+In the example above the function oscillates more on the left than the right, but \eqref{eq:diff_f_Gauss} for the Gaussian kernel says that the maximum difference between function values at two locations is only depends on the distance between the locations.  The same holds for all $K(\bt ,\bx)$ that are  functions of $\bt - \bx$.  Even for more general kernels, we want to be able to infer their location dependence from the data, not have it baked in.
 
-For any reproducing kernel, $K(\bt ,\bx)$, it follows that $w(\bt)w(\bx)K(\bt ,\bx)$ is also a reproducing kernel regardless of the choice of $w$.  We can generalize the Mat\'ern kernel in \eqref{eq:MaternTheta} further as follows and apply \eqref{eq:diff_f}:
-\begin{align} \label{eq:MaternAB}
+For any reproducing kernel, $K(\bt ,\bx)$, it follows that $w(\bt)w(\bx)K(\bt ,\bx)$ is also a reproducing kernel regardless of the choice of $w$.  We can generalize the Gaussian kernel in \eqref{eq:GaussTheta} further as follows and apply \eqref{eq:diff_f}:
+\begin{align} \label{eq:GaussAB}
 K_\btheta(\bt,\bx) &= \exp(\bb^T(\bt + \bx))(1 +  \norm{\ba \odot (\bt-\bx)}) \exp(-\norm{\ba \odot (\bt-\bx)}),  \quad \btheta=(\ba, \bb), \\
 \nonumber
-%\label{eq:diff_f_MaternAB}
+%\label{eq:diff_f_GaussAB}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 &= \exp(2\bb^T\bx), \\
 \nonumber
 \MoveEqLeft[4]{\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2} = \\
@@ -1173,14 +1173,14 @@ Now the kernel is strongly dependent on $\by$
 \label{ex:compfun2}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.eps} 
+		\includegraphics[height = 4.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialGauss_adapt_th_EmpBayesAx_theta_1.eps} 
 		\qquad	\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.eps} 
-		%\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialMatern2.eps} 
+		%\includegraphics[height = 5.5cm]{ProgramsImages/Alg3_LeftPeakFun_SpatialGauss2.eps} 
 		\caption{ \label{fig:ex5}}
 	\end{figure}
 
 		
-	\input{ProgramsImages/Alg3_Out_LeftPeakFun_SpatialMatern_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/Alg3_Out_LeftPeakFun_SpatialGauss_adapt_th_EmpBayesAx_theta_1.txt}
 
 
 	\input{ProgramsImages/AdaptAlgo3_Out_LeftPeakFun_SpatialGaussKernel_adapt_th_EmpBayesAx_theta_-1.txt}
