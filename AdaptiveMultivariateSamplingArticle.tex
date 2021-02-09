@@ -599,7 +599,7 @@ Figure \ref{fig:MaternThPlot} displays the Mat\'ern reproducing kernel for $d=1$
 	\centering
 	\includegraphics[height = 4.5cm]{ProgramsImages/KthetaPlot.eps} \quad
 	\includegraphics[height = 4.5cm]{ProgramsImages/errKplotth.eps}
-	\caption{The Mat\'ern kernel defined in \eqref{eq:MaternTheta} for various values of $\btheta$ (left) and \label{fig:MaternThPlot}}
+	\caption{The Gaussian kernel defined in \eqref{eq:MaternTheta} for various values of $\btheta$ (left) and \label{fig:MaternThPlot}}
 \end{figure}
 
 These differences in kernel shape translate into assumptions about the functions in the RKHS.  Every reproducing kernel describes how large function values may be and how far apart two function values at different locations may be:
@@ -613,7 +613,7 @@ These upper bounds are with respect to the $\calf_\btheta$-norm of the function.
 \begin{subequations} \label{eq:diff_f_Matern}
 	\begin{gather}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \\ 
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 - (1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})].
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 2[1 -  \exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2)].
 \end{gather}
 \end{subequations}
 Function values in the RKHS characterized by the Mat\'ern kernel do not vary much with location 
@@ -654,7 +654,7 @@ The reproducing kernel describes how large function values may be and how far ap
 For the Mat\'ern kernel in \eqref{eq:MaternTheta} this corresponds to 
 \begin{equation} \label{eq:diff_f_Matern}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
-\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [(1 +  \norm{\btheta \odot (\bt-\bx)}) \exp(-\norm{\btheta \odot (\bt-\bx)})]^2.
+\sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [\exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2)]^2.
 \end{equation}
 The Mat\'ern kernel with small $\theta$ is relatively flat, which means that function values in this RKHS do not vary much with location.  This explains why the ellipsoidal solid for $\theta = 0.5$ hugs the line $z_1 = z_2$.  For large $\theta$ the Mat\'ern kernel is peaked, which explains why the ellipsoidal solid for $\theta = 8$ is more spherical in shape.
 
@@ -727,6 +727,46 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 \end{example}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{example}
+\label{ex:ChengDufun}
+Let us consider the following multivariate function
+	\begin{equation}\label{eq:cos_sum}
+	f:(x_1,x_2,\ldots,x_d) \mapsto 
+ \cos(\alpha_1 x_1 + \alpha_2 x_2 +
+ \cdots \alpha_d x_d)
+	\end{equation}
+	where $x_i \in [0,1]^d, i=1,\ldots,d$ and $\alpha_i =2^{-i}$ are the weights with random permutation. 
+	
+This is an example of \emph{coordinate weights}, which arise in the tractability literature for continuous numerical problems (see \cite{DicEtal14a,NovWoz08a, NovWoz10a, NovWoz12a} and the references therein).  Small $\theta_\ell$ means that the $x_\ell$ does not influence the function much.  If many of the $\theta_\ell$ are small, then the effective dimension of the function, $d_\text{eff}$, is much smaller than its nominal dimension, $d$, and the problem is tractable. Here is the result.
+ 
+\begin{table}
+
+\[ 
+ \begin{array}{rccccccc} 
+\toprule
+\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \midrule 
+\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \midrule 
+\theta_\ell & 0.23  & 0.12  & 0.072  & 0.034  & 0.016  & 0.0087  & 0.0041  \\ \midrule 
+\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \midrule 
+\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \midrule 
+\theta_\ell & 0.0023  & 0.0012  & 0.00067  & 0.00028  & 0.000083   \\ \toprule 
+\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \midrule 
+n &  23 &  27 &  33 &  41 &  52 &  74 &  98 \\ \midrule 
+\errBd  & 0.078 & 0.046 & 0.02 & 0.0096 & 0.0047 & 0.0019 & 0.00099 \\ \midrule 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.020 & 0.0081 & 0.0048 & 0.0018 & 0.0014 & 0.00050 & 0.00030  \\ \midrule 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]
+\end{table}
+
+We also approximated the same function in \eqref{eq:cos_sum} with Algorithm 2, but this time fixing $\btheta = (0.05, \ldots, 0.05)$. When $\btheta$ is not chosen adaptively, the algorithm does not even reach the largest error tolerance $\varepsilon = 0.1$ with $n = 200$. This illustrates the need to tune our kernel, $K_\btheta$, and the associated RKHS, $\calf_\btheta$, to best fit the function being approximated.
+
+\end{example}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -751,42 +791,7 @@ The selection criterion proposed above in \eqref{eq:thetEB} is inspired by the e
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\YuhanNote{Insert High Dimensional Example}
-
-
-\begin{example}
-\label{ex:ChengDufun}
-To illustrate it is still a space-filling design,  we consider the following multivariate function
-	\begin{equation}
-	f:(x_1,x_2,\ldots,x_d) \mapsto 
- \cos(\alpha_1 x_1 + \alpha_2 x_2 +
- \cdots \alpha_d x_d)
-	\end{equation}
-	where $x_i \in [0,1]^d, i=1,\ldots,d$ and $\alpha_i =2^{-i}$ are the weights with random permutation. We have the following results. 
-\begin{table}
-
-\[ 
- \begin{array}{rccccccc} 
-\toprule
-\text{Coordinate}, \ell & 2 & 12 & 10 & 5 & 9 & 11 & 7 \\ \midrule 
-\alpha_\ell & 0.5  & 0.25  & 0.13  & 0.063  & 0.031  & 0.016  & 0.0078  \\ \midrule 
-\theta_\ell & 0.23  & 0.12  & 0.072  & 0.034  & 0.016  & 0.0087  & 0.0041  \\ \midrule 
-\text{Coordinate}, \ell & 6  & 8  & 3  & 4  & 1  \\ \midrule 
-\alpha_\ell & 0.0039  & 0.002  & 0.00098  & 0.00049  & 0.00024  \\ \midrule 
-\theta_\ell & 0.0023  & 0.0012  & 0.00067  & 0.00028  & 0.000083   \\ \toprule 
-\varepsilon & 0.1 & 0.05 & 0.02 & 0.01 & 0.005 & 0.002 & 0.001 \\ \midrule 
-n &  23 &  27 &  33 &  41 &  52 &  74 &  98 \\ \midrule 
-\errBd  & 0.078 & 0.046 & 0.02 & 0.0096 & 0.0047 & 0.0019 & 0.00099 \\ \midrule 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.020 & 0.0081 & 0.0048 & 0.0018 & 0.0014 & 0.00050 & 0.00030  \\ \midrule 
-\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% 
-\end{array} 
- \]
-\end{table}
-
-\end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
