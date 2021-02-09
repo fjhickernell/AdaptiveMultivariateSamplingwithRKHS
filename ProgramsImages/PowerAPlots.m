@@ -52,7 +52,7 @@ for ii = 1:nth
 end
 figure(figKtheta)
 xlabel('\(x\)')
-ylabel('K\({}_{\theta}\)')
+ylabel('K\({}_{\theta}(x,0.5)\)')
 legend(legendLabel,'box','off','Orientation','vertical','location','south')
 print('-depsc','Kthetaplot.eps')
 figure(figerrK)
