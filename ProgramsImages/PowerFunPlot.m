@@ -12,7 +12,7 @@ cOrder = [1:6];
 
 
 %% First no trend
-nvec = [4  16  64];
+nvec = [4  8  16];
 nn = length(nvec);
 ndata = max(nvec);
 xdata = seqFixedDes(1:ndata);

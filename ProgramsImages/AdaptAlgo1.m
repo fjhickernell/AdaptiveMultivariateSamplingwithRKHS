@@ -7,7 +7,7 @@ xdata(obj.nmax,d) = 0;
 fdata(obj.nmax,1) = 0;
 ntol = size(obj.abstolVec,1);
 neval = size(xeval,1);
-plotn = [obj.n0 + (0:5) obj.nmax];
+plotn = [obj.n0 + (5:5:10) obj.nmax];
 if obj.isDiagnose
    [h,ploti,legendLabel] =  ...
       multiAppxDiagPrelim(plotn,ntol,xeval,feval,obj);
@@ -61,11 +61,17 @@ for n = obj.n0:obj.nmax
                plot(xdata(1:n,:),zeros(n,1),'k.')
             end
          end
-      end
+      end 
       nNeed(itol) = n;
       itol = itol + 1;
       if itol > ntol, break, end
       abstol = obj.abstolVec(itol);
+      while ErrBd < abstol
+          nNeed(itol) = n;
+          itol = itol + 1;
+          if itol > ntol, break, end
+          abstol = obj.abstolVec(itol);
+      end
    end
    if obj.isDiagnose && nstart < n
       if n == plotn(ploti)

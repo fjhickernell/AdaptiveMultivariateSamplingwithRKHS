@@ -7,6 +7,7 @@ sinFunEx = set_prop(sinFunEx,'Algo',{@AdaptAlgo1,@AdaptAlgo2,@AdaptAlgo3});
 sinFunEx = set_prop(sinFunEx,'theta',{1 , 1 , 1});
 sinFunEx = set_prop(sinFunEx,'n0',repmat({1},1,3));
 sinFunEx = set_prop(sinFunEx,'nmax',repmat({50},1,3));
+sinFunEx = set_prop(sinFunEx,'yLim',repmat({[-1.5;1.5]},1,3));
 sinFunEx = set_prop(sinFunEx,'abstolVec',repmat({[0.01 0.001 0.0001 0.00001]'},1,3));
 
 %%
