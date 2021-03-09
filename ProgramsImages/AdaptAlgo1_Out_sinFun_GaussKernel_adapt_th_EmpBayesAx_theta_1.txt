@@ -1,6 +1,7 @@
 \[ 
  \begin{array}{rccccccc} 
 \multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
+\multicolumn{5}{l}{\text{Final } \theta = 2.7} \\ \hline 
 \varepsilon & 0.01 & 0.001 & 0.0001 & 1\text{E}{-}5 \\ \hline 
 n &  12 &  14 &  22 &  43 \\ \hline 
 \errBd & 0.0059 & 0.00091 & 4.2\text{E}{-}5 & 7.7\text{E}{-}6 \\ \hline 

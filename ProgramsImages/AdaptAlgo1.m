@@ -91,7 +91,7 @@ OutObj.AppxNorm = OutObj.AppxNorm(1:n);
 OutObj.NeccFlag = OutObj.NeccFlag(2:n+1);
 OutObj.xdata = xdata(1:n,:);
 OutObj.fdata = fdata(1:n);
-
+[~,~,~,OutObj.finalTheta] = kernel(xeval(1,:),xeval(1,:));
 
 if obj.isDiagnose
    multiAppxDiagFinishPlotTable ...

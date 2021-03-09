@@ -126,20 +126,18 @@ function AlgSummaryData =  multiAppxDiagFinishPlotTable ...
            fprintf(fid,'\\\\ \\hline \n');
        end
    else
-       if any(strcmp(obj.algoname,'AdaptAlgo3'))
-           dth = length(OutObj.thetaOptimalVec(end,:));
-           fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{\\text{Final } \\theta = ']);
-           if dth == 1
-               fprintf(fid,cleanStringFJH(sprintf('%0.2g',OutObj.finalTheta)));
-           else
-               fprintf(fid,'(');
-               for jj = 1:dth-1
-                   fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',OutObj.finalTheta(jj))));
-               end
-               fprintf(fid,cleanStringFJH(sprintf('%0.2g)',OutObj.finalTheta(dth))));
+       dth = length(OutObj.finalTheta);
+       fprintf(fid,['\\multicolumn{' int2str(ntol+1) '}{l}{\\text{Final } \\theta = ']);
+       if dth == 1
+           fprintf(fid,cleanStringFJH(sprintf('%0.2g',OutObj.finalTheta)));
+       else
+           fprintf(fid,'(');
+           for jj = 1:dth-1
+               fprintf(fid,cleanStringFJH(sprintf('%0.2g, ',OutObj.finalTheta(jj))));
            end
-           fprintf(fid,'} \\\\ \\hline \n');
+           fprintf(fid,cleanStringFJH(sprintf('%0.2g)',OutObj.finalTheta(dth))));
        end
+       fprintf(fid,'} \\\\ \\hline \n');
    end
    %       if dth == 1
    %          fprintf(fid,cleanStringFJH(sprintf('%4.1E',obj.final_theta)));
