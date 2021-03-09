@@ -20,10 +20,9 @@
 \algnewcommand\INPUT{\item[\algorithmicinput]}
 \algnewcommand\RETURN{\State \textbf{Return }}
 \usepackage{algpseudocode}
-
-\theoremstyle{theorem}
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
-\theoremstyle{remark}
+\theoremstyle{definition}
 \newtheorem{example}{Example}
 %%list of acronyms with links
 \newcommand{\QMCSoft}{QMCSoft\xspace}
@@ -296,7 +295,7 @@ These algorithms draw upon the well-developed literature of RKHS function approx
 \begin{itemize}
 	\item The candidate cone (Section \ref{sec:basicIdea}),
 	\item A geometric interpretation of the data-based inference of a suitable RKHS (Section  \ref{sec:adaptTheta}), and
-	\item Inferring the location dependence of the reproducing kernel (Section \ref{sec:InferSpace}).
+%	\item Inferring the location dependence of the reproducing kernel (Section \ref{sec:InferSpace}).
 \end{itemize}
 
 Any algorithm that claims to satisfy \eqref{eq:errorcrit} cannot possibly do so for $\cc$ corresponding to an infinite dimensional vector space.  If such an algorithm existed, then $\ALG(0,\varepsilon)$ would terminate after evaluating the zero function at some data sites $\bx_1, \ldots, \bx_n$ for some positive integer $n$.  Since $\cc$ is infinite dimensional, there exists some $g \in \cc$, for which $g(\bx_1) = \cdots = g(\bx_n) = 0$ but for which $\norm[\infty]{g} > 2 \varepsilon$.  That is, $g$ looks like  $0$ to the algorithm so $\ALG(g,\varepsilon) = \ALG(0,\varepsilon)$, however, $g$ is not close enough to $0$.   Since $\ALG(0,\varepsilon)$ cannot be within distance $\varepsilon$ of both the $0$ and $g$, error criterion \eqref{eq:errorcrit} cannot be satisfied.
@@ -647,11 +646,11 @@ Figure \ref{fig:ellipPlot} displays the one-dimensional Gaussian kernel in \eqre
 \end{figure}
 
 The reproducing kernel describes how large function values may be and how far apart two values of a function at different locations may be:
-\begin{equation} \label{eq:diff_f}
+\begin{equation} \label{eq:diff_fnew}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = K_\btheta(\bx,\bx), \qquad    \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = K_{\btheta}(\bt,\bt) K_{\btheta}(\bx,\bx) - 2 [K_{\btheta}(\bt,\bx)]^2.
 \end{equation}
 For the Gaussian kernel in \eqref{eq:GaussTheta} this corresponds to 
-\begin{equation} \label{eq:diff_f_Gauss}
+\begin{equation} \label{eq:diff_f_Gaussnew}
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bx)}^2 = 1, \qquad 
 \sup_{\norm[\calf_{\btheta}]{f} \le 1} \abs{f(\bt) - f(\bx)}^2 = 1 - 2 [\exp(-\norm[2]{\btheta \odot (\bt-\bx)}^2)]^2.
 \end{equation}
@@ -741,8 +740,8 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	which is plotted in Figure \ref{fig:ex4a}.  We apply all our adaptive algorithms with $nmax = 100$ for this example. 
 		\begin{figure}[H]
 		\centering
-		\includegraphics[height = 5.5cm]{ProgramsImages/HigdonFunPlot.eps} 
-		\caption{A plot of our example $f$ \label{fig:ex4a}}
+		\includegraphics[height = 4.5cm]{ProgramsImages/HigdonFunPlot.eps}
+		\includegraphics[height = 4.5cm]{ProgramsImages/AdaptAlgo3_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.eps}\caption{Left: A plot of our example $f$; Right: Approximation by Algorithm \ref{alg:adapttheta} \label{fig:ex4a}}
 	\end{figure}
 	
 	For Algorithm \ref{alg:basicadapt}, we can find that it can only reach error tolerance $0.01$ with $nmax = 100.$
@@ -757,7 +756,6 @@ But for Algorithm \ref{alg:adapttheta}, it can reach all the error tolerance $\v
 	
 	\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
 \end{example}
-
 
 
 \begin{example}
