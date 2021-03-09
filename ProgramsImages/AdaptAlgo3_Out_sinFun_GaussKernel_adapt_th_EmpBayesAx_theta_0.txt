@@ -1,0 +1,11 @@
+\[ 
+ \begin{array}{rccccccc} 
+\multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
+\multicolumn{5}{l}{\text{Final } \theta = 1} \\ \hline 
+\varepsilon & 0.01 & 0.001 & 0.0001 & 1\text{E}{-}5 \\ \hline 
+n &   7 &   8 &   9 &  22 \\ \hline 
+\errBd & 0.0052 & 0.00089 & 8.1\text{E}{-}5 & 5.4\text{E}{-}6 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.0054 & 0.00023 & 9.4\text{E}{-}6 & 1.4\text{E}{-}6 \\ \hline 
+\text{Ptwise Error Bound} &  43\% & 100\% & 100\% & 100\% 
+\end{array} 
+ \]
