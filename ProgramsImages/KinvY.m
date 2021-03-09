@@ -1,6 +1,5 @@
 function c = KinvY(Kmat,y)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%KINVY multiplies a vector times the inverse of the Gram matrix
 [V,S,~] = svd(Kmat,'econ');
 Sdiag = diag(S);
 nok = find(Sdiag > 1e-12,1,'last');
