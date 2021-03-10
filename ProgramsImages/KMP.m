@@ -1,6 +1,8 @@
 function [Kmat, Kdateval, Kdiageval, errKNull, Pdat, Peval, PTKinv, PTKinvP, Mmat] = ...
 KMP(xdata, xeval, kernel, trend)
 Kmat = kernel(xdata,xdata);
+Kcondinv = rcond(Kmat)
+rankK = rank(Kmat)
 if nargout > 1
    [Kdateval, Kdiageval, errKNull] = kernel(xdata,xeval);
 end
