@@ -357,7 +357,7 @@ which is a van der Corput sequence \cite{} shifted by $1/3$ modulo one.  By defi
 \end{figure}
 
 
-The data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$, which cannot be computed from function data.  What we can compute is  $\bignorm[\calf]{\APP(f)} \linebreak[4] = \sqrt{\by^T \mK^{-1} \by}$ from data using vector-matrix operations.  Moreover, since the error is orthogonal to the approximation,  the Pythagorean Theorem implies that $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we define this candidate cone as follows:
+The data-based approximation $\APP(\mX,\by)$ in \eqref{eq:RKHSAPP} is an ingredient in our adaptive algorithm, but error bound \eqref{eq:RKHSErrBd} contains the unknown factor $\norm[\calf]{f - \APP(\mX,\by)}$, which cannot be computed from function data.  What we can compute from data is  $\bignorm[\calf]{\APP(f)} = \sqrt{\by^T \mK^{-1} \by}$  via vector-matrix operations.  Moreover, since the error is orthogonal to the approximation,  the Pythagorean Theorem implies that $\norm[\calf]{f}^2  = \bignorm[\calf]{\APP(f)}^2 + \bignorm[\calf]{f - \APP(f)}^2$.  To establish a data-driven error bound, we define this candidate cone as follows:
 \begin{align} \label{eq:RKHScone}
 \calc &:= \Bigl\{f \in \calf : \norm[\calf]{f}^2 \le (1 + A^2(\mX)) \bignorm[\calf]{\APP(\mX,\by)}^2 \quad \forall \mX \in \Omega^d, \ \by = f(\mX) \Bigr \} \\
 \nonumber
@@ -413,7 +413,7 @@ This data-based error bound provides what  our adaptive algorithm needs.  Note t
 
 This algorithm adaptively chooses the sample size so that the error criterion must be satisfied for all functions in the candidate cone $\cc$.  For a well chosen design, $\errK(\mX)$ tends to zero as $n$ increases.  A larger function yields larger function data $\by$, which implies that a larger sample size will be required to achieve the error criterion.
 
-This algorithm is deficient.  The choice of the design does not yet depend in on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.  These matters are addressed in the following (sub-)sections.
+This algorithm is deficient.  The choice of the design does not yet depend  on the function data.  There is no assurance that the RKHS specified by the choice of $K$ fits $f$.  There is also the matter of how to choose $A(\mX)$.  These matters are addressed in the following (sub-)sections.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -469,7 +469,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Gaussian kernel in \eqref{eq:GaussianOne} and the parameters in the summary table below.  The bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
 	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-	
+	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	\begin{figure}[H]
 		\centering
 		\includegraphics[height = 4cm]{ProgramsImages/sinFunPlot.eps} \qquad
@@ -550,7 +550,7 @@ Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an
 Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
 \input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-	
+	\input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	
 	\begin{figure}[H]
 		\centering
@@ -713,6 +713,7 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Gaussian kernel \eqref{eq:GaussTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
 		
 	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
+	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	
 	
 	\begin{figure}[H]
@@ -746,14 +747,17 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	For Algorithm \ref{alg:basicadapt}, we can find that it can only reach error tolerance $0.01$ with $nmax = 100.$
 		
 	\input{ProgramsImages/AdaptAlgo1_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}\\
+		\input{ProgramsImages/AdaptAlgo1_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}\\
 	
 	For Algorithm \ref{alg:adaptsample}, with adaptive sample sites, we can find that it can reach better error tolerance. However, the condition number was too large during the calculation. The result is not quite reliable. You can find the success rate of the point-wise error bound of $\varepsilon =0.01$ is just $4\%$.
 		
 	\input{ProgramsImages/AdaptAlgo2_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}\\
+	\input{ProgramsImages/AdaptAlgo2_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}\\
 	
 But for Algorithm \ref{alg:adapttheta}, it can reach all the error tolerance $\varepsilon = 1E-5$ with 25 points.
 	
 	\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
+		\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 \end{example}
 
 
