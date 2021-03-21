@@ -1,7 +1,46 @@
 %% Test ill conditoning
 
 clearvars, close all
+InitializeDisplay
 
+
+%% Rank of Gram matrix with as n increases
+thetavec = [0.01 0.1 1 10 100];
+nth = size(thetavec,2);
+mmax = 6;
+nmax = 2^mmax;
+xdata_all = (0:nmax)'/nmax;
+xeval = 0;
+rankKmat(nth,mmax+1) = 0;
+legtxt = cell(nth,1);
+for ii = 1:nth
+   th = thetavec(ii);
+   kernel = @(t,x) GaussKernel(t,x,th); %without the 4th arg, no transform
+   legtxt(ii) = {['\(\theta = ' num2str(th) '\)']};
+   for m = 0:mmax
+      nskip =2^(mmax-m);
+      xdata = xdata_all(1:nskip:nmax+1);
+      Kmat = KMP(xdata, xeval, kernel);
+      rankKmat(ii,m+1) = rank(Kmat);
+   end
+end
+figure;
+nvec = 2.^(0:mmax)+1;
+h = loglog(nvec,rankKmat');
+legend(h,legtxt,'location','northwest','box','off')
+xlabel('\(n\)')
+ylabel('rank(\(\mathsf{K}\))')
+axis([1 10^ceil(log10(nmax)) 1 10^ceil(log10(nmax))])
+print('rankKernel.eps','-depsc')
+
+return
+      
+
+      
+      
+   
+
+%% Test function
 f = @(x) exp(-5*x).*cos(10*x);
 th = 1;
 n = 16;

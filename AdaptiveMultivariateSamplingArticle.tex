@@ -11,6 +11,8 @@
 \usepackage{cleveref}
 \usepackage{wrapfig}
 \usepackage[font=small,labelfont=bf]{caption}
+%\usepackage{fontawesome}
+\usepackage{fontawesome5}
 
 \usepackage{algpseudocode}
 \usepackage{algorithm, algorithmicx}
@@ -123,6 +125,7 @@
 \newcommand{\mR}{\mathsf{R}}
 \newcommand{\mT}{\mathsf{T}}
 \newcommand{\mU}{\mathsf{U}}
+\newcommand{\mV}{\mathsf{V}}
 \newcommand{\mX}{\mathsf{X}}
 \newcommand{\mZero}{\mathsf{0}}
 \newcommand{\mPhi}{\mathsf{\Phi}}
@@ -251,6 +254,8 @@
 \newcommand{\fint}{f_{\text{int}}}
 \newcommand{\inflate}{\fC}
 \DeclareMathOperator{\spanV}{span}
+\newcommand{\aneye}{\text{\fontsize{4}{5}\selectfont \faEye}}
+\newcommand{\noeye}{\text{\fontsize{4}{5}\selectfont \faEyeSlash}}
 
 \newcommand{\FredNote}[1]{{\color{blue}Fred: #1}}
 \newcommand{\YuhanNote}[1]{{\color{magenta}Yuhan: #1}}
@@ -969,6 +974,26 @@ Our adaptive function algorithm including perfect recovery of pure trends takes 
 \section{Numerical Experiments}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ill-Conditioning}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+For a smooth kernel such as the squared exponential kernel one defined in \eqref{eq:GaussTheta}, the Gram matrix, $\mK$, may not be of full rank numerically.  This requires some adjustment to the formula for the approximation, $\APP(\mX,\by)$, and to our error estimates.
+
+Figure \ref{fig:rankKPlot} displays the numerical rank of the Gram matrix as a function of $n$ for various parameter values of the squared exponential kernel.  For infinite precision, the numerical rank would be the same as $n$, which is the case for small $n$.  One can decompose the Gram matrix as
+\begin{equation}
+	\mK = \mV \mLambda \mV^T = \mK_\aneye + \mK_\noeye, \qquad \mK_\aneye = \mV_{\aneye}\mLambda_\aneye \mV^T_\aneye, \quad 
+	\mK_\noeye = \mV_{\noeye}\mLambda_\noeye \mV^T_\noeye,
+\end{equation}
+where $\mK$ represents the part of $\mK$ that is visible in machine precision, and $\mK_\noeye$ represents the part of $\mK$ that is invisible.  The matrices $\mV$, $\mV_\aneye$, and $\mV_\noeye$ represent the eigenvectors of $\mK$, $\mK_\aneye$, and $\mK_\noeye$, respectively, and $\mLambda$, $\mLambda_\aneye$, and $\mLambda_\noeye$ are diagonal matrices containing the eigenvalues of $\mK$, $\mK_\aneye$, and $\mK_\noeye$, respectively.  The numerical rank of $\mK$ corresponds to the rank of $\mK_\aneye$, which equals the number of rows or columns of $\mLambda_\aneye$. 
+
+\begin{figure}
+	\includegraphics[height = 5cm]{ProgramsImages/rankKernel.eps}
+	\caption{The numerical rank of $\mK$ as a function of $n$ corresponding to the squared exponential kernel \eqref{eq:GaussTheta} for $d = 1$ and various parameters $\theta$.  For the flatter kernels (smaller $\theta$), the numerical rank falls below $n$ for smaller $n$.}
+	\label{fig:rankKplot}
+\end{figure}
 
 \bibliographystyle{amsplain}
 \bibliography{FJHown23,FJH23}
