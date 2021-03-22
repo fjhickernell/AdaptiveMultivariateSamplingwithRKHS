@@ -12,6 +12,7 @@ nmax = 2^mmax;
 xdata_all = (0:nmax)'/nmax;
 xeval = 0;
 rankKmat(nth,mmax+1) = 0;
+rankKmatB(nth,mmax+1) = 0;
 legtxt = cell(nth,1);
 for ii = 1:nth
    th = thetavec(ii);
@@ -22,11 +23,42 @@ for ii = 1:nth
       xdata = xdata_all(1:nskip:nmax+1);
       Kmat = KMP(xdata, xeval, kernel);
       rankKmat(ii,m+1) = rank(Kmat);
+      [~,rankKmatB(ii,m+1)] = KinvY(Kmat,zeros(size(Kmat,1),1));,
    end
 end
 figure;
 nvec = 2.^(0:mmax)+1;
-h = loglog(nvec,rankKmat');
+%h = loglog(nvec,rankKmatB');
+legend(h,legtxt,'location','northwest','box','off')
+xlabel('\(n\)')
+ylabel('rank(\(\mathsf{K}\))')
+axis([1 10^ceil(log10(nmax)) 1 10^ceil(log10(nmax))])
+print('rankKernel.eps','-depsc')
+
+
+%% Plot bases functions
+
+thetavec = [0.01 0.1 1 10 100];
+nth = size(thetavec,2);
+nplot = 1e3;
+xeval = (0:nplot)'/nplot;
+n = 32;
+y0 = zeros(n,1);
+xdata = (0:n)'/nmax;
+rankKmat(nth,mmax+1) = 0;
+rankKmatB(nth,mmax+1) = 0;
+legtxt = cell(nth,1);
+for ii = 1:nth
+   th = thetavec(ii);
+   kernel = @(t,x) GaussKernel(t,x,th); %without the 4th arg, no transform
+   legtxt(ii) = {['\(\theta = ' num2str(th) '\)']};
+   Kmat = KMP(xdata, xeval, kernel);
+   [~,rankKmatB(ii,m+1)] = KinvY(Kmat,y0);
+end
+figure;
+nvec = 2.^(0:mmax)+1;
+%h = loglog(nvec,rankKmat');
+h = loglog(nvec,rankKmatB');
 legend(h,legtxt,'location','northwest','box','off')
 xlabel('\(n\)')
 ylabel('rank(\(\mathsf{K}\))')

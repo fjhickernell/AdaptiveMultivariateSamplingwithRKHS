@@ -1,4 +1,4 @@
-function c = KinvY(Kmat,y,cutoff)
+function [c,nok,Vok,Sok,Vnot,Snot] = KinvY(Kmat,y,cutoff)
 %KINVY multiplies a vector times the inverse of the Gram matrix
 n = size(y,1);
 if nargin <= 2
@@ -13,6 +13,10 @@ end
 Sdiag = diag(S);
 nok = find(Sdiag > cutoff,1,'last');
 Vok = V(:,1:nok);
-c = Vok*(Vok'*y ./ Sdiag(1:nok));
+Sok = Sdiag(1:nok);
+c = Vok*(Vok'*y ./ Sok);
+if nargout > 4
+   Vnot = V(:,nok+1:n);
+   Snot = Sdiag(nok+1:n);
 end
 
