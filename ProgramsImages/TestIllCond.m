@@ -75,7 +75,7 @@ return
 %% Test function
 f = @(x) exp(-5*x).*cos(10*x);
 th = 1;
-n = 16;
+n = 64;
 cutoff = 1e-10;
 ntest = 1e4;
 xdata = (0:(n-1))'/(n-1);

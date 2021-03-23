@@ -1,11 +1,11 @@
 \[ 
  \begin{array}{rccccccc} 
-\multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
+\multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 = 10} \\ \hline 
 \multicolumn{5}{l}{\text{Final } \theta = 2.7} \\ \hline 
 \varepsilon & 0.01 & 0.001 \\ \hline 
-n &  15 &  25 \\ \hline 
-\errBd & 0.0047 & 0.00096 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.0072 & 0.00019 \\ \hline 
-\text{Ptwise Error Bound} &   4\% & 100\% 
+n &  15 &  17 \\ \hline 
+\errBd & 0.0067 & 0.00083 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.0093 & 0.00043 \\ \hline 
+\text{Ptwise Error Bound} &  14\% & 100\% 
 \end{array} 
  \]

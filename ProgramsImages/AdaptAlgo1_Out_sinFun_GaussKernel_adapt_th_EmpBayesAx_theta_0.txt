@@ -2,10 +2,10 @@
  \begin{array}{rccccccc} 
 \multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
 \multicolumn{5}{l}{\text{Final } \theta = 1} \\ \hline 
-\varepsilon & 0.01 & 0.001 \\ \hline 
-n &   8 &  14 \\ \hline 
-\errBd & 0.0069 & 0.00034 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 0.0017 & 1.1\text{E}{-}5 \\ \hline 
-\text{Ptwise Error Bound} & 100\% & 100\% 
+\varepsilon & 0.01 & 0.001 & 0.0001 & 1\text{E}{-}5 \\ \hline 
+n &   8 &  12 &  14 &  31 \\ \hline 
+\errBd & 0.0069 & 0.00021 & 6.1\text{E}{-}5 & 8.3\text{E}{-}6 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.0017 & 6.2\text{E}{-}5 & 1\text{E}{-}5 & 2.1\text{E}{-}6 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]

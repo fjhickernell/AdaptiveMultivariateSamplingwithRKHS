@@ -1,11 +1,11 @@
 \[ 
  \begin{array}{rccccccc} 
-\multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 =  1} \\ \hline 
-\multicolumn{5}{l}{\text{Final } \theta = 4.6} \\ \hline 
+\multicolumn{5}{l}{A_\infty = 1.00\qquad B_0 = 0.2\qquad \mT = ( 0, 5\text{E}{-}5,\ldots,  1)\qquad n_0 = 20} \\ \hline 
+\multicolumn{5}{l}{\text{Final } \theta = 4.5} \\ \hline 
 \varepsilon & 0.01 & 0.001 & 0.0001 & 1\text{E}{-}5 \\ \hline 
-n &   3 &   3 &   3 &   3 \\ \hline 
-\errBd & 6.9\text{E}-17 & 6.9\text{E}-17 & 6.9\text{E}-17 & 6.9\text{E}-17 \\ \hline 
-\norm[\infty]{f - \APP(\mX,\by)} & 1.1 & 1.1 & 1.1 & 1.1 \\ \hline 
-\text{Ptwise Error Bound} &   0\% &   0\% &   0\% &   0\% 
+n &  20 &  22 &  23 &  24 \\ \hline 
+\errBd & 0.0059 & 0.00028 & 4.8\text{E}{-}5 & 3\text{E}{-}6 \\ \hline 
+\norm[\infty]{f - \APP(\mX,\by)} & 0.062 & 5.5\text{E}{-}5 & 1.1\text{E}{-}5 & 1.4\text{E}{-}7 \\ \hline 
+\text{Ptwise Error Bound} & 100\% & 100\% & 100\% & 100\% 
 \end{array} 
  \]
