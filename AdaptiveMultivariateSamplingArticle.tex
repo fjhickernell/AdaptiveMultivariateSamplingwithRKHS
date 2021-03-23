@@ -474,7 +474,7 @@ where $\mT := (\bt_1, \ldots, \bt_\NT)^T \in \cx^\NT$ is a fixed array of test p
 	which is plotted in Figure \ref{fig:ex1}.  We apply Algorithm \ref{alg:basicadapt} to this example using the sequence of data sites described in \eqref{eq:FixedVDCDes} and for a sequence of error tolerances.  We choose the Gaussian kernel in \eqref{eq:GaussianOne} and the parameters in the summary table below.  The bottom row shows the percentage of points in $\mT$ for which the pointwise error bound is valid.
 	
 	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
+%	\input{ProgramsImages/AdaptAlgo1_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	\begin{figure}[H]
 		\centering
 		\includegraphics[height = 4cm]{ProgramsImages/sinFunPlot.eps} \qquad
@@ -555,7 +555,7 @@ Consider again the function and kernel in Example \ref{ex:adpsamplesize} with an
 Algorithm \ref{alg:adaptsample} uses fewer data sites that Algorithm \ref{alg:basicadapt} while still satisfying the overall error bound \eqref{eq:DataErrBdB} as well also satisfying the pointwise error bound \eqref{eq:DataErrBdA}.
 	
 \input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-	\input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
+%	\input{ProgramsImages/AdaptAlgo2_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	
 	\begin{figure}[H]
 		\centering
@@ -718,7 +718,7 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	Consider again the function to be approximated as in Examples \ref{ex:adpsamplesize} and \ref{ex:adpdataselect}, but now with the Gaussian kernel \eqref{eq:GaussTheta} where the parameter $\btheta = \theta$ is inferred from the data as in Algorithm \ref{alg:adapttheta}.
 		
 	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
+%	\input{ProgramsImages/AdaptAlgo3_Out_sinFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
 	
 	
 	\begin{figure}[H]
@@ -752,17 +752,17 @@ where $n$ is the final number of data sites required.  Again, our intended appli
 	For Algorithm \ref{alg:basicadapt}, we can find that it can only reach error tolerance $0.01$ with $nmax = 100.$
 		
 	\input{ProgramsImages/AdaptAlgo1_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}\\
-		\input{ProgramsImages/AdaptAlgo1_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}\\
+		\input{ProgramsImages/AdaptAlgo1_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_2.txt}\\
 	
 	For Algorithm \ref{alg:adaptsample}, with adaptive sample sites, we can find that it can reach better error tolerance. However, the condition number was too large during the calculation. The result is not quite reliable. You can find the success rate of the point-wise error bound of $\varepsilon =0.01$ is just $4\%$.
 		
 	\input{ProgramsImages/AdaptAlgo2_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}\\
-	\input{ProgramsImages/AdaptAlgo2_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}\\
+	\input{ProgramsImages/AdaptAlgo2_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_2.txt}\\
 	
 But for Algorithm \ref{alg:adapttheta}, it can reach all the error tolerance $\varepsilon = 1E-5$ with 25 points.
 	
 	\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_1.txt}
-		\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_0.txt}
+		\input{ProgramsImages/AdaptAlgo3_Out_HigdonFun_GaussKernel_adapt_th_EmpBayesAx_theta_2.txt}
 \end{example}
 
 
