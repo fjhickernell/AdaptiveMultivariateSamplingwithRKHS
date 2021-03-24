@@ -1,4 +1,4 @@
-function [c,nok,Vok,Sok,Vnot,Snot] = KinvY(Kmat,y,cutoff)
+function [c,cutoff,nok,Vok,Sok,Vnot,Snot] = KinvY(Kmat,y,cutoff)
 %KINVY multiplies a vector times the inverse of the Gram matrix
 n = size(y,1);
 if nargin <= 2
@@ -6,9 +6,6 @@ if nargin <= 2
 elseif cutoff <=0
    cutoff = n*eps;
 end
-% Kmat =  Kmat + n*eps*eye(n);
-% rcondKnug = rcond(Kmat)
-% rankKnug = rank(Kmat)
 [V,S,~] = svd(Kmat,'econ');
 Sdiag = diag(S);
 nok = find(Sdiag > cutoff,1,'last');
