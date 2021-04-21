@@ -36,7 +36,8 @@ axis([1 10^ceil(log10(nmax)) 1 10^ceil(log10(nmax))])
 print('rankKernel.eps','-depsc')
 
 
-%% Plot bases functions
+
+%% Plot Hilbert space orthogonal bases
 
 thetavec = [0.01 0.1 1 10 100];
 nth = size(thetavec,2);
@@ -49,6 +50,12 @@ rankKmat(nth,mmax+1) = 0;
 rankKmatB(nth,mmax+1) = 0;
 legtxt = cell(nth,1);
 basevec(n,2) = 0;
+thsmall = 0.02; %threshhold for small theta
+txevalmone = 2.*xeval - 1;
+LegendrePoly = [ones(size(xeval)) txevalmone 3*txevalmone.^2 - 1 ...
+   txevalmone.*(5*txevalmone.^2 - 3)]; %scaled Legendre polynomials
+nPoly = size(LegendrePoly,2);
+
 for ii = 1:nth
    th = thetavec(ii);
    kernel = @(t,x) GaussKernel(t,x,th); %without the 4th arg, no transform
@@ -65,7 +72,7 @@ for ii = 1:nth
       basesInVis = basesInVis.*sign(basesInVis(sub2ind([nplot+1, n+1-nok],wh,1:n+1-nok)));
    end
    basevec(1,1) = 1;
-   scale0 = max(abs(basesVis(:,1)));
+   scale0 = max(abs(basesVis(:,1))); %scale of the largest basis function
    kk = 1;
    for jj = 2:nok
       scale = max(abs(basesVis(:,jj)));
@@ -83,12 +90,28 @@ for ii = 1:nth
          whbas = basevec(jj,1);
          plot(xeval,basesVis(:,whbas));
          subtitleTxt(2,:) = "basis "+num2str(whbas);
+         if th < thsmall && basevec(jj) <= nPoly %plot approximating Legendre
+            hold on
+            coef = LegendrePoly(:,whbas)\basesVis(:,whbas);
+            plot(xeval,coef*LegendrePoly(:,whbas), '--')
+         end
       else
          whbas = basevec(jj,1):basevec(jj,2);
          plot(xeval,basesVis(:,whbas));
          subtitleTxt(2,:) = "bases "+num2str(whbas(1))+ ...
             " to "+num2str(whbas(end));
-      end
+         if th < thsmall && whbas(1) <= nPoly %plot approximating Legendre
+            whPolybas = basevec(jj,1):min(nPoly,basevec(jj,2));
+            hold on
+            nbas = numel(whbas);
+            coef = zeros(1,nbas);
+            for ll = 1:nbas
+               coef(ll) = LegendrePoly(:,whPolybas(ll))\basesVis(:,whPolybas(ll));
+            end
+            plot(xeval,LegendrePoly(:,whPolybas).*coef, '--')
+         end
+
+      end         
       xlabel('\(x\)')      
       title(['Visible, \(\theta = ' num2str(th) '\)'],subtitleTxt) 
       ax = gca;
